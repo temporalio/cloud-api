@@ -268,6 +268,28 @@ service CloudService {
         };
     }
 
+    // Add a member to the group, can only be used with Cloud group types.
+    rpc AddUserGroupMember(AddUserGroupMemberRequest) returns (AddUserGroupMemberResponse) {
+        option (google.api.http) = {
+            post: "/cloud/user-groups/{group_id}/members",
+            body: "*"
+        };
+    }
+
+    // Remove a member from the group, can only be used with Cloud group types.
+    rpc RemoveUserGroupMember(RemoveUserGroupMemberRequest) returns (RemoveUserGroupMemberResponse) {
+        option (google.api.http) = {
+            post: "/cloud/user-groups/{group_id}/remove-member",
+            body: "*"
+        };
+    }
+
+    rpc GetUserGroupMembers(GetUserGroupMembersRequest) returns (GetUserGroupMembersResponse) {
+        option (google.api.http) = {
+            get: "/cloud/user-groups/{group_id}/members",
+        };
+    }
+
     // Create a service account.
     rpc CreateServiceAccount(CreateServiceAccountRequest) returns (CreateServiceAccountResponse) {
         option (google.api.http) = {

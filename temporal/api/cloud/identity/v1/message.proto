@@ -133,6 +133,9 @@ message SCIMGroupSpec {
     string idp_id = 1;
 }
 
+message CloudGroupSpec {
+}
+
 message UserGroupSpec {
     // The display name of the group.
     string display_name = 1;
@@ -144,6 +147,9 @@ message UserGroupSpec {
         // The specification of the SCIM group that this group is associated with.
         // SCIM groups cannot be created or deleted directly, but their access can be managed.
         SCIMGroupSpec scim_group = 4;
+        // The specification for a Cloud group. Cloud groups can manage members using
+        // the add and remove member APIs.
+        CloudGroupSpec cloud_group = 5;
     }
 }
 
@@ -171,6 +177,17 @@ message UserGroup {
     // The date and time when the group was last modified
     // Will not be set if the group has never been modified
     google.protobuf.Timestamp last_modified_time = 7;
+}
+
+message UserGroupMemberId {
+    oneof member_type {
+        string user_id = 1;
+    }
+}
+
+message UserGroupMember {
+    UserGroupMemberId member_id = 1;
+    google.protobuf.Timestamp created_time = 2;
 }
 
 message ServiceAccount {
