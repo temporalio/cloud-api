@@ -482,10 +482,17 @@ message GetUserGroupsRequest {
     string display_name = 4;
     // Filter groups by the google group specification - optional.
     GoogleGroupFilter google_group = 5;
+    // Filter groups by the SCIM group specification - optional.
+    SCIMGroupFilter scim_group = 6;
+
 
     message GoogleGroupFilter {
         // Filter groups by the google group email - optional.
         string email_address = 1;
+    }
+    message SCIMGroupFilter {
+        // Filter groups by the SCIM IDP id - optional.
+        string idp_id = 1;
     }
 }
 
