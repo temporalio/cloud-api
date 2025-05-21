@@ -63,6 +63,21 @@ message CodecServerSpec {
     bool pass_access_token = 2;
     // Whether to include cross-origin credentials.
     bool include_cross_origin_credentials = 3;
+    // A custom error message to display for remote codec server errors.
+    // temporal:versioning:min_version=v0.5.1
+    CustomErrorMessage custom_error_message = 4;
+
+    message CustomErrorMessage {
+        // The error message to display by default for any remote codec server errors.
+        ErrorMessage default = 1;
+
+        message ErrorMessage {
+            // A message to display.
+            string message = 1;
+            // A link that is displayed along side the configured message.
+            string link = 2;
+        }
+    }
 }
 
 message LifecycleSpec {
