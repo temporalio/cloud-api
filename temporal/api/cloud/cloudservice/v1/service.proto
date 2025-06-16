@@ -395,4 +395,12 @@ service CloudService {
             body: "*"
         };
     }
+
+    // Update the tags for a namespace
+    rpc UpdateNamespaceTags(UpdateNamespaceTagsRequest) returns (UpdateNamespaceTagsResponse) {
+        option (google.api.http) = {
+            post: "/cloud/namespaces/{namespace}/tags",
+            body: "*"
+        };
+    }
 }
