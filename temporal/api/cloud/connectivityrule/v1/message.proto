@@ -29,7 +29,7 @@ message ConnectivityRule {
   google.protobuf.Timestamp created_time = 6;
 }
 
-// spec that passed in when create/update the connectivity rule
+// The connectivity rule specification passed in on create/update operations.
 message ConnectivityRuleSpec {
   oneof connection_type {
     PublicConnectivityRule public_rule = 1;
