@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package temporal.api.cloud.connectivityrule.v1;
+
+option go_package = "go.temporal.io/api/cloud/connectivityrule/v1;connectivityrule";
+option java_package = "io.temporal.api.cloud.connectivityrule.v1";
+option java_multiple_files = true;
+option java_outer_classname = "MessageProto";
+option ruby_package = "Temporalio::Api::Cloud::ConnectivityRule::V1";
+option csharp_namespace = "Temporalio.Api.Cloud.ConnectivityRule.V1";
+
+import "temporal/api/cloud/resource/v1/message.proto";
+import "google/protobuf/timestamp.proto";
+
+message ConnectivityRule {
+  // unique id for ConnectivityRule (should be a uuid generated from db)
+  string id = 1;
+
+  // connectivity rule spec including user specified values
+  ConnectivityRuleSpec spec = 2;
+
+  string resource_version = 3;
+  temporal.api.cloud.resource.v1.ResourceState state = 4;
+  // the id of the async operation that is creating/updating/deleting the rule, if any
+  string async_operation_id = 5;
+  // the date and time when the rule was created
+  google.protobuf.Timestamp created_time = 6;
+}
+
+// spec that passed in when create/update the connectivity rule
+message ConnectivityRuleSpec {
+  oneof connection_type {
+    PublicConnectivityRule public_rule = 1;
+    PrivateConnectivityRule private_rule = 2;
+  }
+}
+
+message PublicConnectivityRule {}
+
+message PrivateConnectivityRule {
+  // connection id provided by user so we enforce the private connectivity.  This is required both by AWS and GCP
+  string connection_id = 1;
+
+  // for gcp private connectivity service, gcp needs both gcp project id and the Private Service Connect Connection IDs
+  // AWS only needs the connection_id
+  string gcp_project_id = 2;
+
+  // connectivity region, Example: "aws-us-west-2"
+  string region = 3;
+}
