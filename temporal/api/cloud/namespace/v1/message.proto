@@ -141,7 +141,7 @@ message NamespaceSpec {
     // temporal:versioning:min_version=v0.4.0
     HighAvailabilitySpec high_availability = 10;
     // The private connectivity configuration for the namespace.
-    // temporal:versioning:min_version=v0.5.1
+    // temporal:versioning:min_version=prerelease
     repeated string connectivity_rule_ids = 11;
 
 
@@ -223,8 +223,8 @@ message Namespace {
     // The status of each region where the namespace is available.
     // The id of the region is the key and the status is the value of the map.
     map<string, NamespaceRegionStatus> region_status = 12;
-    // connectivity_rules that set on this namespace
-    // temporal:versioning:min_version=v0.5.1
+    // The connectivity rules that are set on this namespace.
+    // temporal:versioning:min_version=prerelease
     repeated temporal.api.cloud.connectivityrule.v1.ConnectivityRule connectivity_rules = 14;
 }
 
