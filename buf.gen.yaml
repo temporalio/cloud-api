@@ -1,14 +1,21 @@
-version: v1
+version: v2
 plugins:
-  - plugin: go
-    out: go
-    opt: paths=source_relative
-  - plugin: go-grpc
-    out: go
-    opt:
+  - local: protoc-gen-go
+    out: api
+    opt: 
       - paths=source_relative
-  - plugin: openapiv2
-    out: openapiv2
-    opt:
-      - output_format=yaml
-      - allow_delete_body
+      # TODO: Fix the package names in the cloud-api repository when after we deprecate the cloud client from the api-go repository
+      - Mtemporal/api/cloud/resource/v1/message.proto=go.temporal.io/cloud-sdk/api/resource/v1
+      - Mtemporal/api/cloud/account/v1/message.proto=go.temporal.io/cloud-sdk/api/account/v1
+      - Mtemporal/api/cloud/identity/v1/message.proto=go.temporal.io/cloud-sdk/api/identity/v1
+      - Mtemporal/api/cloud/namespace/v1/message.proto=go.temporal.io/cloud-sdk/api/namespace/v1
+      - Mtemporal/api/cloud/operation/v1/message.proto=go.temporal.io/cloud-sdk/api/operation/v1
+      - Mtemporal/api/cloud/sink/v1/message.proto=go.temporal.io/cloud-sdk/api/sink/v1
+      - Mtemporal/api/cloud/region/v1/message.proto=go.temporal.io/cloud-sdk/api/region/v1
+      - Mtemporal/api/cloud/usage/v1/message.proto=go.temporal.io/cloud-sdk/api/usage/v1
+      - Mtemporal/api/cloud/nexus/v1/message.proto=go.temporal.io/cloud-sdk/api/nexus/v1
+      - Mtemporal/api/cloud/connectivityrule/v1/message.proto=go.temporal.io/cloud-sdk/api/connectivityrule/v1
+  - local: protoc-gen-go-grpc
+    out: api
+    opt: paths=source_relative
+
