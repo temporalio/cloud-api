@@ -878,7 +878,7 @@ message GetConnectivityRulesRequest {
     // The page token if this is continuing from another response.
     // Optional, defaults to empty.
     string page_token = 2;
-    // Namespace id
+    // Filter connectivity rule by the namespace id.
     string namespace = 3;
 }
 
@@ -894,6 +894,7 @@ message DeleteConnectivityRuleRequest {
     string connectivity_rule_id = 1;
 
     // The resource version which should be the same from the the db, required
+    // The latest version can be found in the GetConnectivityRule operation response
     string resource_version = 2;
     // The id to use for this async operation.
     // Optional, if not provided a random id will be generated.
