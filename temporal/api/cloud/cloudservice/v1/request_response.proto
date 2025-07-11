@@ -848,6 +848,7 @@ message ValidateNamespaceExportSinkResponse {
 }
 
 message CreateConnectivityRuleRequest {
+    // The connectivity rule specification.
     temporal.api.cloud.connectivityrule.v1.ConnectivityRuleSpec spec = 1;
     // The id to use for this async operation.
     // Optional, if not provided a random id will be generated.
