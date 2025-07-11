@@ -855,12 +855,14 @@ message CreateConnectivityRuleRequest {
 }
 
 message CreateConnectivityRuleResponse {
+    // The id of the connectivity rule that was created.
     string connectivity_rule_id = 1;
     // The async operation
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 2;
 }
 
 message GetConnectivityRuleRequest {
+    // The id of the connectivity rule to get.
     string connectivity_rule_id = 1;
 }
 
