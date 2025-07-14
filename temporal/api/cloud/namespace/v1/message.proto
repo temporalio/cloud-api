@@ -142,7 +142,7 @@ message NamespaceSpec {
     HighAvailabilitySpec high_availability = 10;
     // The private connectivity configuration for the namespace.
     // This will apply the connectivity rules specified to the namespace.
-    // temporal:versioning:min_version=prerelease
+    // temporal:versioning:min_version=v0.6.0
     repeated string connectivity_rule_ids = 11;
 
 
