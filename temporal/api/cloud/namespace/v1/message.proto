@@ -226,6 +226,8 @@ message Namespace {
     map<string, NamespaceRegionStatus> region_status = 12;
     // The connectivity rules that are set on this namespace.
     repeated temporal.api.cloud.connectivityrule.v1.ConnectivityRule connectivity_rules = 14;
+    // The tags for the namespace.
+    map<string, string> tags = 15;
 }
 
 message NamespaceRegionStatus {

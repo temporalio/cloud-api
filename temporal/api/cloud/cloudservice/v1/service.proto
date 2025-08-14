@@ -396,6 +396,14 @@ service CloudService {
         };
     }
 
+    // Update the tags for a namespace
+     rpc UpdateNamespaceTags(UpdateNamespaceTagsRequest) returns (UpdateNamespaceTagsResponse) {
+        option (google.api.http) = {
+            post: "/cloud/namespaces/{namespace}/update-tags"
+            body: "*"
+        };
+    }
+
     // Creates a connectivity rule
     rpc CreateConnectivityRule(CreateConnectivityRuleRequest) returns (CreateConnectivityRuleResponse) {
         option (google.api.http) = {

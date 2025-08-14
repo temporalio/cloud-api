@@ -130,6 +130,9 @@ message CreateNamespaceRequest {
     // The id to use for this async operation.
     // Optional, if not provided a random id will be generated.
     string async_operation_id = 3;
+    // The tags to add to the namespace.
+    // Note: This field can be set by global admins or account owners only.
+    map<string, string> tags = 4;
 }
 
 message CreateNamespaceResponse {
@@ -846,6 +849,26 @@ message ValidateNamespaceExportSinkRequest {
 
 message ValidateNamespaceExportSinkResponse {
 }
+
+message UpdateNamespaceTagsRequest {
+    // The namespace to set tags for.
+    string namespace = 1;
+    // A list of tags to add or update. 
+    // If a key of an existing tag is added, the tag's value is updated. 
+    // At least one of tags_to_upsert or tags_to_remove must be specified.
+    map<string, string> tags_to_upsert = 2;
+    // A list of tag keys to remove. 
+    // If a tag key doesn't exist, it is silently ignored.
+    // At least one of tags_to_upsert or tags_to_remove must be specified.
+    repeated string tags_to_remove = 3;
+    // The id to use for this async operation - optional.
+    string async_operation_id = 4;
+}
+
+message UpdateNamespaceTagsResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+} 
 
 message CreateConnectivityRuleRequest {
     // The connectivity rule specification.
