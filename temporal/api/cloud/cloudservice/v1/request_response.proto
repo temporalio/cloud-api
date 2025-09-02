@@ -928,3 +928,11 @@ message DeleteConnectivityRuleResponse {
     // The async operation
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
+
+message ValidateAccountAuditLogSinkRequest {
+  // The audit log sink spec that will be validated
+  temporal.api.cloud.account.v1.AuditLogSinkSpec spec = 1;
+}
+
+message ValidateAccountAuditLogSinkResponse {
+}
