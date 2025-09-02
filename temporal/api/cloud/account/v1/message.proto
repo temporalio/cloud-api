@@ -11,7 +11,6 @@ option csharp_namespace = "Temporalio.Api.Cloud.Account.V1";
 
 import "temporal/api/cloud/resource/v1/message.proto";
 import "temporal/api/cloud/sink/v1/message.proto";
-import "google/protobuf/timestamp.proto";
 
 message MetricsSpec {
     // The ca cert(s) in PEM format that clients connecting to the metrics endpoint can use for authentication.
