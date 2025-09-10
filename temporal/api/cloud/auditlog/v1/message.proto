@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package temporal.api.cloud.auditlog.v1;
+
+option go_package = "go.temporal.io/api/cloud/auditlog/v1;auditlog";
+option java_package = "io.temporal.api.cloud.auditlog.v1";
+option java_multiple_files = true;
+option java_outer_classname = "MessageProto";
+option ruby_package = "Temporalio::Api::Cloud::AuditLog::V1";
+option csharp_namespace = "Temporalio.Api.Cloud.AuditLog.V1";
+
+import "google/protobuf/timestamp.proto";
+
+// LogRecord represents an audit log entry from Temporal, structured for easy parsing and analysis.
+message LogRecord {
+  // Time when the log was emitted from the source
+  google.protobuf.Timestamp emit_time = 1;
+
+  // Operation performed
+  string operation = 5;
+
+  // Operation status from API call
+  string status = 7;
+
+  // Specifies the version of the log entry to distinguish between different systems on the server side.
+  int32 version = 9;
+
+  // Unique ID for the log record.
+  string log_id = 10;
+
+  // Request ID / Async Operation ID
+  string request_id = 11;
+
+  // Principal struct
+  Principal principal = 12;
+
+  // Raw request details
+  string raw_details = 13;
+
+  // x_forwarded_for, capture the chain of ip address from the caller
+  string x_forwarded_for = 14;
+}
+
+message Principal {
+  // Possible type values: user, serviceaccount.
+  string type = 1;
+  string id = 2;
+  string name = 3;
+  string api_key_id = 4;
+}
+
