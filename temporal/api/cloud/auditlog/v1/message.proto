@@ -29,7 +29,7 @@ message LogRecord {
   string log_id = 10;
 
   // Request ID / Async Operation ID
-  string request_id = 11;
+  string async_operation_id = 11;
 
   // Principal struct
   Principal principal = 12;
