@@ -34,12 +34,13 @@ message MtlsAuthSpec {
     // This must only be one value, but the CA can have a chain.
     //
     // (-- api-linter: core::0140::base64=disabled --)
-    // Deprecated: Not supported after v0.2.0 api version. Use accepted_client_ca instead.
+    // Deprecated: Use accepted_client_ca instead. Will be ignored when accepted_client_ca is set.
     // temporal:versioning:max_version=v0.2.0
     string accepted_client_ca_deprecated = 1 [deprecated = true];
     // The ca cert(s) in PEM format that the clients can use for authentication and authorization.
     // This must only be one value, but the CA can have a chain.
     // temporal:versioning:min_version=v0.2.0
+    // temporal:codegen:ignore
     bytes accepted_client_ca = 4;
     // Certificate filters which, if specified, only allow connections from client certificates whose distinguished name properties match at least one of the filters.
     // This allows limiting access to specific end-entity certificates.
@@ -55,6 +56,11 @@ message ApiKeyAuthSpec {
     // Flag to enable API key auth (default: disabled).
     // Note: disabling API key auth will cause existing API key connections to fail.
     bool enabled = 1;
+}
+
+message LifecycleSpec {
+    // Flag to enable delete protection for the namespace.
+    bool enable_delete_protection = 1;
 }
 
 message CodecServerSpec {
@@ -81,14 +87,76 @@ message CodecServerSpec {
     }
 }
 
-message LifecycleSpec {
-    // Flag to enable delete protection for the namespace.
-    bool enable_delete_protection = 1;
-}
-
 message HighAvailabilitySpec {
     // Flag to disable managed failover for the namespace.
     bool disable_managed_failover = 1;
+}
+
+
+// temporal:dev
+message CapacitySpec {
+    oneof spec {
+        // on-demand capacity (dynamic-envelope)
+        OnDemand on_demand = 1;
+        // provisioned capacity
+        Provisioned provisioned = 2;
+    }
+
+    message OnDemand {
+    }
+
+    message Provisioned {
+        // the unit of the provisioned capacity (Temporal Resource Units)
+        double value = 1;
+    }
+}
+
+// temporal:dev
+message Capacity {
+
+    // temporal:dev
+    oneof current_mode {
+        // the current capacity is on-demand
+        OnDemand on_demand = 1;
+        // the current capacity is provisioned
+        Provisioned provisioned = 2;
+    }
+
+    // temporal:dev
+    message OnDemand {
+    }
+
+    // temporal:dev
+    message Provisioned {
+        // the current unit of the provisioned capacity (Temporal Resource Units)
+        double current_value = 1;
+    }
+
+    // temporal:dev
+    message Request {
+        // the current state of the capacity request (e.g. in-progress, completed, failed)
+        State state = 1;
+        // The date and time when the capacity request was created.
+        google.protobuf.Timestamp start_time = 2;
+        // The date and time when the capacity request was completed or failed.
+        google.protobuf.Timestamp end_time = 3;
+        // The id of the async operation that is creating/updating/deleting the capacity, if any.
+        string async_operation_id = 4;
+        // The requested capacity specification.
+        CapacitySpec spec = 5;
+
+        // temporal:dev
+        enum State {
+            STATE_CAPACITY_REQUEST_UNSPECIFIED = 0;
+            STATE_CAPACITY_REQUEST_COMPLETED = 1;
+            STATE_CAPACITY_REQUEST_IN_PROGRESS = 2;
+            STATE_CAPACITY_REQUEST_FAILED = 3;
+        }
+    }
+
+    // temporal:dev
+    // The latest capacity request, if any.
+    Request latest_request = 3;
 }
 
 message NamespaceSpec {
@@ -121,7 +189,7 @@ message NamespaceSpec {
     // Supported attribute types: text, keyword, int, double, bool, datetime, keyword_list.
     // NOTE: currently deleting a search attribute is not supported.
     // Optional, default is empty.
-    // Deprecated: Not supported after v0.3.0 api version. Use search_attributes instead.
+    // Deprecated: Use search_attributes instead.
     // temporal:versioning:max_version=v0.3.0
     map<string, string> custom_search_attributes = 5 [deprecated = true];
     // The custom search attributes to use for the namespace.
@@ -134,17 +202,23 @@ message NamespaceSpec {
     // Codec server spec used by UI to decode payloads for all users interacting with this namespace.
     // Optional, default is unset.
     CodecServerSpec codec_server = 6;
+
     // The lifecycle configuration for the namespace.
     // temporal:versioning:min_version=v0.4.0
     LifecycleSpec lifecycle = 9;
+
     // The high availability configuration for the namespace.
     // temporal:versioning:min_version=v0.4.0
     HighAvailabilitySpec high_availability = 10;
-    // The private connectivity configuration for the namespace.
-    // This will apply the connectivity rules specified to the namespace.
+
+    // The existing connectivity rule ids for the namespace.
     // temporal:versioning:min_version=v0.6.0
     repeated string connectivity_rule_ids = 11;
 
+    // The capacity configuration for the namespace.
+    // temporal:versioning:min_version=development
+    // temporal:dev
+    CapacitySpec capacity_spec = 12;
 
     enum SearchAttributeType {
         SEARCH_ATTRIBUTE_TYPE_UNSPECIFIED = 0;
@@ -171,6 +245,12 @@ message Limits {
     // The number of actions per second (APS) that is currently allowed for the namespace.
     // The namespace may be throttled if its APS exceeds the limit.
     int32 actions_per_second_limit = 1;
+    // The number of requests per second (RPS) that is currently allowed for the namespace.
+    // temporal:dev
+    int32 requests_per_second_limit = 2;
+    // The number of concurrent task pollers allowed for the namespace.
+    // temporal:dev
+    int32 concurrent_task_poller_limit = 3;
 }
 
 message AWSPrivateLinkInfo {
@@ -198,7 +278,7 @@ message Namespace {
     // The namespace specification.
     NamespaceSpec spec = 3;
     // The current state of the namespace.
-    // Deprecated: Not supported after v0.3.0 api version. Use state instead.
+    // Deprecated: Use state instead.
     // temporal:versioning:max_version=v0.3.0
     string state_deprecated = 4 [deprecated = true];
     // The current state of the namespace.
@@ -224,17 +304,22 @@ message Namespace {
     // The status of each region where the namespace is available.
     // The id of the region is the key and the status is the value of the map.
     map<string, NamespaceRegionStatus> region_status = 12;
-    // The connectivity rules that are set on this namespace.
+    // connectivity_rules that set on this namespace
     repeated temporal.api.cloud.connectivityrule.v1.ConnectivityRule connectivity_rules = 14;
+    
     // The tags for the namespace.
     map<string, string> tags = 15;
+
+    // The capacity of the namespace.
+    // temporal:dev
+    Capacity capacity = 16;
 }
 
 message NamespaceRegionStatus {
     // The current state of the namespace region.
     // Possible values: adding, active, passive, removing, failed.
     // For any failed state, reach out to Temporal Cloud support for remediation.
-    // Deprecated: Not supported after v0.3.0 api version. Use state instead.
+    // Deprecated: Use state instead.
     // temporal:versioning:max_version=v0.3.0
     string state_deprecated = 1 [deprecated = true];
     // The current state of the namespace region.
@@ -255,21 +340,22 @@ message NamespaceRegionStatus {
 }
 
 message ExportSinkSpec {
-    // The unique name of the export sink, it can't be changed once set. 
+    // The unique name of the export sink.
     string name = 1;
 
     // A flag indicating whether the export sink is enabled or not.
     bool enabled = 2;
-    
+
     // The S3 configuration details when destination_type is S3.
     temporal.api.cloud.sink.v1.S3Spec s3 = 3;
 
-    // The GCS configuration details when destination_type is GCS. 
+    // This is a feature under development. We will allow GCS sink support for GCP Namespaces.
+    // The GCS configuration details when destination_type is GCS.
     temporal.api.cloud.sink.v1.GCSSpec gcs = 4;
 }
 
 message ExportSink {
-    // The unique name of the export sink.
+    // The unique name of the export sink, once set it can't be changed
     string name = 1;
 
     // The version of the export sink resource.
