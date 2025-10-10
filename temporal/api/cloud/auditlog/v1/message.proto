@@ -45,8 +45,14 @@ message Principal {
   // The type of the principal. 
   // Possible type values: user, serviceaccount.
   string type = 1;
+
+  // The id of the principal.
   string id = 2;
+
+  // The name of the principal.
   string name = 3;
+
+  // The api key id of the principal if provided.
   string api_key_id = 4;
 }
 
