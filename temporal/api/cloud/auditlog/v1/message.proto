@@ -13,7 +13,7 @@ import "google/protobuf/timestamp.proto";
 
 // LogRecord represents an audit log entry from Temporal, structured for easy parsing and analysis.
 message LogRecord {
-  // Time when the log was emitted from the source
+  // Time when the log was emitted.
   google.protobuf.Timestamp emit_time = 1;
 
   // Operation performed
