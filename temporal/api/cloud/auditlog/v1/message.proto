@@ -22,7 +22,7 @@ message LogRecord {
   // The status of the operation.
   string status = 7;
 
-  // Specifies the version of the log entry to distinguish between different systems on the server side.
+  // The internal version of the log message.  Can be used in deduplication if needed.
   int32 version = 9;
 
   // Unique ID for the log record.
