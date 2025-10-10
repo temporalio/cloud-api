@@ -31,7 +31,7 @@ message LogRecord {
   // The ID of the async operation.
   string async_operation_id = 11;
 
-  // Principal struct
+  // The principal that performed the operation.
   Principal principal = 12;
 
   // Raw request details
