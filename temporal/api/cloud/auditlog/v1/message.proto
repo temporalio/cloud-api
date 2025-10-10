@@ -19,7 +19,7 @@ message LogRecord {
   // The operation performed.
   string operation = 5;
 
-  // Operation status from API call
+  // The status of the operation.
   string status = 7;
 
   // Specifies the version of the log entry to distinguish between different systems on the server side.
