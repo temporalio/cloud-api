@@ -28,7 +28,7 @@ message LogRecord {
   // Unique ID for the log record.
   string log_id = 10;
 
-  // Request ID / Async Operation ID
+  // The ID of the async operation.
   string async_operation_id = 11;
 
   // Principal struct
