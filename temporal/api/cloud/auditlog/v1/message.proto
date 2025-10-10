@@ -37,7 +37,7 @@ message LogRecord {
   // The raw details of the operation.
   string raw_details = 13;
 
-  // x_forwarded_for, capture the chain of ip address from the caller
+  // The originating IP address of the request.
   string x_forwarded_for = 14;
 }
 
