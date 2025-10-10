@@ -16,7 +16,7 @@ message LogRecord {
   // Time when the log was emitted.
   google.protobuf.Timestamp emit_time = 1;
 
-  // Operation performed
+  // The operation performed.
   string operation = 5;
 
   // Operation status from API call
