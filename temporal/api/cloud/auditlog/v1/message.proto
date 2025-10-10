@@ -10,6 +10,7 @@ option ruby_package = "Temporalio::Api::Cloud::AuditLog::V1";
 option csharp_namespace = "Temporalio.Api.Cloud.AuditLog.V1";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
 
 // LogRecord represents an audit log entry from Temporal, structured for easy parsing and analysis.
 message LogRecord {
@@ -35,7 +36,7 @@ message LogRecord {
   Principal principal = 12;
 
   // The raw details of the operation.
-  string raw_details = 13;
+  google.protobuf.Struct raw_details = 13;
 
   // The originating IP address of the request.
   string x_forwarded_for = 14;
