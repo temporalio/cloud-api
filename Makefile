@@ -24,8 +24,7 @@ $(PROTO_OUT):
 	mkdir $(PROTO_OUT)
 
 ##### Compile proto files for go #####
-# grpc: buf-lint buf-breaking go-grpc
-grpc: buf-lint go-grpc
+grpc: buf-lint buf-breaking go-grpc
 
 go-grpc: clean $(PROTO_OUT)
 	printf $(COLOR) "Compile for go-gRPC..."
