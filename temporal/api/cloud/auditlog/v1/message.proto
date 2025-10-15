@@ -29,9 +29,6 @@ message LogRecord {
   // Unique ID for the log record.
   string log_id = 10;
 
-  // The ID of the async operation.
-  string async_operation_id = 11;
-
   // The principal that performed the operation.
   Principal principal = 12;
 
@@ -40,6 +37,9 @@ message LogRecord {
 
   // The originating IP address of the request.
   string x_forwarded_for = 14;
+
+  // The ID of the async operation.
+  string async_operation_id = 15;
 }
 
 message Principal {
