@@ -19,13 +19,16 @@ jobs:
   
   validation:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v4
       - name: Clone saas-proto repository
-        run: |
-          git clone --depth 1 --branch abhinav/protoCompareExistingRemote https://x-access-token:${{ github.token }}@github.com/temporalio/saas-proto.git
+        uses: actions/checkout@v4
+        with:
+          repository: temporalio/saas-proto
+          ref: abhinav/protoCompareExistingRemote
+          path: saas-proto
+          token: ${{ github.token }}
       - name: Run proto compare
         run: |
           cd saas-proto
