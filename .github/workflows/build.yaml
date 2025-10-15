@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Clone saas-proto repository
         run: |
-          git clone --depth 1 --branch abhinav/protoCompareExistingRemote https://${{ github.token }}@github.com/temporalio/saas-proto.git
+          git clone --depth 1 --branch abhinav/protoCompareExistingRemote https://x-access-token:${{ github.token }}@github.com/temporalio/saas-proto.git
       - name: Run proto compare
         run: |
           cd saas-proto
