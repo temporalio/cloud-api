@@ -34,7 +34,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          gh repo clone temporalio/saas-proto -- --depth 1 --branch abhinav/protoCompareExistingRemote
+          gh repo clone temporalio/saas-proto -- --depth 1 --branch main
       - name: Run proto compare
         run: |
           cd saas-proto
