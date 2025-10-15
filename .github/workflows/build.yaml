@@ -22,10 +22,17 @@ jobs:
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v4
-      - name: Setup GitHub CLI
-        run: |
-          gh auth login --with-token <<< "${{ github.token }}"
+      - name: Generate GitHub token (App)
+        id: generate_token
+        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b
+        with:
+          app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
+          private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-contents: "read"
       - name: Clone saas-proto repository
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
           gh repo clone temporalio/saas-proto -- --depth 1 --branch abhinav/protoCompareExistingRemote
       - name: Run proto compare
