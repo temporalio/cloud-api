@@ -22,13 +22,12 @@ jobs:
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v4
+      - name: Setup GitHub CLI
+        run: |
+          gh auth login --with-token <<< "${{ github.token }}"
       - name: Clone saas-proto repository
-        uses: actions/checkout@v4
-        with:
-          repository: temporalio/saas-proto
-          ref: abhinav/protoCompareExistingRemote
-          path: saas-proto
-          token: ${{ github.token }}
+        run: |
+          gh repo clone temporalio/saas-proto -- --depth 1 --branch abhinav/protoCompareExistingRemote
       - name: Run proto compare
         run: |
           cd saas-proto
