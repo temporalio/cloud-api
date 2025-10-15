@@ -16,3 +16,17 @@ jobs:
         env:
           BUF_INPUT_HTTPS_USERNAME: ${{github.actor}}
           BUF_INPUT_HTTPS_PASSWORD: ${{github.token}}
+  
+  validation:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+      - name: Clone saas-proto repository
+        run: |
+          git clone --depth 1 --branch abhinav/protoCompareExistingRemote https://${{ github.token }}@github.com/temporalio/saas-proto.git
+      - name: Run proto compare
+        run: |
+          cd saas-proto
+          go run ./tools/proto-compare -existing-remote-repo ..
