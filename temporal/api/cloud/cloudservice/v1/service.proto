@@ -11,6 +11,7 @@ option csharp_namespace = "Temporalio.Api.Cloud.CloudService.V1";
 
 import "temporal/api/cloud/cloudservice/v1/request_response.proto";
 import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 // WARNING: This service is currently experimental and may change in
 // incompatible ways.
@@ -20,12 +21,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/users",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Get a user
     rpc GetUser(GetUserRequest) returns (GetUserResponse) {
         option (google.api.http) = {
             get: "/cloud/users/{user_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -35,6 +42,9 @@ service CloudService {
             post: "/cloud/users",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Update a user
@@ -43,12 +53,18 @@ service CloudService {
             post: "/cloud/users/{user_id}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Delete a user
     rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
         option (google.api.http) = {
             delete: "/cloud/users/{user_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -58,12 +74,18 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/users/{user_id}/access",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Get the latest information on an async operation
     rpc GetAsyncOperation(GetAsyncOperationRequest) returns (GetAsyncOperationResponse) {
         option (google.api.http) = {
             get: "/cloud/operations/{async_operation_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Operations"];
         };
     }
 
@@ -73,6 +95,9 @@ service CloudService {
             post: "/cloud/namespaces",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Get all namespaces
@@ -80,12 +105,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/namespaces",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Get a namespace
     rpc GetNamespace (GetNamespaceRequest) returns (GetNamespaceResponse) {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
         };
     }
 
@@ -95,6 +126,9 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Rename an existing customer search attribute
@@ -103,12 +137,18 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/rename-custom-search-attribute",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Delete a namespace
     rpc DeleteNamespace (DeleteNamespaceRequest) returns (DeleteNamespaceResponse) {
         option (google.api.http) = {
             delete: "/cloud/namespaces/{namespace}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
         };
     }
 
@@ -118,6 +158,9 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/failover-region",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Add a new region to a namespace
@@ -126,12 +169,18 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/add-region",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Delete a region from a namespace
     rpc DeleteNamespaceRegion (DeleteNamespaceRegionRequest) returns (DeleteNamespaceRegionResponse) {
         option (google.api.http) = {
             delete: "/cloud/namespaces/{namespace}/regions/{region}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
         };
     }
 
@@ -140,12 +189,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/regions",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Regions"];
+        };
     }
 
     // Get a region
     rpc GetRegion (GetRegionRequest) returns (GetRegionResponse) {
         option (google.api.http) = {
             get: "/cloud/regions/{region}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Regions"];
         };
     }
 
@@ -154,12 +209,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/api-keys",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Get an API key
     rpc GetApiKey (GetApiKeyRequest) returns (GetApiKeyResponse) {
         option (google.api.http) = {
             get: "/cloud/api-keys/{key_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -169,6 +230,9 @@ service CloudService {
             post: "/cloud/api-keys",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Update an API key
@@ -177,12 +241,18 @@ service CloudService {
             post: "/cloud/api-keys/{key_id}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Delete an API key
     rpc DeleteApiKey (DeleteApiKeyRequest) returns (DeleteApiKeyResponse) {
         option (google.api.http) = {
             delete: "/cloud/api-keys/{key_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -191,12 +261,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/nexus/endpoints",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Nexus"];
+        };
     }
 
     // Get a nexus endpoint
     rpc GetNexusEndpoint(GetNexusEndpointRequest) returns (GetNexusEndpointResponse) {
         option (google.api.http) = {
             get: "/cloud/nexus/endpoints/{endpoint_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {  
+            tags: ["Nexus"];
         };
     }
 
@@ -206,6 +282,9 @@ service CloudService {
             post: "/cloud/nexus/endpoints",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Nexus"];
+        };
     }
 
     // Update a nexus endpoint
@@ -214,12 +293,18 @@ service CloudService {
             post: "/cloud/nexus/endpoints/{endpoint_id}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Nexus"];
+        };
     }
 
     // Delete a nexus endpoint
     rpc DeleteNexusEndpoint(DeleteNexusEndpointRequest) returns (DeleteNexusEndpointResponse) {
         option (google.api.http) = {
             delete: "/cloud/nexus/endpoints/{endpoint_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Nexus"];
         };
     }
 
@@ -228,12 +313,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/user-groups",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Get a user group
     rpc GetUserGroup (GetUserGroupRequest) returns (GetUserGroupResponse) {
         option (google.api.http) = {
             get: "/cloud/user-groups/{group_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -243,6 +334,9 @@ service CloudService {
             post: "/cloud/user-groups",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Update a user group
@@ -251,12 +345,18 @@ service CloudService {
             post: "/cloud/user-groups/{group_id}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Delete a user group
     rpc DeleteUserGroup (DeleteUserGroupRequest) returns (DeleteUserGroupResponse) {
         option (google.api.http) = {
             delete: "/cloud/user-groups/{group_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -266,6 +366,9 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/user-groups/{group_id}/access",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Add a member to the group, can only be used with Cloud group types.
@@ -273,6 +376,9 @@ service CloudService {
         option (google.api.http) = {
             post: "/cloud/user-groups/{group_id}/members",
             body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -282,11 +388,17 @@ service CloudService {
             post: "/cloud/user-groups/{group_id}/remove-member",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     rpc GetUserGroupMembers(GetUserGroupMembersRequest) returns (GetUserGroupMembersResponse) {
         option (google.api.http) = {
             get: "/cloud/user-groups/{group_id}/members",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -296,6 +408,9 @@ service CloudService {
             post: "/cloud/service-accounts",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Get a service account.
@@ -303,12 +418,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/service-accounts/{service_account_id}",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Get service accounts.
     rpc GetServiceAccounts(GetServiceAccountsRequest) returns (GetServiceAccountsResponse) {
         option (google.api.http) = {
             get: "/cloud/service-accounts",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -318,6 +439,9 @@ service CloudService {
             post: "/cloud/service-accounts/{service_account_id}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Set a service account's access to a namespace.
@@ -326,12 +450,18 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/service-accounts/{service_account_id}/access",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
+        };
     }
 
     // Delete a service account.
     rpc DeleteServiceAccount(DeleteServiceAccountRequest) returns (DeleteServiceAccountResponse) {
         option (google.api.http) = {
             delete: "/cloud/service-accounts/{service_account_id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Identity"];
         };
     }
 
@@ -341,12 +471,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/usage",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+        };
     }
 
     // Get account information.
     rpc GetAccount (GetAccountRequest) returns (GetAccountResponse) {
         option (google.api.http) = {
             get: "/cloud/account",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
         };
     }
 
@@ -355,7 +491,10 @@ service CloudService {
         option (google.api.http) = {
             post: "/cloud/account",
             body: "*"
-	};
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+        };
     }
 
     // Create an export sink
@@ -364,6 +503,9 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/export-sinks",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Get an export sink
@@ -371,12 +513,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}/export-sinks/{name}"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Get export sinks
     rpc GetNamespaceExportSinks(GetNamespaceExportSinksRequest) returns (GetNamespaceExportSinksResponse) {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}/export-sinks"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
         };
     }
 
@@ -386,12 +534,18 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/export-sinks/{spec.name}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Delete an export sink
     rpc DeleteNamespaceExportSink(DeleteNamespaceExportSinkRequest) returns (DeleteNamespaceExportSinkResponse) {
         option (google.api.http) = {
             delete: "/cloud/namespaces/{namespace}/export-sinks/{name}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
         };
     }
 
@@ -402,6 +556,9 @@ service CloudService {
             post: "/cloud/namespaces/{namespace}/export-sinks/validate",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
+        };
     }
 
     // Update the tags for a namespace
@@ -409,6 +566,9 @@ service CloudService {
         option (google.api.http) = {
             post: "/cloud/namespaces/{namespace}/update-tags"
             body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Namespaces"];
         };
     }
 
@@ -418,12 +578,18 @@ service CloudService {
             post: "/cloud/connectivity-rules"
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Connectivity"];
+        };
     }
 
     // Gets a connectivity rule by id
     rpc GetConnectivityRule(GetConnectivityRuleRequest) returns (GetConnectivityRuleResponse) {
         option (google.api.http) = {
             get: "/cloud/connectivity-rules/{connectivity_rule_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Connectivity"];
         };
     }
 
@@ -432,12 +598,18 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/connectivity-rules"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Connectivity"];
+        };
     }
 
     // Deletes a connectivity rule by id
     rpc DeleteConnectivityRule(DeleteConnectivityRuleRequest) returns (DeleteConnectivityRuleResponse) {
         option (google.api.http) = {
             delete: "/cloud/connectivity-rules/{connectivity_rule_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Connectivity"];
         };
     }
 
@@ -447,6 +619,9 @@ service CloudService {
         option (google.api.http) = {
             post: "/cloud/account/audit-logs/sink/validate",
             body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
         };
     }
 }
