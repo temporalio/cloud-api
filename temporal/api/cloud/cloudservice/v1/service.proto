@@ -13,6 +13,62 @@ import "temporal/api/cloud/cloudservice/v1/request_response.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Temporal Cloud Ops API";
+        description: "Programmatic access to manage Temporal Cloud control plane resources including namespaces, users, service accounts, and more.";
+        version: "1.0";
+        extensions: {
+            key: "x-logo";
+            value: {
+                struct_value: {
+                    fields: {
+                        key: "url";
+                        value: {
+                            string_value: "https://images.ctfassets.net/0uuz8ydxyd9p/4YGUnEoCaH9SyoUDhlJkau/e1600205d17eeee3033d926ef06664a9/Temporal_LogoLockup_Horizontal_dark_1.svg";
+                        }
+                    }
+                }
+            }
+        }
+    };
+    external_docs: {
+        url: "https://docs.temporal.io/cloud";
+        description: "Temporal Cloud Documentation";
+    };
+    tags: [
+        {name: "Namespaces"; description: "Manage Temporal Cloud namespaces"},
+        {name: "Users"; description: "Manage users and their namespace access"},
+        {name: "Service Accounts"; description: "Manage service accounts and their namespace access"},
+        {name: "API Keys"; description: "Manage API keys for authentication"},
+        {name: "Groups"; description: "Manage user groups and group membership"},
+        {name: "Nexus"; description: "Manage Nexus endpoints"},
+        {name: "High Availability"; description: "Manage high availability (multi-region, multi-cloud, and same-region replication) namespace configurations"},
+        {name: "Export Sinks"; description: "Manage data export configurations"},
+        {name: "Connectivity Rules"; description: "Manage network connectivity rules"},
+        {name: "Regions"; description: "Query available regions"},
+        {name: "Account"; description: "Manage account settings and usage"},
+        {name: "Operations"; description: "Query async operation status"}
+    ];
+    security_definitions: {
+        security: {
+            key: "ApiKeyAuth";
+            value: {
+                type: TYPE_API_KEY;
+                in: IN_HEADER;
+                name: "Authorization";
+                description: "API key authentication. Use 'Bearer YOUR_API_KEY' format. See https://docs.temporal.io/cloud/api-keys";
+            }
+        }
+    }
+    security: {
+        security_requirement: {
+            key: "ApiKeyAuth";
+            value: {};
+        }
+    }
+};
+
 // WARNING: This service is currently experimental and may change in
 // incompatible ways.
 service CloudService {
@@ -790,7 +846,7 @@ service CloudService {
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Connectivity"];
+            tags: ["Connectivity Rules"];
             summary: "Create connectivity rule";
             description: "Creates a new connectivity rule for network access control";
             external_docs: {
@@ -806,7 +862,7 @@ service CloudService {
             get: "/cloud/connectivity-rules/{connectivity_rule_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Connectivity"];
+            tags: ["Connectivity Rules"];
             summary: "Get connectivity rule details";
             description: "Returns detailed information about a specific connectivity rule";
             external_docs: {
@@ -822,7 +878,7 @@ service CloudService {
             get: "/cloud/connectivity-rules"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Connectivity"];
+            tags: ["Connectivity Rules"];
             summary: "List all connectivity rules";
             description: "Returns a list of all connectivity rules in the account";
             external_docs: {
@@ -838,7 +894,7 @@ service CloudService {
             delete: "/cloud/connectivity-rules/{connectivity_rule_id}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Connectivity"];
+            tags: ["Connectivity Rules"];
             summary: "Delete connectivity rule";
             description: "Removes a connectivity rule from the account";
         };
