@@ -44,7 +44,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
         {name: "Groups"; description: "Manage user groups and group membership"},
         {name: "Nexus"; description: "Manage Nexus endpoints"},
         {name: "High Availability"; description: "Manage high availability (multi-region, multi-cloud, and same-region replication) namespace configurations"},
-        {name: "Export Sinks"; description: "Manage data export configurations"},
+        {name: "Export"; description: "Manage workflow history export configurations"},
         {name: "Connectivity Rules"; description: "Manage network connectivity rules"},
         {name: "Regions"; description: "Query available regions"},
         {name: "Account"; description: "Manage account settings and usage"},
@@ -356,6 +356,10 @@ service CloudService {
             tags: ["Namespaces"];
             summary: "Update a namespace";
             description: "Updates configuration for an existing namespace";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/namespaces";
+                description: "Namespace management documentation";
+            };
             security: {
                  security_requirement: {
                     key: "ApiKeyAuth";
@@ -409,6 +413,10 @@ service CloudService {
             tags: ["Namespaces"];
             summary: "Delete a namespace";
             description: "Permanently deletes a namespace and all its data";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/namespaces";
+                description: "Namespace management documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -461,7 +469,7 @@ service CloudService {
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["High Availability"];
-            summary: "Add namespace region";
+            summary: "Add namespace replica";
             description: "Adds a new replica to an existing namespace";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/high-availability";
@@ -485,7 +493,7 @@ service CloudService {
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["High Availability"];
-            summary: "Remove namespace region";
+            summary: "Remove namespace replica";
             description: "Removes a replica from a high availability namespace";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/high-availability";
@@ -616,6 +624,10 @@ service CloudService {
             tags: ["API Keys"];
             summary: "Create an API key";
             description: "Creates a new API key for programmatic access";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/api-keys";
+                description: "API Keys documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -639,6 +651,10 @@ service CloudService {
             tags: ["API Keys"];
             summary: "Update an API key";
             description: "Updates an existing API key's properties";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/api-keys";
+                description: "API Keys documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -661,6 +677,10 @@ service CloudService {
             tags: ["API Keys"];
             summary: "Delete an API key";
             description: "Revokes and deletes an API key";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/api-keys";
+                description: "API Keys documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -736,6 +756,10 @@ service CloudService {
             tags: ["Nexus"];
             summary: "Create a Nexus endpoint";
             description: "Creates a new Nexus endpoint for cross-namespace communication";
+            external_docs: {
+                url: "https://docs.temporal.io/nexus";
+                description: "Nexus documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -759,6 +783,10 @@ service CloudService {
             tags: ["Nexus"];
             summary: "Update a Nexus endpoint";
             description: "Updates an existing Nexus endpoint's configuration";
+            external_docs: {
+                url: "https://docs.temporal.io/nexus";
+                description: "Nexus documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -781,6 +809,10 @@ service CloudService {
             tags: ["Nexus"];
             summary: "Delete a Nexus endpoint";
             description: "Removes a Nexus endpoint from the account";
+            external_docs: {
+                url: "https://docs.temporal.io/nexus";
+                description: "Nexus documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -830,7 +862,7 @@ service CloudService {
             summary: "Get user group details";
             description: "Returns detailed information about a specific user group";
             external_docs: {
-                url: "https://docs.temporal.io/cloud/users-account-level-roles";
+                url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
             security: {
@@ -856,6 +888,10 @@ service CloudService {
             tags: ["Groups"];
             summary: "Create a user group";
             description: "Creates a new user group for managing permissions";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -879,6 +915,10 @@ service CloudService {
             tags: ["Groups"];
             summary: "Update a user group";
             description: "Updates an existing user group's properties";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -901,6 +941,10 @@ service CloudService {
             tags: ["Groups"];
             summary: "Delete a user group";
             description: "Removes a user group from the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -925,8 +969,8 @@ service CloudService {
             summary: "Set user group namespace access";
             description: "Configures a user group's permissions for a specific namespace";
             external_docs: {
-                url: "https://docs.temporal.io/cloud/users-namespace-level-permissions";
-                description: "Namespace permissions documentation";
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
             };
             security: {
                 security_requirement: {
@@ -949,8 +993,12 @@ service CloudService {
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Groups"];
-            summary: "Add member to user group";
+            summary: "Add user to group";
             description: "Adds a user to a user group (Cloud groups only)";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -972,8 +1020,12 @@ service CloudService {
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Groups"];
-            summary: "Remove member from user group";
+            summary: "Remove user from group";
             description: "Removes a user from a user group (Cloud groups only)";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -993,8 +1045,12 @@ service CloudService {
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Groups"];
-            summary: "List user group members";
-            description: "Returns a list of all members in a user group";
+            summary: "List users in a group";
+            description: "Returns a list of all users in a user group";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/user-groups";
+                description: "User groups documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -1097,6 +1153,10 @@ service CloudService {
             tags: ["Service Accounts"];
             summary: "Update a service account";
             description: "Updates an existing service account's properties";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/service-accounts";
+                description: "Service Accounts documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -1121,8 +1181,8 @@ service CloudService {
             summary: "Set service account namespace access";
             description: "Configures a service account's permissions for a specific namespace";
             external_docs: {
-                url: "https://docs.temporal.io/cloud/users-namespace-level-permissions";
-                description: "Namespace permissions documentation";
+                url: "https://docs.temporal.io/cloud/service-accounts";
+                description: "Service Accounts documentation";
             };
             security: {
                 security_requirement: {
@@ -1146,6 +1206,10 @@ service CloudService {
             tags: ["Service Accounts"];
             summary: "Delete a service account";
             description: "Removes a service account from the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/service-accounts";
+                description: "Service Accounts documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -1167,7 +1231,8 @@ service CloudService {
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Account"];
-            summary: "Get usage data across namespaces.";
+            summary: "Get usage data";
+            description: "Get usage data across namespaces";
             deprecated: true;
             security: {
                 security_requirement: {
@@ -1191,6 +1256,10 @@ service CloudService {
             tags: ["Account"];
             summary: "Get account details";
             description: "Returns detailed information about the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/billing-and-cost";
+                description: "Billing documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -1214,6 +1283,10 @@ service CloudService {
             tags: ["Account"];
             summary: "Update account details";
             description: "Updates account configuration and settings";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/billing-and-cost";
+                description: "Billing documentation";
+            };
             security: {
                 security_requirement: {
                     key: "ApiKeyAuth";
@@ -1234,9 +1307,9 @@ service CloudService {
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Export Sinks"];
-            summary: "Create namespace export sink";
-            description: "Creates a new export sink for exporting namespace data";
+            tags: ["Export"];
+            summary: "Create history export sink";
+            description: "Creates a new workflow history export sink";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/export";
                 description: "Export documentation";
@@ -1250,9 +1323,9 @@ service CloudService {
             get: "/cloud/namespaces/{namespace}/export-sinks/{name}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Export Sinks"];
-            summary: "Get export sink details";
-            description: "Returns detailed information about a specific export sink";
+            tags: ["Export"];
+            summary: "Get history sink details";
+            description: "Returns detailed information about a specific workflow history export sink";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/export";
                 description: "Export documentation";
@@ -1266,9 +1339,9 @@ service CloudService {
             get: "/cloud/namespaces/{namespace}/export-sinks"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Export Sinks"];
-            summary: "List namespace export sinks";
-            description: "Returns a list of all export sinks for a namespace";
+            tags: ["Export"];
+            summary: "List history export sinks";
+            description: "Returns a list of all workflow history export sinks for a namespace";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/export";
                 description: "Export documentation";
@@ -1283,9 +1356,13 @@ service CloudService {
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Export Sinks"];
-            summary: "Update namespace export sink";
-            description: "Updates an existing export sink's configuration";
+            tags: ["Export"];
+            summary: "Update history export sink";
+            description: "Updates an existing workflow history export sink's configuration";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/export";
+                description: "Export documentation";
+            };
         };
     }
 
@@ -1295,9 +1372,13 @@ service CloudService {
             delete: "/cloud/namespaces/{namespace}/export-sinks/{name}"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Export Sinks"];
-            summary: "Delete namespace export sink";
-            description: "Removes an export sink from a namespace";
+            tags: ["Export"];
+            summary: "Delete history export sink";
+            description: "Removes a workflow history export sink from a namespace";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/export";
+                description: "Export documentation";
+            };
         };
     }
 
@@ -1309,9 +1390,13 @@ service CloudService {
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-            tags: ["Export Sinks"];
-            summary: "Validate export sink configuration";
-            description: "Tests export sink configuration by delivering a test file to verify accessibility";
+            tags: ["Export"];
+            summary: "Validate history export sink configuration";
+            description: "Tests workflow history export sink configuration by delivering a test file to verify accessibility";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/export";
+                description: "Export documentation";
+            };
         };
     }
 
@@ -1325,6 +1410,10 @@ service CloudService {
             tags: ["Namespaces"];
             summary: "Update namespace tags";
             description: "Updates the tags associated with a namespace";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/namespaces#tag-a-namespace";
+                description: "Namespace tag documentation";
+            };
             security: {
                 security_requirement: {
                     key: "RoleBasedAccess";
@@ -1373,8 +1462,8 @@ service CloudService {
             summary: "Get connectivity rule details";
             description: "Returns detailed information about a specific connectivity rule";
             external_docs: {
-                url: "https://docs.temporal.io/cloud/security#connectivity-rules";
-                description: "Connectivity rules documentation";
+                url: "https://docs.temporal.io/cloud/connectivity";
+                description: "Connectivity documentation";
             };
         };
     }
@@ -1389,8 +1478,8 @@ service CloudService {
             summary: "List all connectivity rules";
             description: "Returns a list of all connectivity rules in the account";
             external_docs: {
-                url: "https://docs.temporal.io/cloud/security#connectivity-rules";
-                description: "Connectivity rules documentation";
+                url: "https://docs.temporal.io/cloud/connectivity";
+                description: "Connectivity documentation";
             };
         };
     }
@@ -1404,6 +1493,10 @@ service CloudService {
             tags: ["Connectivity Rules"];
             summary: "Delete connectivity rule";
             description: "Removes a connectivity rule from the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/connectivity";
+                description: "Connectivity documentation";
+            };
         };
     }
 
