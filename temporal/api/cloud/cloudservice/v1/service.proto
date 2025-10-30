@@ -479,4 +479,11 @@ service CloudService {
             body: "*"
         };
     }
+
+    // Delete an audit log sink
+    rpc DeleteAccountAuditLogSink(DeleteAccountAuditLogSinkRequest) returns (DeleteAccountAuditLogSinkResponse) {
+        option (google.api.http) = {
+            delete: "/cloud/account/audit-log-sinks/{name}"
+        };
+    }
 }
