@@ -87,10 +87,14 @@ message AuditLogSink {
     // The last succeeded timestamp for the internal workflow responsible for adding data to the sink.
     google.protobuf.Timestamp last_succeeded_time = 7;
 
+    // The health status of the audit log sink.
     enum Health {
         HEALTH_UNSPECIFIED = 0;
+        // The audit log sink is healthy and functioning correctly.
         HEALTH_OK = 1;
+        // The audit log sink has an internal error.
         HEALTH_ERROR_INTERNAL = 2;
+        // The audit log sink has a configuration error.
         HEALTH_ERROR_USER_CONFIGURATION = 3;
     }
 }
