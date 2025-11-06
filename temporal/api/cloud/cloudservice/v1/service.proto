@@ -399,7 +399,7 @@ service CloudService {
     // This operation verifies that the sink is correctly configured, accessible, and ready for data export.
     rpc ValidateNamespaceExportSink(ValidateNamespaceExportSinkRequest) returns (ValidateNamespaceExportSinkResponse) {
         option (google.api.http) = {
-            post: "/cloud/namespaces/{namespace}/export-sinks/validate",
+            post: "/cloud/namespaces/{namespace}/export-sink-validate",
             body: "*"
         };
     }
@@ -445,7 +445,7 @@ service CloudService {
     // The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs.
     rpc ValidateAccountAuditLogSink(ValidateAccountAuditLogSinkRequest) returns (ValidateAccountAuditLogSinkResponse) {
         option (google.api.http) = {
-            post: "/cloud/account/audit-logs/sink/validate",
+            post: "/cloud/audit-log-sink/validate",
             body: "*"
         };
     }
