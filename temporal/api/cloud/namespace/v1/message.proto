@@ -36,7 +36,7 @@ message MtlsAuthSpec {
     // (-- api-linter: core::0140::base64=disabled --)
     // Deprecated: Not supported after v0.2.0 api version. Use accepted_client_ca instead.
     // temporal:versioning:max_version=v0.2.0
-    string accepted_client_ca_deprecated = 1;
+    string accepted_client_ca_deprecated = 1 [deprecated = true];
     // The ca cert(s) in PEM format that the clients can use for authentication and authorization.
     // This must only be one value, but the CA can have a chain.
     // temporal:versioning:min_version=v0.2.0
