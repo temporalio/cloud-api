@@ -307,6 +307,7 @@ message GetApiKeysRequest {
     string owner_id = 3;
     // Filter api keys by owner type - optional.
     // Possible values: user, service-account
+    // temporal:versioning:max_version=v0.3.0
     string owner_type_deprecated = 4 [deprecated = true];
     // Filter api keys by owner type - optional.
     // temporal:enums:replaces=owner_type_deprecated
