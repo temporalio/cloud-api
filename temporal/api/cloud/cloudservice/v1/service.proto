@@ -1517,4 +1517,41 @@ service CloudService {
             };
         };
     }
+
+    // Create an audit log sink
+    rpc CreateAccountAuditLogSink(CreateAccountAuditLogSinkRequest) returns (CreateAccountAuditLogSinkResponse) {
+        option (google.api.http) = {
+            post: "/cloud/audit-log-sinks",
+            body: "*"
+        };
+    }
+
+    // Get an audit log sink
+    rpc GetAccountAuditLogSink(GetAccountAuditLogSinkRequest) returns (GetAccountAuditLogSinkResponse) {
+        option (google.api.http) = {
+            get: "/cloud/audit-log-sinks/{name}"
+        };
+    }
+
+    // Get audit log sinks
+    rpc GetAccountAuditLogSinks(GetAccountAuditLogSinksRequest) returns (GetAccountAuditLogSinksResponse) {
+        option (google.api.http) = {
+            get: "/cloud/audit-log-sinks"
+        };
+    }
+
+    // Update an audit log sink
+    rpc UpdateAccountAuditLogSink(UpdateAccountAuditLogSinkRequest) returns (UpdateAccountAuditLogSinkResponse) {
+        option (google.api.http) = {
+            post: "/cloud/audit-log-sinks/{spec.name}",
+            body: "*"
+        };
+    }
+
+    // Delete an audit log sink
+    rpc DeleteAccountAuditLogSink(DeleteAccountAuditLogSinkRequest) returns (DeleteAccountAuditLogSinkResponse) {
+        option (google.api.http) = {
+            delete: "/cloud/audit-log-sinks/{name}"
+        };
+    }
 }
