@@ -60,27 +60,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
                     name: "Authorization";
                     description: "API key authentication. Use 'Bearer YOUR_API_KEY' format. See https://docs.temporal.io/cloud/api-keys";
                 }
-            },
-            {
-                key: "RoleBasedAccess";
-                value: {
-                    type: TYPE_OAUTH2;
-                    description: "Not all roles can access all endpoints. See https://docs.temporal.io/cloud/users#account-level-roles-and-namespace-level-permissions";
-                    flow: FLOW_IMPLICIT;
-                    authorization_url: "TBD";
-                    scopes: {
-                        scope: [
-                            {key: "account-owner"; value: "Account Owner: Full account access"},
-                            {key: "account-admin"; value: "Account Admin: Manage namespaces, users, and service accounts"},
-                            {key: "account-developer"; value: "Account Developer: Create namespaces and manage Nexus endpoints"},
-                            {key: "account-read"; value: "Account Read: Limited access."},
-                            {key: "finance-admin"; value: "Finance Admin: Manage usage and billing"},
-                            {key: "namespace-admin"; value: "Namespace Admin: Full access to a namespace"},
-                            {key: "namespace-write"; value: "Namespace Write: Use a namespace"},
-                            {key: "namespace-read"; value: "Namespace Read: Read-only access to a namespace"}
-                        ]
-                    }
-                }
             }
         ]
     }
@@ -109,16 +88,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/users";
                 description: "User management documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -135,16 +104,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/users";
                 description: "User management documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -158,16 +117,6 @@ service CloudService {
             tags: ["Users"];
             summary: "Create a user";
             description: "Creates a new user in the account";
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -181,16 +130,6 @@ service CloudService {
             tags: ["Users"];
             summary: "Update a user";
             description: "Updates an existing user's details";
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -203,16 +142,6 @@ service CloudService {
             tags: ["Users"];
             summary: "Delete a user";
             description: "Removes a user from the account";
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -230,16 +159,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/users-namespace-level-permissions";
                 description: "Namespace permissions documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -252,16 +171,6 @@ service CloudService {
             tags: ["Operations"];
             summary: "Get async operation status";
             description: "Returns the current status and details of an asynchronous operation";
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -279,16 +188,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/namespaces";
                 description: "Namespace management documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-developer", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -305,16 +204,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/namespaces";
                 description: "Namespace management documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -331,18 +220,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/namespaces";
                 description: "Namespace management documentation";
             };
-            security: {
-                 security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin", "namespace-write", "namespace-read"];
-                    };
-                }
-            }
         };
     }
 
@@ -360,18 +237,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/namespaces";
                 description: "Namespace management documentation";
             };
-            security: {
-                 security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -389,18 +254,6 @@ service CloudService {
                 url: "https://docs.temporal.io/search-attribute#custom-search-attribute";
                 description: "Custom Search Attributes documentation";
             };
-            security: {
-                 security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -417,18 +270,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/namespaces";
                 description: "Namespace management documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -446,18 +287,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/high-availability";
                 description: "High availability namespace documentation";
             };
-            security: {
-                 security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -475,14 +304,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/high-availability";
                 description: "High availability namespace documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -499,14 +320,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/high-availability";
                 description: "High availability namespace documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["namespace-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -523,16 +336,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/regions";
                 description: "Regions documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -549,16 +352,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/regions";
                 description: "Regions documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -575,16 +368,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/api-keys";
                 description: "API Keys documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -601,16 +384,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/api-keys";
                 description: "API Keys documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -628,16 +401,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/api-keys";
                 description: "API Keys documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -655,16 +418,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/api-keys";
                 description: "API Keys documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -681,16 +434,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/api-keys";
                 description: "API Keys documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -707,16 +450,6 @@ service CloudService {
                 url: "https://docs.temporal.io/nexus";
                 description: "Nexus documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -733,16 +466,6 @@ service CloudService {
                 url: "https://docs.temporal.io/nexus";
                 description: "Nexus documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -760,16 +483,6 @@ service CloudService {
                 url: "https://docs.temporal.io/nexus";
                 description: "Nexus documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-developer", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -787,16 +500,6 @@ service CloudService {
                 url: "https://docs.temporal.io/nexus";
                 description: "Nexus documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-developer", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -813,16 +516,6 @@ service CloudService {
                 url: "https://docs.temporal.io/nexus";
                 description: "Nexus documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-developer", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -839,16 +532,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/users-account-level-roles";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -865,16 +548,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -892,16 +565,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -919,16 +582,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -945,16 +598,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -972,16 +615,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -999,16 +632,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1026,16 +649,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1051,16 +664,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1078,16 +681,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1104,16 +697,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1130,16 +713,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1157,16 +730,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1184,16 +747,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1210,16 +763,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1234,16 +777,6 @@ service CloudService {
             summary: "Get usage data";
             description: "Get usage data across namespaces";
             deprecated: true;
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["finance-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1260,16 +793,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/billing-and-cost";
                 description: "Billing documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-read", "account-developer", "finance-admin", "account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1287,16 +810,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/billing-and-cost";
                 description: "Billing documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
@@ -1414,14 +927,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/namespaces#tag-a-namespace";
                 description: "Namespace tag documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {
-                        scope: ["account-owner", "account-admin"];
-                    };
-                }
-            }
         };
     }
 
@@ -1439,16 +944,6 @@ service CloudService {
                 url: "https://docs.temporal.io/cloud/connectivity";
                 description: "Connectivity documentation";
             };
-            security: {
-                security_requirement: {
-                    key: "ApiKeyAuth";
-                    value: {};
-                }
-                security_requirement: {
-                    key: "RoleBasedAccess";
-                    value: {scope: ["account-admin", "account-owner"]};
-                }
-            }
         };
     }
 
