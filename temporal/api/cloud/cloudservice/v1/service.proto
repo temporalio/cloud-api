@@ -1504,7 +1504,7 @@ service CloudService {
     // The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs.
     rpc ValidateAccountAuditLogSink(ValidateAccountAuditLogSinkRequest) returns (ValidateAccountAuditLogSinkResponse) {
         option (google.api.http) = {
-            post: "/cloud/audit-log-sink/validate",
+            post: "/cloud/audit-log-sink-validate",
             body: "*"
         };
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -1524,6 +1524,15 @@ service CloudService {
             post: "/cloud/audit-log-sinks",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Create audit log sink";
+            description: "Creates a new audit log sink for exporting audit logs";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
+        };
     }
 
     // Get an audit log sink
@@ -1531,12 +1540,30 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/audit-log-sinks/{name}"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Get audit log sink details";
+            description: "Returns detailed information about a specific audit log sink";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
+        };
     }
 
     // Get audit log sinks
     rpc GetAccountAuditLogSinks(GetAccountAuditLogSinksRequest) returns (GetAccountAuditLogSinksResponse) {
         option (google.api.http) = {
             get: "/cloud/audit-log-sinks"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "List audit log sinks";
+            description: "Returns a list of all audit log sinks for the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
         };
     }
 
@@ -1546,12 +1573,30 @@ service CloudService {
             post: "/cloud/audit-log-sinks/{spec.name}",
             body: "*"
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Update audit log sink";
+            description: "Updates an existing audit log sink's configuration";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
+        };
     }
 
     // Delete an audit log sink
     rpc DeleteAccountAuditLogSink(DeleteAccountAuditLogSinkRequest) returns (DeleteAccountAuditLogSinkResponse) {
         option (google.api.http) = {
             delete: "/cloud/audit-log-sinks/{name}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Delete audit log sink";
+            description: "Removes an audit log sink from the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
         };
     }
 }
