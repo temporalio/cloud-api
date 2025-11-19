@@ -244,12 +244,6 @@ message Limits {
     // The number of actions per second (APS) that is currently allowed for the namespace.
     // The namespace may be throttled if its APS exceeds the limit.
     int32 actions_per_second_limit = 1;
-    // The number of requests per second (RPS) that is currently allowed for the namespace.
-    // temporal:dev
-    int32 requests_per_second_limit = 2;
-    // The number of concurrent task pollers allowed for the namespace.
-    // temporal:dev
-    int32 concurrent_task_poller_limit = 3;
 }
 
 message AWSPrivateLinkInfo {
