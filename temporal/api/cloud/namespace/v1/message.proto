@@ -34,13 +34,12 @@ message MtlsAuthSpec {
     // This must only be one value, but the CA can have a chain.
     //
     // (-- api-linter: core::0140::base64=disabled --)
-    // Deprecated: Use accepted_client_ca instead. Will be ignored when accepted_client_ca is set.
+    // Deprecated: Not supported after v0.2.0 api version. Use accepted_client_ca instead.
     // temporal:versioning:max_version=v0.2.0
     string accepted_client_ca_deprecated = 1 [deprecated = true];
     // The ca cert(s) in PEM format that the clients can use for authentication and authorization.
     // This must only be one value, but the CA can have a chain.
     // temporal:versioning:min_version=v0.2.0
-    // temporal:codegen:ignore
     bytes accepted_client_ca = 4;
     // Certificate filters which, if specified, only allow connections from client certificates whose distinguished name properties match at least one of the filters.
     // This allows limiting access to specific end-entity certificates.
@@ -189,7 +188,7 @@ message NamespaceSpec {
     // Supported attribute types: text, keyword, int, double, bool, datetime, keyword_list.
     // NOTE: currently deleting a search attribute is not supported.
     // Optional, default is empty.
-    // Deprecated: Use search_attributes instead.
+    // Deprecated: Not supported after v0.3.0 api version. Use search_attributes instead.
     // temporal:versioning:max_version=v0.3.0
     map<string, string> custom_search_attributes = 5 [deprecated = true];
     // The custom search attributes to use for the namespace.
@@ -211,7 +210,8 @@ message NamespaceSpec {
     // temporal:versioning:min_version=v0.4.0
     HighAvailabilitySpec high_availability = 10;
 
-    // The existing connectivity rule ids for the namespace.
+    // The private connectivity configuration for the namespace.
+    // This will apply the connectivity rules specified to the namespace.
     // temporal:versioning:min_version=v0.6.0
     repeated string connectivity_rule_ids = 11;
 
@@ -277,7 +277,7 @@ message Namespace {
     // The namespace specification.
     NamespaceSpec spec = 3;
     // The current state of the namespace.
-    // Deprecated: Use state instead.
+     // Deprecated: Not supported after v0.3.0 api version. Use state instead.
     // temporal:versioning:max_version=v0.3.0
     string state_deprecated = 4 [deprecated = true];
     // The current state of the namespace.
@@ -303,7 +303,7 @@ message Namespace {
     // The status of each region where the namespace is available.
     // The id of the region is the key and the status is the value of the map.
     map<string, NamespaceRegionStatus> region_status = 12;
-    // connectivity_rules that set on this namespace
+    // The connectivity rules that are set on this namespace.
     repeated temporal.api.cloud.connectivityrule.v1.ConnectivityRule connectivity_rules = 14;
     
     // The tags for the namespace.
@@ -318,7 +318,7 @@ message NamespaceRegionStatus {
     // The current state of the namespace region.
     // Possible values: adding, active, passive, removing, failed.
     // For any failed state, reach out to Temporal Cloud support for remediation.
-    // Deprecated: Use state instead.
+    // Deprecated: Not supported after v0.3.0 api version. Use state instead.
     // temporal:versioning:max_version=v0.3.0
     string state_deprecated = 1 [deprecated = true];
     // The current state of the namespace region.
@@ -339,7 +339,7 @@ message NamespaceRegionStatus {
 }
 
 message ExportSinkSpec {
-    // The unique name of the export sink.
+    // The unique name of the export sink, once set it can't be changed, it can't be changed once set.
     string name = 1;
 
     // A flag indicating whether the export sink is enabled or not.
