@@ -51,6 +51,7 @@ buf-lint:
 
 buf-breaking:
 	@printf $(COLOR) "Run buf breaking changes check against main branch..."
+	buf breaking --against 'https://github.com/temporalio/api-cloud.git#branch=main'
 
 ##### Clean #####
 clean:
