@@ -339,7 +339,7 @@ message NamespaceRegionStatus {
 }
 
 message ExportSinkSpec {
-    // The unique name of the export sink, once set it can't be changed, it can't be changed once set.
+    // The unique name of the export sink, it can't be changed once set.
     string name = 1;
 
     // A flag indicating whether the export sink is enabled or not.
