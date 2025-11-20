@@ -110,10 +110,8 @@ message CapacitySpec {
     }
 }
 
-// temporal:versioning:min_version=v0.10.0
 message Capacity {
 
-    // temporal:versioning:min_version=v0.10.0
     oneof current_mode {
         // the current capacity is on-demand
         OnDemand on_demand = 1;
@@ -121,17 +119,14 @@ message Capacity {
         Provisioned provisioned = 2;
     }
 
-    // temporal:versioning:min_version=v0.10.0
     message OnDemand {
     }
 
-    // temporal:versioning:min_version=v0.10.0
     message Provisioned {
         // the current unit of the provisioned capacity (Temporal Resource Units)
         double current_value = 1;
     }
 
-    // temporal:versioning:min_version=v0.10.0
     message Request {
         // the current state of the capacity request (e.g. in-progress, completed, failed)
         State state = 1;
@@ -144,7 +139,6 @@ message Capacity {
         // The requested capacity specification.
         CapacitySpec spec = 5;
 
-        // temporal:versioning:min_version=v0.10.0
         enum State {
             STATE_CAPACITY_REQUEST_UNSPECIFIED = 0;
             STATE_CAPACITY_REQUEST_COMPLETED = 1;
@@ -154,7 +148,6 @@ message Capacity {
     }
 
     // The latest capacity request, if any.
-    // temporal:versioning:min_version=v0.10.0
     Request latest_request = 3;
 }
 
@@ -304,7 +297,6 @@ message Namespace {
     map<string, string> tags = 15;
 
     // The capacity of the namespace.
-    // temporal:versioning:min_version=v0.10.0
     Capacity capacity = 16;
 }
 
