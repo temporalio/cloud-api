@@ -105,8 +105,8 @@ message CapacitySpec {
     }
 
     message Provisioned {
-        // The unit of the provisioned capacity in Temporal Resource Units.
-        // TODO: expand on this.
+        // The units of provisioned capacity in TRU (Temporal Resource Units).
+        // Each TRU unit assigned to the namespace will entitle it with additional APS limits as specified in the documentation.
         double value = 1;
     }
 }
