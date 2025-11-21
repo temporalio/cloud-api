@@ -112,7 +112,6 @@ message CapacitySpec {
 }
 
 message Capacity {
-
     oneof current_mode {
         // The status of on-demand capacity mode.
         OnDemand on_demand = 1;
@@ -214,6 +213,7 @@ message NamespaceSpec {
     // There are two capacity modes: on-demand and provisioned.
     // On-demand capacity mode allows the namespace to scale automatically based on usage.
     // Provisioned capacity mode allows the user to specify a fixed amount of capacity (in TRUs) for the namespace.
+    // Can be changed only when the last capacity request is not in progress.
     // temporal:versioning:min_version=v0.10.0
     CapacitySpec capacity_spec = 12;
 
