@@ -11,6 +11,8 @@ jobs:
           check-latest: true
       - name: Install Protoc
         uses: arduino/setup-protoc@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate and build go bindings from the proto files
         run: make ci-build
         env:

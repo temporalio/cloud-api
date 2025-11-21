@@ -95,9 +95,9 @@ message HighAvailabilitySpec {
 // temporal:versioning:min_version=v0.10.0
 message CapacitySpec {
     oneof spec {
-        // on-demand capacity (dynamic-envelope)
+        // The on-demand capacity mode configuration.
         OnDemand on_demand = 1;
-        // provisioned capacity
+        // The provisioned capacity mode configuration.
         Provisioned provisioned = 2;
     }
 
@@ -105,17 +105,17 @@ message CapacitySpec {
     }
 
     message Provisioned {
-        // the unit of the provisioned capacity (Temporal Resource Units)
+        // The units of provisioned capacity in TRU (Temporal Resource Units).
+        // Each TRU unit assigned to the namespace will entitle it with additional APS limits as specified in the documentation.
         double value = 1;
     }
 }
 
 message Capacity {
-
     oneof current_mode {
-        // the current capacity is on-demand
+        // The status of on-demand capacity mode.
         OnDemand on_demand = 1;
-        // the current capacity is provisioned
+        // The status of provisioned capacity mode.
         Provisioned provisioned = 2;
     }
 
@@ -123,12 +123,13 @@ message Capacity {
     }
 
     message Provisioned {
-        // the current unit of the provisioned capacity (Temporal Resource Units)
+        // The current provisioned capacity for the namespace in Temporal Resource Units.
+        // Can be different from the requested capacity in latest_request if the request is still in progress.
         double current_value = 1;
     }
 
     message Request {
-        // the current state of the capacity request (e.g. in-progress, completed, failed)
+        // The current state of the capacity request (e.g. in-progress, completed, failed).
         State state = 1;
         // The date and time when the capacity request was created.
         google.protobuf.Timestamp start_time = 2;
@@ -147,7 +148,7 @@ message Capacity {
         }
     }
 
-    // The latest capacity request, if any.
+    // The latest requested capacity for the namespace, if any.
     Request latest_request = 3;
 }
 
@@ -209,6 +210,10 @@ message NamespaceSpec {
     repeated string connectivity_rule_ids = 11;
 
     // The capacity configuration for the namespace.
+    // There are two capacity modes: on-demand and provisioned.
+    // On-demand capacity mode allows the namespace to scale automatically based on usage.
+    // Provisioned capacity mode allows the user to specify a fixed amount of capacity (in TRUs) for the namespace.
+    // Can be changed only when the last capacity request is not in progress.
     // temporal:versioning:min_version=v0.10.0
     CapacitySpec capacity_spec = 12;
 
@@ -292,11 +297,9 @@ message Namespace {
     map<string, NamespaceRegionStatus> region_status = 12;
     // The connectivity rules that are set on this namespace.
     repeated temporal.api.cloud.connectivityrule.v1.ConnectivityRule connectivity_rules = 14;
-    
     // The tags for the namespace.
     map<string, string> tags = 15;
-
-    // The capacity of the namespace.
+    // The status of namespace's capacity, if any.
     Capacity capacity = 16;
 }
 
