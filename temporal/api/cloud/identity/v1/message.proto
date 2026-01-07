@@ -87,6 +87,8 @@ message UserSpec {
     string email = 1;
     // The access to assigned to the user
     Access access = 2;
+    // Whether the user is managed via SCIM or not (signup/invitation)
+    bool is_scim = 3;
 }
 
 message Invitation {
