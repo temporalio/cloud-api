@@ -981,6 +981,15 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/audit-logs",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Get audit logs"
+            description: "Gets a list of audit logs."
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
+        };
     }
 
     // Validate customer audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink.
