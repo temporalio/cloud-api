@@ -976,6 +976,13 @@ service CloudService {
         };
     }
 
+    // Get audit logs
+    rpc GetAuditLogs(GetAuditLogsRequest) returns (GetAuditLogsResponse) {
+        option (google.api.http) = {
+            get: "/cloud/account/audit-logs",
+        };
+    }
+
     // Validate customer audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink.
     // The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs.
     rpc ValidateAccountAuditLogSink(ValidateAccountAuditLogSinkRequest) returns (ValidateAccountAuditLogSinkResponse) {
