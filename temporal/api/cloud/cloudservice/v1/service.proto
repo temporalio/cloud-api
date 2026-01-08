@@ -979,7 +979,7 @@ service CloudService {
     // Get audit logs
     rpc GetAuditLogs(GetAuditLogsRequest) returns (GetAuditLogsResponse) {
         option (google.api.http) = {
-            get: "/cloud/account/audit-logs",
+            get: "/cloud/audit-logs",
         };
     }
 
