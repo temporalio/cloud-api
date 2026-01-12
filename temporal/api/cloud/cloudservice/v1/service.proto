@@ -984,7 +984,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Account"];
             summary: "Get audit logs"
-            description: "Gets a list of audit logs."
+            description: "Returns a paginated list of audit logs for the account, optionally filtered by time range"
             external_docs: {
                 url: "https://docs.temporal.io/cloud/audit-logging";
                 description: "Audit logging documentation";
