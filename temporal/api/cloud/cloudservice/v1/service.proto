@@ -976,6 +976,22 @@ service CloudService {
         };
     }
 
+    // Get audit logs
+    rpc GetAuditLogs(GetAuditLogsRequest) returns (GetAuditLogsResponse) {
+        option (google.api.http) = {
+            get: "/cloud/audit-logs",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Get audit logs"
+            description: "Returns a paginated list of audit logs for the account, optionally filtered by time range"
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/audit-logging";
+                description: "Audit logging documentation";
+            };
+        };
+    }
+
     // Validate customer audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink.
     // The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs.
     rpc ValidateAccountAuditLogSink(ValidateAccountAuditLogSinkRequest) returns (ValidateAccountAuditLogSinkResponse) {
