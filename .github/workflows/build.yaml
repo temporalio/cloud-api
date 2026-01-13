@@ -20,3 +20,26 @@ jobs:
         env:
           BUF_INPUT_HTTPS_USERNAME: ${{github.actor}}
           BUF_INPUT_HTTPS_PASSWORD: ${{github.token}}
+  
+  validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current repo
+        uses: actions/checkout@v4
+      - name: Generate GitHub token (App)
+        id: generate_token
+        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b
+        with:
+          app-id: ${{ secrets.TEMPORAL_CICD_APP_ID }}
+          private-key: ${{ secrets.TEMPORAL_CICD_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          permission-contents: "read"
+      - name: Clone saas-proto repository
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          gh repo clone temporalio/saas-proto -- --depth 1 --branch main
+      - name: Run proto compare
+        run: |
+          cd saas-proto
+          go run ./tools/proto-compare -existing-remote-repo ..
