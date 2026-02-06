@@ -1043,3 +1043,14 @@ message DeleteAccountAuditLogSinkResponse {
     // The async operation.
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
+
+message GetNamespaceCapacityInfoRequest {
+  // The namespace identifier.
+  // Required.
+  string namespace = 1;
+}
+
+message GetNamespaceCapacityInfoResponse {
+  // Capacity information for the namespace.
+  temporal.api.cloud.namespace.v1.NamespaceCapacityInfo capacity_info = 1;
+}

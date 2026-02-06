@@ -374,3 +374,62 @@ message ExportSink {
         HEALTH_ERROR_USER_CONFIGURATION = 3;
     }
 }
+
+// NamespaceCapacityInfo contains detailed capacity information for a namespace.
+// This message uses nested types following the pattern established by Capacity and CapacitySpec.
+message NamespaceCapacityInfo {
+  // The namespace identifier.
+  string namespace = 1;
+
+  // Whether the namespace's APS limit was set by Temporal Support.
+  // When true, adjusting the namespace's capacity will reset this limit.
+  bool has_legacy_limits = 2;
+
+  // The current capacity of the namespace.
+  // Includes the current mode (on-demand or provisioned) and latest request status.
+  Capacity current_capacity = 3;
+
+  // Available capacity mode options for this namespace.
+  // Contains configuration limits for both provisioned and on-demand modes.
+  CapacityModeOptions mode_options = 4;
+
+  // Usage statistics for the namespace over the last 7 days.
+  // Used to calculate On-Demand capacity limits, also useful for capacity planning.
+  Stats stats = 5;
+
+  message CapacityModeOptions {
+    // Provisioned capacity options and entitlements.
+    Provisioned provisioned = 1;
+
+    // On-Demand capacity information.
+    OnDemand on_demand = 2;
+
+    message Provisioned {
+      // The valid TRU (Temporal Resource Unit) values that can be set.
+      // These are the discrete capacity tiers available for selection.
+      repeated double valid_tru_values = 1;
+
+      // The maximum TRU value that can currently be set for this namespace.
+      // This may be lower than the highest value in valid_tru_values due to
+      // inventory constraints.
+      double max_available_tru_value = 2;
+    }
+
+    message OnDemand {
+      // The APS limit that would apply to this namespace in on-demand mode.
+      // See: https://docs.temporal.io/cloud/limits#actions-per-second
+      double aps_limit = 1;
+    }
+  }
+
+  message Stats {
+    // Actions-per-second measurements summarized over the last 7 days.
+    Summary aps = 1;
+
+    message Summary {
+      double mean = 1;
+      double p90 = 2;
+      double p99 = 3;
+    }
+  }
+}
