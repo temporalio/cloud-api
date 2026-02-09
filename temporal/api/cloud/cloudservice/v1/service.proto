@@ -61,6 +61,11 @@ service CloudService {
         option (google.api.http) = {
             get: "/cloud/current-identity",
         };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Get current identity";
+            description: "Returns information about the currently authenticated user or service account principal";
+        };
     }
 
     // Gets all known users
