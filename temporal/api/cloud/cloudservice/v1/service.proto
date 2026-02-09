@@ -55,6 +55,14 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 // WARNING: This service is currently experimental and may change in
 // incompatible ways.
 service CloudService {
+
+    // Get information about the current authenticated user or service account principal
+    rpc GetCurrentIdentity(GetCurrentIdentityRequest) returns (GetCurrentIdentityResponse) {
+        option (google.api.http) = {
+            get: "/cloud/current-identity",
+        };
+    }
+
     // Gets all known users
     rpc GetUsers(GetUsersRequest) returns (GetUsersResponse) {
         option (google.api.http) = {
