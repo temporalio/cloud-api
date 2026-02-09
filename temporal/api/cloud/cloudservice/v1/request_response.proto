@@ -21,11 +21,9 @@ import "temporal/api/cloud/usage/v1/message.proto";
 import "temporal/api/cloud/connectivityrule/v1/message.proto";
 import "temporal/api/cloud/auditlog/v1/message.proto";
 
-// temporal:dev
 message GetCurrentIdentityRequest {
 }
 
-// temporal:dev
 message GetCurrentIdentityResponse {
     // The authenticated principal making the request
     oneof principal {
