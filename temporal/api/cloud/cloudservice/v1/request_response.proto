@@ -21,6 +21,21 @@ import "temporal/api/cloud/usage/v1/message.proto";
 import "temporal/api/cloud/connectivityrule/v1/message.proto";
 import "temporal/api/cloud/auditlog/v1/message.proto";
 
+message GetCurrentIdentityRequest {
+}
+
+message GetCurrentIdentityResponse {
+    // The authenticated principal making the request
+    oneof principal {
+        // The user is a regular user
+        temporal.api.cloud.identity.v1.User user = 1;
+        // The user is a service account
+        temporal.api.cloud.identity.v1.ServiceAccount service_account = 2;
+    }
+    // The API key info used to authenticate the request, if any
+    temporal.api.cloud.identity.v1.ApiKey principal_api_key = 3;
+}
+
 message GetUsersRequest {
     // The requested size of the page to retrieve - optional.
     // Cannot exceed 1000. Defaults to 100.
