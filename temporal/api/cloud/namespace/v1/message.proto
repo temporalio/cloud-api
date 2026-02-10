@@ -376,7 +376,6 @@ message ExportSink {
 }
 
 // NamespaceCapacityInfo contains detailed capacity information for a namespace.
-// This message uses nested types following the pattern established by Capacity and CapacitySpec.
 message NamespaceCapacityInfo {
   // The namespace identifier.
   string namespace = 1;
