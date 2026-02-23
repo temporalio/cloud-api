@@ -1105,20 +1105,19 @@ service CloudService {
         };
     }
 
-    // GetNamespaceCapacityInfo returns capacity information for a namespace.
-    // This includes provisioned capacity options, on-demand limits, and 7 day historical APS statistics useful for capacity planning.
+    // Get namespace capacity information
     rpc GetNamespaceCapacityInfo(GetNamespaceCapacityInfoRequest) returns (GetNamespaceCapacityInfoResponse) {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}/capacity-info"
-      };
-      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Namespaces"];
-            summary: "";
-            description: "Returns capacity information and options for a namespace";
+            summary: "Get namespace capacity information";
+            description: "Returns capacity information for a namespace. This includes provisioned capacity options, on-demand limits, and 7 day historical APS statistics useful for capacity planning.";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/capacity-modes";
                 description: "Capacity modes information documentation";
+            };
         };
-      };
-  }
+    }
 }
