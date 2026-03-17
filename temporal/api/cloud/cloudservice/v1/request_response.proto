@@ -20,6 +20,7 @@ import "temporal/api/cloud/account/v1/message.proto";
 import "temporal/api/cloud/usage/v1/message.proto";
 import "temporal/api/cloud/connectivityrule/v1/message.proto";
 import "temporal/api/cloud/auditlog/v1/message.proto";
+import "temporal/api/cloud/billing/v1/message.proto";
 
 message GetCurrentIdentityRequest {
 }
@@ -1068,4 +1069,32 @@ message GetNamespaceCapacityInfoRequest {
 message GetNamespaceCapacityInfoResponse {
   // Capacity information for the namespace.
   temporal.api.cloud.namespace.v1.NamespaceCapacityInfo capacity_info = 1;
+}
+
+// temporal:dev
+message CreateBillingReportRequest {
+    // The specification for the billing report.
+    temporal.api.cloud.billing.v1.BillingReportSpec spec = 1 [(buf.validate.field).required = true];
+    // Optional, if not provided a random id will be generated.
+    string async_operation_id = 2;
+}
+
+// temporal:dev
+message CreateBillingReportResponse {
+    // The id of the billing report created.
+    string billing_report_id = 1;
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 2;
+}
+
+// temporal:dev
+message GetBillingReportRequest {
+    // The id of the billing report to retrieve.
+    string billing_report_id = 1;
+}
+
+// temporal:dev
+message GetBillingReportResponse {
+    // The billing report retrieved.
+    temporal.api.cloud.billing.v1.BillingReport billing_report = 1;
 }

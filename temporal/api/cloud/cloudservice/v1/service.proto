@@ -1120,4 +1120,38 @@ service CloudService {
             };
         };
     }
+
+    // Create a billing report
+    // temporal:dev
+    rpc CreateBillingReport(CreateBillingReportRequest) returns (CreateBillingReportResponse) {
+        option (google.api.http) = {
+            post: "/cloud/billing-reports"
+            body: "*"
+        };
+
+        option (temporal.authz.v1.requirement) = {
+            custom_role_permission: "cloud.billingreport.create",
+            resource: {
+                type: RESOURCE_TYPE_ACCOUNT,
+                // Billing reports are scoped to the account, so no resource id template is needed
+                allow_default_resource_id: true
+            }
+        };
+    }
+
+    // Get a billing report
+    // temporal:dev
+    rpc GetBillingReport(GetBillingReportRequest) returns (GetBillingReportResponse) {
+        option (google.api.http) = {
+            get: "/cloud/billing-reports/{billing_report_id}"
+        };
+
+        option (temporal.authz.v1.requirement) = {
+            custom_role_permission: "cloud.billingreport.get",
+            resource: {
+                type: RESOURCE_TYPE_ACCOUNT,
+                allow_default_resource_id: true,
+            }
+        };
+    }
 }
