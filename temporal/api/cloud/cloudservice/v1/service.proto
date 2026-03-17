@@ -1130,7 +1130,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Account"];
             summary: "Create a billing report";
-            description: "Creates a billing report";
+            description: "Creates a billing report for the account";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/billing-reports";
                 description: "Billing report documentation";
@@ -1146,7 +1146,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Account"];
             summary: "Get a billing report";
-            description: "Gets a billing report";
+            description: "Gets an existing billing report for the account";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/billing-reports";
                 description: "Billing report documentation";
