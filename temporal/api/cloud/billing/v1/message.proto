@@ -31,7 +31,7 @@ message BillingReport {
   // The id of the billing report.
   string id = 1;
   // The current state of the billing report.
-  State state = 2;
+  BillingReportState state = 2;
   // The spec used to generate this billing report.
   BillingReportSpec spec = 3;
   // The download information for the billing report.
@@ -61,7 +61,7 @@ message BillingReport {
     }
   }
 
-  enum State {
+  enum BillingReportState {
     BILLING_REPORT_STATE_UNSPECIFIED = 0;
     BILLING_REPORT_STATE_IN_PROGRESS = 1;
     BILLING_REPORT_STATE_GENERATED = 2;

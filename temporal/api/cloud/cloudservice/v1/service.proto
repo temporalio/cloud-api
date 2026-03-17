@@ -1122,36 +1122,35 @@ service CloudService {
     }
 
     // Create a billing report
-    // temporal:dev
     rpc CreateBillingReport(CreateBillingReportRequest) returns (CreateBillingReportResponse) {
         option (google.api.http) = {
             post: "/cloud/billing-reports"
             body: "*"
         };
-
-        option (temporal.authz.v1.requirement) = {
-            custom_role_permission: "cloud.billingreport.create",
-            resource: {
-                type: RESOURCE_TYPE_ACCOUNT,
-                // Billing reports are scoped to the account, so no resource id template is needed
-                allow_default_resource_id: true
-            }
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Billing Report"];
+            summary: "Create a billing report";
+            description: "Creates a billing report";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/billing-reports";
+                description: "Billing report documentation";
+            };
         };
     }
 
     // Get a billing report
-    // temporal:dev
     rpc GetBillingReport(GetBillingReportRequest) returns (GetBillingReportResponse) {
         option (google.api.http) = {
             get: "/cloud/billing-reports/{billing_report_id}"
         };
-
-        option (temporal.authz.v1.requirement) = {
-            custom_role_permission: "cloud.billingreport.get",
-            resource: {
-                type: RESOURCE_TYPE_ACCOUNT,
-                allow_default_resource_id: true,
-            }
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Billing Report"];
+            summary: "Get a billing report";
+            description: "Gets a billing report";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/billing-reports";
+                description: "Billing report documentation";
+            };
         };
     }
 }

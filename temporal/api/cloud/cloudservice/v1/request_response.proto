@@ -1074,7 +1074,7 @@ message GetNamespaceCapacityInfoResponse {
 // temporal:dev
 message CreateBillingReportRequest {
     // The specification for the billing report.
-    temporal.api.cloud.billing.v1.BillingReportSpec spec = 1 [(buf.validate.field).required = true];
+    temporal.api.cloud.billing.v1.BillingReportSpec spec = 1;
     // Optional, if not provided a random id will be generated.
     string async_operation_id = 2;
 }
