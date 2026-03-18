@@ -1120,4 +1120,37 @@ service CloudService {
             };
         };
     }
+
+    // Create a billing report
+    rpc CreateBillingReport(CreateBillingReportRequest) returns (CreateBillingReportResponse) {
+        option (google.api.http) = {
+            post: "/cloud/billing-reports"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Create a billing report";
+            description: "Creates a billing report for the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/billing-reports";
+                description: "Billing report documentation";
+            };
+        };
+    }
+
+    // Get a billing report
+    rpc GetBillingReport(GetBillingReportRequest) returns (GetBillingReportResponse) {
+        option (google.api.http) = {
+            get: "/cloud/billing-reports/{billing_report_id}"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Account"];
+            summary: "Get a billing report";
+            description: "Gets an existing billing report for the account";
+            external_docs: {
+                url: "https://docs.temporal.io/cloud/billing-reports";
+                description: "Billing report documentation";
+            };
+        };
+    }
 }
