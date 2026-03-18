@@ -12,7 +12,6 @@ option csharp_namespace = "Temporalio.Api.Cloud.Billing.V1";
 import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-// temporal:dev
 message BillingReportSpec {
   // The start time of the billing report (in UTC).
   google.protobuf.Timestamp start_time_inclusive = 1;
@@ -26,7 +25,6 @@ message BillingReportSpec {
   string description = 4;
 }
 
-// temporal:dev
 message BillingReport {
   // The id of the billing report.
   string id = 1;
@@ -44,7 +42,6 @@ message BillingReport {
   // The async operation id associated with the billing report generation.
   string async_operation_id = 7;
 
-  // temporal:dev
   message Download {
     // The download url.
     string url = 1;
