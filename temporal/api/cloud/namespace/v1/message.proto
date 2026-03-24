@@ -337,7 +337,7 @@ message Namespace {
     // The id of the region is the key and the status is the value of the map.
     // deprecated: Use replicas field instead.
     // temporal:versioning:max_version=v0.15.0
-    map<string, NamespaceRegionStatus> region_status = 12 [deprecated = true];;
+    map<string, NamespaceRegionStatus> region_status = 12 [deprecated = true];
     // The connectivity rules that are set on this namespace.
     repeated temporal.api.cloud.connectivityrule.v1.ConnectivityRule connectivity_rules = 14;
     // The tags for the namespace.
