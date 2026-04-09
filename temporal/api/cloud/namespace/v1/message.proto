@@ -89,6 +89,10 @@ message CodecServerSpec {
 message HighAvailabilitySpec {
     // Flag to disable managed failover for the namespace.
     bool disable_managed_failover = 1;
+
+    // Flag to disable passive poller forwarding for this namespace.
+    // temporal:versioning:min_version=v0.14.0
+    bool disable_passive_poller_forwarding = 2;
 }
 
 // temporal:versioning:min_version=v0.13.0
