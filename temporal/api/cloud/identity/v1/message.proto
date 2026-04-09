@@ -303,7 +303,6 @@ message ApiKeySpec {
     bool disabled = 6;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message CustomRoleSpec {
     // The name of the custom role.
     string name = 1;
@@ -329,7 +328,6 @@ message CustomRoleSpec {
     }
 }
 
-// temporal:versioning:min_version=v0.13.0
 message CustomRole {
     // The id of the custom role.
     string id = 1;
