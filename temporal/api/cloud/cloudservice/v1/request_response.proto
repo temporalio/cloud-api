@@ -1095,7 +1095,6 @@ message GetBillingReportResponse {
     temporal.api.cloud.billing.v1.BillingReport billing_report = 1;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message GetCustomRolesRequest {
     // The requested size of the page to retrieve.
     // Cannot exceed 1000. Defaults to 100.
@@ -1104,7 +1103,6 @@ message GetCustomRolesRequest {
     string page_token = 2;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message GetCustomRolesResponse {
     // The list of custom roles in ascending ID order.
     repeated temporal.api.cloud.identity.v1.CustomRole custom_roles = 1;
@@ -1112,19 +1110,16 @@ message GetCustomRolesResponse {
     string next_page_token = 2;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message GetCustomRoleRequest {
     // The ID of the custom role to retrieve.
     string role_id = 1;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message GetCustomRoleResponse {
     // The custom role retrieved.
     temporal.api.cloud.identity.v1.CustomRole custom_role = 1;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message CreateCustomRoleRequest {
     // The specification for the custom role to create.
     temporal.api.cloud.identity.v1.CustomRoleSpec spec = 1;
@@ -1133,7 +1128,6 @@ message CreateCustomRoleRequest {
     string async_operation_id = 2;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message CreateCustomRoleResponse {
     // The ID of the custom role created.
     string role_id = 1;
@@ -1141,7 +1135,6 @@ message CreateCustomRoleResponse {
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 2;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message UpdateCustomRoleRequest {
     // The ID of the custom role to update.
     string role_id = 1;
@@ -1155,13 +1148,11 @@ message UpdateCustomRoleRequest {
     string async_operation_id = 4;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message UpdateCustomRoleResponse {
     // The async operation.
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message DeleteCustomRoleRequest {
     // The ID of the custom role to delete.
     string role_id = 1;
@@ -1173,7 +1164,6 @@ message DeleteCustomRoleRequest {
     string async_operation_id = 3;
 }
 
-// temporal:versioning:min_version=v0.13.0
 message DeleteCustomRoleResponse {
     // The async operation.
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;

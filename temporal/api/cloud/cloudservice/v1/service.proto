@@ -1160,7 +1160,6 @@ service CloudService {
     }
 
     // Get custom roles
-    // temporal:versioning:min_version=v0.13.0
     rpc GetCustomRoles(GetCustomRolesRequest) returns (GetCustomRolesResponse) {
         option (google.api.http) = {
             get: "/cloud/custom-roles"
@@ -1177,7 +1176,6 @@ service CloudService {
     }
 
     // Get a custom role
-    // temporal:versioning:min_version=v0.13.0
     rpc GetCustomRole(GetCustomRoleRequest) returns (GetCustomRoleResponse) {
         option (google.api.http) = {
             get: "/cloud/custom-roles/{role_id}"
@@ -1194,7 +1192,6 @@ service CloudService {
     }
 
     // Create a custom role
-    // temporal:versioning:min_version=v0.13.0
     rpc CreateCustomRole(CreateCustomRoleRequest) returns (CreateCustomRoleResponse) {
         option (google.api.http) = {
             post: "/cloud/custom-roles"
@@ -1212,7 +1209,6 @@ service CloudService {
     }
 
     // Update a custom role
-    // temporal:versioning:min_version=v0.13.0
     rpc UpdateCustomRole(UpdateCustomRoleRequest) returns (UpdateCustomRoleResponse) {
         option (google.api.http) = {
             post: "/cloud/custom-roles/{role_id}"
@@ -1230,7 +1226,6 @@ service CloudService {
     }
 
     // Delete a custom role
-    // temporal:versioning:min_version=v0.13.0
     rpc DeleteCustomRole(DeleteCustomRoleRequest) returns (DeleteCustomRoleResponse) {
         option (google.api.http) = {
             delete: "/cloud/custom-roles/{role_id}"
