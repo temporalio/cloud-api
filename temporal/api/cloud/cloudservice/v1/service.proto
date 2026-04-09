@@ -285,7 +285,9 @@ service CloudService {
     }
 
     // Add a new region to a namespace
+    // Deprecated: Use the UpdateNamespace() to add new replica in the namespace spec instead.
     rpc AddNamespaceRegion (AddNamespaceRegionRequest) returns (AddNamespaceRegionResponse) {
+        option deprecated = true;
         option (google.api.http) = {
             post: "/cloud/namespaces/{namespace}/add-region",
             body: "*"
@@ -302,7 +304,9 @@ service CloudService {
     }
 
     // Delete a region from a namespace
+    // Deprecated: Use the UpdateNamespace() to delete a replica in the namespace spec instead.
     rpc DeleteNamespaceRegion (DeleteNamespaceRegionRequest) returns (DeleteNamespaceRegionResponse) {
+        option deprecated = true;
         option (google.api.http) = {
             delete: "/cloud/namespaces/{namespace}/regions/{region}",
         };
