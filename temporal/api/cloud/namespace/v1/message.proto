@@ -186,6 +186,11 @@ message Capacity {
     Request latest_request = 3;
 }
 
+message FairnessSpec {
+    // Flag to enable task queue fairness for the namespace (default: disabled).
+    bool task_queue_fairness_enabled = 1;
+}
+
 message NamespaceSpec {
     // The name to use for the namespace.
     // This will create a namespace that's available at '<name>.<account>.tmprl.cloud:7233'.
@@ -261,6 +266,11 @@ message NamespaceSpec {
     // If the preferred primary replica ID is not set, the first replica in this replicas list will be the preferred primary.
     // temporal:versioning:min_version=v0.13.0
     repeated ReplicaSpec replicas = 13;
+
+    // The fairness configuration for the namespace.
+    // If unspecified, fairness features will be disabled.
+    // temporal:versioning:min_version=v0.14.0
+    FairnessSpec fairness = 14;
 
     enum SearchAttributeType {
         SEARCH_ATTRIBUTE_TYPE_UNSPECIFIED = 0;
