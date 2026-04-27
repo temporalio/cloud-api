@@ -186,7 +186,6 @@ message Capacity {
     Request latest_request = 3;
 }
 
-// temporal:versioning:min_version=v0.14.0
 message FairnessSpec {
     // Flag to enable task queue fairness for the namespace (default: disabled).
     bool task_queue_fairness_enabled = 1;
