@@ -28,7 +28,6 @@ message BillingReportSpec {
   // temporal:versioning:min_version=v0.16.0
   BillingReportGranularity granularity = 5;
 
-  // temporal:versioning:min_version=v0.16.0
   enum BillingReportGranularity {
     BILLING_REPORT_GRANULARITY_UNSPECIFIED = 0;
     BILLING_REPORT_GRANULARITY_HOURLY = 1;
