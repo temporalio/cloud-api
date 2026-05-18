@@ -49,7 +49,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
         {name: "Connectivity Rules"; description: "Manage network connectivity rules"},
         {name: "Regions"; description: "Query available regions"},
         {name: "Account"; description: "Manage account settings and usage"},
-        {name: "Custom Roles"; description: "Manage custom roles and their permissions (Pre-Release: to get early access, contact Temporal Cloud support)"},
+        {name: "Custom Roles"; description: "Manage custom roles and their permissions (Pre-Release: To get early access contact Temporal Cloud support)"},
         {name: "Operations"; description: "Query async operation status"}
     ];
 };
