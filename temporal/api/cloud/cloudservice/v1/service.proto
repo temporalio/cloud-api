@@ -1249,7 +1249,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Users"];
             summary: "List users with access to a namespace";
-            description: "Returns the users that have access to the namespace, including each user's namespace-level access and whether that access is inherited from an account or project role.";
+            description: "Returns the users that have access to the namespace, including each user's namespace permission.";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/users";
                 description: "Users documentation";
@@ -1265,7 +1265,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Service Accounts"];
             summary: "List service accounts with access to a namespace";
-            description: "Returns the service accounts that have access to the namespace, including each service account's namespace-level access and whether that access is inherited from an account or project role.";
+            description: "Returns the service accounts that have access to the namespace, including each service account's namespace permission.";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/service-accounts";
                 description: "Service Accounts documentation";
@@ -1281,7 +1281,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Groups"];
             summary: "List user groups with access to a namespace";
-            description: "Returns the user groups that have access to the namespace, including each group's namespace-level access and whether that access is inherited from an account or project role.";
+            description: "Returns the user groups that have access to the namespace, including each group's namespace permission.";
             external_docs: {
                 url: "https://docs.temporal.io/cloud/user-groups";
                 description: "User groups documentation";
