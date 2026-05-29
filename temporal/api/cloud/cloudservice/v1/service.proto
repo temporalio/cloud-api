@@ -1241,7 +1241,7 @@ service CloudService {
         };
     }
 
-    // List users with access to a namespace
+    // Get users with access to a namespace
     rpc GetUserNamespaceAssignments(GetUserNamespaceAssignmentsRequest) returns (GetUserNamespaceAssignmentsResponse) {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}/user-assignments",
@@ -1257,7 +1257,7 @@ service CloudService {
         };
     }
 
-    // List service accounts with access to a namespace
+    // Get service accounts with access to a namespace
     rpc GetServiceAccountNamespaceAssignments(GetServiceAccountNamespaceAssignmentsRequest) returns (GetServiceAccountNamespaceAssignmentsResponse) {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}/service-account-assignments",
@@ -1273,7 +1273,7 @@ service CloudService {
         };
     }
 
-    // List user groups with access to a namespace
+    // Get user groups with access to a namespace
     rpc GetUserGroupNamespaceAssignments(GetUserGroupNamespaceAssignmentsRequest) returns (GetUserGroupNamespaceAssignmentsResponse) {
         option (google.api.http) = {
             get: "/cloud/namespaces/{namespace}/user-group-assignments",
