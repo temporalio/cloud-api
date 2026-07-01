@@ -19,6 +19,7 @@ import "temporal/api/cloud/region/v1/message.proto";
 import "temporal/api/cloud/account/v1/message.proto";
 import "temporal/api/cloud/usage/v1/message.proto";
 import "temporal/api/cloud/connectivityrule/v1/message.proto";
+import "temporal/api/cloud/project/v1/message.proto";
 import "temporal/api/cloud/auditlog/v1/message.proto";
 import "temporal/api/cloud/billing/v1/message.proto";
 
@@ -150,6 +151,8 @@ message CreateNamespaceRequest {
     // The tags to add to the namespace.
     // Note: This field can be set by global admins or account owners only.
     map<string, string> tags = 4;
+    // The id of the project to create the namespace in - optional.
+    string project_id = 5;
 }
 
 message CreateNamespaceResponse {
@@ -170,6 +173,8 @@ message GetNamespacesRequest {
     // Filter namespaces by their name.
     // Optional, defaults to empty.
     string name = 3;
+    // Filter namespaces by project id - optional.
+    string project_id = 4;
 }
 
 message GetNamespacesResponse {
@@ -419,6 +424,8 @@ message GetNexusEndpointsRequest {
 
     // Filter endpoints by their name - optional, treated as an AND if specified. Specifying this will result in zero or one results.
     string name = 5;
+    // Filter endpoints by their project id - optional.
+    string project_id = 6;
 }
 
 message GetNexusEndpointsResponse {
@@ -445,6 +452,8 @@ message CreateNexusEndpointRequest {
 
     // The id to use for this async operation - optional.
     string async_operation_id = 2;
+    // The id of the project to associate this endpoint with - optional.
+    string project_id = 3;
 }
 
 message CreateNexusEndpointResponse {
@@ -695,6 +704,23 @@ message GetServiceAccountsResponse {
     string next_page_token = 2;
 }
 
+message GetProjectScopedServiceAccountsRequest {
+    // The project to list project scoped service accounts for.
+    string project_id = 1;
+    // The requested size of the page to retrieve - optional.
+    // Cannot exceed 1000. Defaults to 100.
+    int32 page_size = 2;
+    // The page token if this is continuing from another response - optional.
+    string page_token = 3;
+}
+
+message GetProjectScopedServiceAccountsResponse {
+    // The list of project scoped service accounts in ascending ID order.
+    repeated temporal.api.cloud.identity.v1.ServiceAccount service_accounts = 1;
+    // The next page token, set if there is another page.
+    string next_page_token = 2;
+}
+
 message UpdateServiceAccountRequest {
     // The ID of the service account to update.
     string service_account_id = 1;
@@ -913,6 +939,8 @@ message CreateConnectivityRuleRequest {
     // The id to use for this async operation.
     // Optional, if not provided a random id will be generated.
     string async_operation_id = 2;
+    // The ID of the project this connectivity rule belongs to - optional.
+    string project_id = 3;
 }
 
 message CreateConnectivityRuleResponse {
@@ -940,6 +968,8 @@ message GetConnectivityRulesRequest {
     string page_token = 2;
     // Filter connectivity rule by the namespace id.
     string namespace = 3;
+    // Filter connectivity rules by project id - optional.
+    string project_id = 4;
 }
 
 message GetConnectivityRulesResponse {
@@ -1169,6 +1199,57 @@ message DeleteCustomRoleResponse {
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
 
+message GetUserProjectAssignmentsRequest {
+    // The id of the project to get users for.
+    string project_id = 1;
+    // The requested size of the page to retrieve - optional.
+    // Cannot exceed 1000. Defaults to 100.
+    int32 page_size = 2;
+    // The page token if this is continuing from another response - optional.
+    string page_token = 3;
+}
+
+message GetUserProjectAssignmentsResponse {
+    // The list of users with access to the project.
+    repeated temporal.api.cloud.identity.v1.UserProjectAssignment users = 1;
+    // The next page's token.
+    string next_page_token = 2;
+}
+
+message GetServiceAccountProjectAssignmentsRequest {
+    // The id of the project to get service accounts for.
+    string project_id = 1;
+    // The requested size of the page to retrieve - optional.
+    // Cannot exceed 1000. Defaults to 100.
+    int32 page_size = 2;
+    // The page token if this is continuing from another response - optional.
+    string page_token = 3;
+}
+
+message GetServiceAccountProjectAssignmentsResponse {
+    // The list of service accounts with access to the project.
+    repeated temporal.api.cloud.identity.v1.ServiceAccountProjectAssignment service_accounts = 1;
+    // The next page's token.
+    string next_page_token = 2;
+}
+
+message GetUserGroupProjectAssignmentsRequest {
+    // The id of the project to get user groups for.
+    string project_id = 1;
+    // The requested size of the page to retrieve - optional.
+    // Cannot exceed 1000. Defaults to 100.
+    int32 page_size = 2;
+    // The page token if this is continuing from another response - optional.
+    string page_token = 3;
+}
+
+message GetUserGroupProjectAssignmentsResponse {
+    // The list of user groups with access to the project.
+    repeated temporal.api.cloud.identity.v1.UserGroupProjectAssignment groups = 1;
+    // The next page's token.
+    string next_page_token = 2;
+}
+
 message GetUserNamespaceAssignmentsRequest {
     // The namespace to get users for.
     string namespace = 1;
@@ -1218,4 +1299,137 @@ message GetUserGroupNamespaceAssignmentsResponse {
     repeated temporal.api.cloud.identity.v1.UserGroupNamespaceAssignment groups = 1;
     // The next page's token.
     string next_page_token = 2;
+}
+
+message GetProjectsRequest {
+    // The requested size of the page to retrieve - optional.
+    // Cannot exceed 1000. Defaults to 100.
+    int32 page_size = 1;
+    // The page token if this is continuing from another response - optional.
+    string page_token = 2;
+    // Filter by project IDs - optional.
+    repeated string project_ids = 3;
+}
+
+message GetProjectsResponse {
+    // The list of projects in ascending ids order
+    repeated temporal.api.cloud.project.v1.Project projects = 1;
+    // The next page's token
+    string next_page_token = 2;
+}
+
+message GetProjectRequest {
+    // The id of the project to get
+    string project_id = 1;
+}
+
+message GetProjectResponse {
+    // The project
+    temporal.api.cloud.project.v1.Project project = 1;
+}
+
+message CreateProjectRequest {
+    // The spec for the project to create.
+    temporal.api.cloud.project.v1.ProjectSpec spec = 1;
+    // The id to use for this async operation.
+    // Optional, if not provided a random id will be generated.
+    string async_operation_id = 2;
+}
+
+message CreateProjectResponse {
+    // The id of the project that was created.
+    string project_id = 1;
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 2;
+}
+
+message UpdateProjectRequest {
+    // The id of the project to update.
+    string project_id = 1;
+    // The new project specification.
+    temporal.api.cloud.project.v1.ProjectSpec spec = 2;
+    // The version of the project for which this update is intended for.
+    // The latest version can be found in the GetProject operation response.
+    string resource_version = 3;
+    // The id to use for this async operation.
+    // Optional, if not provided a random id will be generated.
+    string async_operation_id = 4;
+}
+
+message UpdateProjectResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+}
+
+message DeleteProjectRequest {
+    // The id of the project to delete.
+    string project_id = 1;
+    // The version of the project for which this delete is intended for.
+    // The latest version can be found in the GetProject operation response.
+    string resource_version = 2;
+    // The id to use for this async operation.
+    // Optional, if not provided a random id will be generated.
+    string async_operation_id = 3;
+}
+
+message DeleteProjectResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+}
+
+message SetUserProjectAccessRequest {
+    // The project to set permissions for.
+    string project_id = 1;
+    // The id of the user to set permissions for.
+    string user_id = 2;
+    // The project access to assign the user. If left empty, the user will be removed from the project access.
+    temporal.api.cloud.identity.v1.ProjectAccess access = 3;
+    // The version of the user for which this update is intended for.
+    // The latest version can be found in the GetUser operation response.
+    string resource_version = 4;
+    // The id to use for this async operation - optional.
+    string async_operation_id = 5;
+}
+
+message SetUserProjectAccessResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+}
+
+message SetUserGroupProjectAccessRequest {
+    // The project to set permissions for.
+    string project_id = 1;
+    // The id of the group to set permissions for.
+    string group_id = 2;
+    // The project access to assign the group. If left empty, the group will be removed from the project access.
+    temporal.api.cloud.identity.v1.ProjectAccess access = 3;
+    // The version of the group for which this update is intended for.
+    // The latest version can be found in the GetGroup operation response.
+    string resource_version = 4;
+    // The id to use for this async operation - optional.
+    string async_operation_id = 5;
+}
+
+message SetUserGroupProjectAccessResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+}
+
+message SetServiceAccountProjectAccessRequest {
+    // The project to set permissions for.
+    string project_id = 1;
+    // The id of the service account to set permissions for.
+    string service_account_id = 2;
+    // The project access to assign the service account. If left empty, the service account will be removed from the project access.
+    temporal.api.cloud.identity.v1.ProjectAccess access = 3;
+    // The version of the service account for which this update is intended for.
+    // The latest version can be found in the GetServiceAccount operation response.
+    string resource_version = 4;
+    // The id to use for this async operation - optional.
+    string async_operation_id = 5;
+}
+
+message SetServiceAccountProjectAccessResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
