@@ -71,12 +71,31 @@ enum OwnerType {
     OWNER_TYPE_SERVICE_ACCOUNT = 2; // The owner is a service account.
 }
 
+message ProjectAccess {
+    ProjectRole role = 1;
+
+    enum ProjectRole {
+        PROJECT_ROLE_UNSPECIFIED = 0;
+        PROJECT_ROLE_ADMIN = 1;
+        PROJECT_ROLE_WRITE = 2;
+        PROJECT_ROLE_READ = 3;
+        PROJECT_ROLE_LIST = 4;
+        PROJECT_ROLE_CONTRIBUTE = 5;
+        PROJECT_ROLE_MEMBER = 6;
+        PROJECT_ROLE_DEVELOPER = 7;
+    }
+}
+
 message Access {
     // The account access
     AccountAccess account_access = 1;
     // The map of namespace accesses
     // The key is the namespace name and the value is the access to the namespace
     map<string, NamespaceAccess> namespace_accesses = 2;
+    // The map of project accesses
+    // The key is the project ID and the value is the access to the project
+    // temporal:versioning:min_version=v0.18.0
+    map<string, ProjectAccess> project_accesses = 3;
     // List of custom role IDs assigned to the user or service account.
     // Deprecated: Not supported after v0.12.0 api version. Use account_access.custom_roles instead.
     // temporal:versioning:max_version=v0.12.0
@@ -88,6 +107,16 @@ message NamespaceScopedAccess {
     string namespace = 1;
     // The namespace access assigned to the service account - mutable.
     NamespaceAccess access = 2;
+}
+
+message ProjectScopedAccess {
+    // The ID of the project the service account is assigned to - immutable.
+    string project_id = 1;
+    // The project access assigned to the service account - mutable.
+    ProjectAccess access = 2;
+    // The map of namespace accesses - mutable.
+    // The key is the namespace name and the value is the access to the namespace.
+    map<string, NamespaceAccess> namespace_accesses = 3;
 }
 
 message UserSpec {
@@ -244,6 +273,10 @@ message ServiceAccountSpec {
     // Refer to `NamespaceScopedAccess` for details.
     NamespaceScopedAccess namespace_scoped_access = 4;
 
+    // The project scoped access assigned to the service account.
+    // If set, creates a project scoped service account (limited to a single project).
+    ProjectScopedAccess project_scoped_access = 5;
+
     // The description associated with the service account - optional.
     // The description is mutable.
     string description = 3;
@@ -348,6 +381,18 @@ message CustomRole {
     google.protobuf.Timestamp last_modified_time = 7;
 }
 
+message UserProjectAssignment {
+    // The id of the user
+    string id = 1;
+    // The email of the user
+    string email = 2;
+    // The access assigned to the user at the project level.
+    ProjectAccess project_access = 3;
+    // True if the user has inherited access to the project through an account role
+    bool inherited_access = 4;
+    string resource_version = 5;
+}
+
 message UserNamespaceAssignment {
     // The ID of the user.
     string id = 1;
@@ -361,6 +406,18 @@ message UserNamespaceAssignment {
     string resource_version = 5;
 }
 
+message ServiceAccountProjectAssignment {
+    // The id of the service account.
+    string id = 1;
+    // The name of the service account.
+    string name = 2;
+    // The access assigned to the service account at the project level.
+    ProjectAccess project_access = 3;
+    // True if the user has inherited access to the project through an account role
+    bool inherited_access = 4;
+    string resource_version = 5;
+}
+
 message ServiceAccountNamespaceAssignment {
     // The ID of the service account.
     string id = 1;
@@ -371,6 +428,18 @@ message ServiceAccountNamespaceAssignment {
     // True if the service account has inherited access to the namespace through an account or project role.
     bool inherited_access = 4;
     // The current resource version of the service account.
+    string resource_version = 5;
+}
+
+message UserGroupProjectAssignment {
+    // The id of the group
+    string id = 1;
+    // The display name of the group
+    string display_name = 2;
+    // The access assigned to the group at the project level.
+    ProjectAccess project_access = 3;
+    // True if the group has inherited access to the project through an account role
+    bool inherited_access = 4;
     string resource_version = 5;
 }
 
