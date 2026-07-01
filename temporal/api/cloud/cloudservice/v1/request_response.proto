@@ -152,6 +152,7 @@ message CreateNamespaceRequest {
     // Note: This field can be set by global admins or account owners only.
     map<string, string> tags = 4;
     // The id of the project to create the namespace in - optional.
+    // If not set, the namespace will be created in the account's default project.
     string project_id = 5;
 }
 
@@ -453,6 +454,7 @@ message CreateNexusEndpointRequest {
     // The id to use for this async operation - optional.
     string async_operation_id = 2;
     // The id of the project to associate this endpoint with - optional.
+    // If not set, the endpoint will be created in the account's default project.
     string project_id = 3;
 }
 
@@ -940,6 +942,7 @@ message CreateConnectivityRuleRequest {
     // Optional, if not provided a random id will be generated.
     string async_operation_id = 2;
     // The ID of the project this connectivity rule belongs to - optional.
+    // If not set, the connectivity rule will be created in the account's default project.
     string project_id = 3;
 }
 

@@ -76,13 +76,13 @@ message ProjectAccess {
 
     enum ProjectRole {
         PROJECT_ROLE_UNSPECIFIED = 0;
-        PROJECT_ROLE_ADMIN = 1;
-        PROJECT_ROLE_WRITE = 2;
-        PROJECT_ROLE_READ = 3;
-        PROJECT_ROLE_LIST = 4;
-        PROJECT_ROLE_CONTRIBUTE = 5;
-        PROJECT_ROLE_MEMBER = 6;
-        PROJECT_ROLE_DEVELOPER = 7;
+        PROJECT_ROLE_ADMIN = 1;       // Full access to the project, including managing project membership.
+        PROJECT_ROLE_WRITE = 2;       // Write access to project resources.
+        PROJECT_ROLE_READ = 3;        // Read-only access to project resources.
+        PROJECT_ROLE_LIST = 4;        // Access to list resources within the project.
+        PROJECT_ROLE_CONTRIBUTE = 5;  // Access to contribute to workflows within the project.
+        PROJECT_ROLE_MEMBER = 6;      // Basic membership; grants read-only access to the project.
+        PROJECT_ROLE_DEVELOPER = 7;   // Inherited from the account developer role; cannot be assigned directly.
     }
 }
 
@@ -262,7 +262,7 @@ message ServiceAccountSpec {
     // The name is mutable, but must be unique across all your active service accounts.
     string name = 1;
 
-    // Note: one of `Access` or `NamespaceScopedAccess` must be provided, but not both.
+    // Note: one of `Access`, `ProjectScopedAccess`, or `NamespaceScopedAccess` must be provided.
     // The access assigned to the service account.
     // If set, creates an account scoped service account.
     // The access is mutable.
@@ -390,6 +390,7 @@ message UserProjectAssignment {
     ProjectAccess project_access = 3;
     // True if the user has inherited access to the project through an account role
     bool inherited_access = 4;
+    // The current resource version of the user.
     string resource_version = 5;
 }
 
