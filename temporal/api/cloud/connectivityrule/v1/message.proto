@@ -32,6 +32,9 @@ message ConnectivityRule {
 
   // The date and time when the connectivity rule was created.
   google.protobuf.Timestamp created_time = 7;
+
+  // The ID of the project this connectivity rule belongs to.
+  string project_id = 8;
 }
 
 // The connectivity rule specification passed in on create/update operations.
