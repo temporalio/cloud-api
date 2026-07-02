@@ -49,7 +49,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
         {name: "Regions"; description: "Query available regions"},
         {name: "Account"; description: "Manage account settings and usage"},
         {name: "Custom Roles"; description: "Manage custom roles and their permissions"},
-        {name: "Projects"; description: "Manage projects and project-level access control"},
+        {name: "Projects"; description: "Manage projects and project-level access control. Projects are an upcoming feature and may not be enabled for your account. Contact Temporal support to request access."},
         {name: "Operations"; description: "Query async operation status"}
     ];
 };

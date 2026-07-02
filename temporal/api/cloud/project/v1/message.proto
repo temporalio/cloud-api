@@ -1,3 +1,6 @@
+// Projects are an upcoming feature and may not be enabled for your account.
+// Contact Temporal support to request access.
+
 syntax = "proto3";
 
 package temporal.api.cloud.project.v1;
