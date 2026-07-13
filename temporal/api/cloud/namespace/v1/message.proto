@@ -361,6 +361,8 @@ message Namespace {
     // The status of each replica where the namespace is available.
     // temporal:versioning:min_version=v0.13.0
     repeated Replica replicas = 18;
+    // The id of the project this namespace belongs to.
+    string project_id = 17;
 }
 
 message NamespaceRegionStatus {
