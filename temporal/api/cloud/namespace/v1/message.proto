@@ -397,9 +397,11 @@ message ExportSinkSpec {
     // The S3 configuration details when destination_type is S3.
     temporal.api.cloud.sink.v1.S3Spec s3 = 3;
 
-    // This is a feature under development. We will allow GCS sink support for GCP Namespaces.
     // The GCS configuration details when destination_type is GCS.
     temporal.api.cloud.sink.v1.GCSSpec gcs = 4;
+
+    // The Azure Blob configuration details when destination_type is Azure Blob.
+    temporal.api.cloud.sink.v1.AzureBlobSpec azure_blob = 5;
 }
 
 message ExportSink {
