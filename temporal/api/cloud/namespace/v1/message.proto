@@ -443,7 +443,6 @@ message NamespaceCapacityInfo {
   string namespace = 1;
 
   // Whether the namespace's APS limit was set by Temporal Support.
-  // When true, adjusting the namespace's capacity will reset this limit.
   bool has_legacy_limits = 2;
 
   // The current capacity of the namespace.
