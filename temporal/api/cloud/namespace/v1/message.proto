@@ -403,6 +403,7 @@ message ExportSinkSpec {
     temporal.api.cloud.sink.v1.GCSSpec gcs = 4;
 
     // The Azure Blob configuration details when destination_type is Azure Blob.
+    // temporal:versioning:min_version=v0.18.1
     temporal.api.cloud.sink.v1.AzureBlobSpec azure_blob = 5;
 }
 
