@@ -191,6 +191,38 @@ message FairnessSpec {
     bool task_queue_fairness_enabled = 1;
 }
 
+message EncryptionValidationSpec {
+    // The payload encryption validation mode for this namespace.
+    EncryptionValidationMode mode = 1;
+
+    // (Optional) The payload metadata key used to identify encrypted payloads.
+    // Default value is "encoding" if omitted.
+    string metadata_key = 2;
+
+    // (Optional) The payload metadata values used to identify encrypted payloads.
+    // Default value is ["binary/encrypted"] if omitted.
+    repeated string metadata_values = 3;
+
+    // Whether workflow headers should be inspected for encryption validation.
+    bool inspect_header = 4;
+
+    // Whether to inspect the message and stack_trace fields for Failure messages.
+    bool inspect_failure = 5;
+
+    enum EncryptionValidationMode {
+        ENCRYPTION_VALIDATION_MODE_UNSPECIFIED = 0;
+
+        // Disables encryption validation.
+        ENCRYPTION_VALIDATION_MODE_DISABLED = 1;
+
+        // Allows requests with unencrypted payloads, but emits warning metrics when validation fails.
+        ENCRYPTION_VALIDATION_MODE_WARN = 2;
+
+        // Rejects requests with unencrypted payloads when validation fails.
+        ENCRYPTION_VALIDATION_MODE_DENY = 3;
+    }
+}
+
 message NamespaceSpec {
     // The name to use for the namespace.
     // This will create a namespace that's available at '<name>.<account>.tmprl.cloud:7233'.
@@ -271,6 +303,11 @@ message NamespaceSpec {
     // If unspecified, fairness features will be disabled.
     // temporal:versioning:min_version=v0.14.0
     FairnessSpec fairness = 14;
+
+    // The payload encryption validation configuration for the namespace.
+    // If unspecified, payload encryption validation will be disabled.
+    // temporal:versioning:min_version=development
+    EncryptionValidationSpec encryption_validation = 15;
 
     enum SearchAttributeType {
         SEARCH_ATTRIBUTE_TYPE_UNSPECIFIED = 0;
