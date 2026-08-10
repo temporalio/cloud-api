@@ -10,7 +10,7 @@ option ruby_package = "Temporalio::Api::Cloud::Sink::V1";
 option csharp_namespace = "Temporalio.Api.Cloud.Sink.V1";
 
 message S3Spec {
-    // The IAM role that Temporal Cloud assumes for writing records to the customer's S3 bucket.
+    // The IAM role that Temporal Cloud assumes for writing records to the user's S3 bucket.
     string role_name = 1;
 
     // The name of the destination S3 bucket where Temporal will send data.
@@ -27,7 +27,7 @@ message S3Spec {
 }
 
 message GCSSpec {
-    // The customer service account ID that Temporal Cloud impersonates for writing records to the customer's GCS bucket.
+    // The Google service account ID that Temporal Cloud impersonates for writing records to the user's GCS bucket.
     string sa_id = 1;
 
     // The name of the destination GCS bucket where Temporal will send data.
@@ -41,7 +41,7 @@ message GCSSpec {
 }
 
 message AzureBlobSpec {
-    // The customer's Azure tenant ID where the storage account exists and where Temporal's app registration is consented/granted access.
+    // The Azure tenant ID where the storage account exists and where Temporal's app registration is consented/granted access.
     string tenant_id = 1;
 
     // The name of the destination Azure storage account where Temporal will send data.
@@ -61,7 +61,7 @@ message AzureBlobSpec {
 }
 
 message KinesisSpec {
-    // The role Temporal Cloud assumes when writing records to Kinesis
+    // The role Temporal Cloud assumes when writing records to Kinesis.
     string role_name = 1;
 
     // Destination Kinesis endpoint arn for temporal to send data to.
@@ -72,12 +72,12 @@ message KinesisSpec {
 }
 
 message PubSubSpec{
-    // The customer service account id that Temporal Cloud impersonates for writing records to customer's pubsub topic
+    // The Google service account ID that Temporal Cloud impersonates for writing records to user's pubsub topic.
     string service_account_id = 1;
 
     // Destination pubsub topic name for us
     string topic_name = 2;
 
-    // The gcp project id of pubsub topic and service account
+    // The gcp project ID of pubsub topic and service account
     string gcp_project_id = 3;
 }
