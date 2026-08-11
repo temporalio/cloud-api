@@ -1011,7 +1011,7 @@ service CloudService {
         };
     }
 
-    // Validate user's audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink.
+    // Validate the audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink.
     // The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs.
     rpc ValidateAccountAuditLogSink(ValidateAccountAuditLogSinkRequest) returns (ValidateAccountAuditLogSinkResponse) {
         option (google.api.http) = {
@@ -1021,7 +1021,7 @@ service CloudService {
         option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
             tags: ["Account"];
             summary: "Validate audit log sink"
-            description: "Validate user audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink. The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs."
+            description: "Validate the audit log sink is accessible from Temporal's workflow by delivering an empty file to the specified sink. The operation verifies that the sink is correctly configured, accessible and ready to receive audit logs."
             external_docs: {
                 url: "https://docs.temporal.io/cloud/audit-logging";
                 description: "Audit logging documentation";

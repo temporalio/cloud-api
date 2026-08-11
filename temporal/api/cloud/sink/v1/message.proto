@@ -10,7 +10,7 @@ option ruby_package = "Temporalio::Api::Cloud::Sink::V1";
 option csharp_namespace = "Temporalio.Api.Cloud.Sink.V1";
 
 message S3Spec {
-    // The IAM role that Temporal Cloud assumes for writing records to the user's S3 bucket.
+    // The IAM role that Temporal Cloud assumes for writing records to the S3 bucket.
     string role_name = 1;
 
     // The name of the destination S3 bucket where Temporal will send data.
@@ -27,7 +27,7 @@ message S3Spec {
 }
 
 message GCSSpec {
-    // The Google service account ID that Temporal Cloud impersonates for writing records to the user's GCS bucket.
+    // The Google service account ID that Temporal Cloud impersonates for writing records to the GCS bucket.
     string sa_id = 1;
 
     // The name of the destination GCS bucket where Temporal will send data.
@@ -72,7 +72,7 @@ message KinesisSpec {
 }
 
 message PubSubSpec{
-    // The Google service account ID that Temporal Cloud impersonates for writing records to user's pubsub topic.
+    // The Google service account ID that Temporal Cloud impersonates for writing records to the pubsub topic.
     string service_account_id = 1;
 
     // Destination pubsub topic name for us
