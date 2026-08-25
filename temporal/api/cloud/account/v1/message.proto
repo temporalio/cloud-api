@@ -20,7 +20,7 @@ message MetricsSpec {
 }
 
 message AuthenticationSettings {
-    // Restricts session lifetimes for users in this account.
+    // Restricts Cloud web UI session lifetimes for users in this account.
     bool restrict_session_lifetimes = 1;
 }
 
