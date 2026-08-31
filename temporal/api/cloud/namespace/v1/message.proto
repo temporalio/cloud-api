@@ -272,8 +272,9 @@ message NamespaceSpec {
     // temporal:versioning:min_version=v0.14.0
     FairnessSpec fairness = 14;
 
-    // Optional human-readable description of the namespace purpose.
+    // The description is a human-readable description of the namespace purpose.
     // Must be at most 255 printable ASCII characters plus whitespace.
+    // Optional, default is empty.
     // temporal:versioning:min_version=v0.21.0
     string description = 16;
 
