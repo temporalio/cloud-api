@@ -1340,6 +1340,19 @@ service CloudService {
         };
     }
 
+    // Move a namespace to a different project within the same account
+    rpc MoveNamespaceToProject(MoveNamespaceToProjectRequest) returns (MoveNamespaceToProjectResponse) {
+        option (google.api.http) = {
+            post: "/cloud/namespaces/{namespace}/move-to-project",
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Projects"];
+            summary: "Move a namespace to a project";
+            description: "Moves a namespace to a different project within the same account.";
+        };
+    }
+
     // Delete a project
     rpc DeleteProject(DeleteProjectRequest) returns (DeleteProjectResponse) {
         option (google.api.http) = {

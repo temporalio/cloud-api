@@ -1364,6 +1364,40 @@ message UpdateProjectResponse {
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
 
+// The full set of connectivity rules a namespace should carry after a move.
+message ConnectivityRuleIDs {
+    // One or more rule ids to attach in the destination project.
+    repeated string connectivity_rule_ids = 1;
+}
+
+message NoConnectivityRules {}
+
+message MoveNamespaceToProjectRequest {
+    // The namespace to move.
+    string namespace = 1;
+    // The project to move the namespace to.
+    string destination_project_id = 2;
+    // The project the caller expects the namespace to currently belong to.
+    string expected_source_project_id = 3;
+    // The version of the namespace for which this move is intended for.
+    // The latest version can be found in the GetNamespace operation response.
+    string resource_version = 4;
+    // The id to use for this async operation.
+    // Optional, if not provided a random id will be generated.
+    string async_operation_id = 5;
+    // The connectivity rules the namespace should have in the destination project.
+    // Leave unset only when the namespace has no connectivity rules today.
+    oneof destination_connectivity_rules {
+        ConnectivityRuleIDs rule_ids = 6;
+        NoConnectivityRules unrestricted = 7;
+    }
+}
+
+message MoveNamespaceToProjectResponse {
+    // The async operation.
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+}
+
 message DeleteProjectRequest {
     // The id of the project to delete.
     string project_id = 1;
