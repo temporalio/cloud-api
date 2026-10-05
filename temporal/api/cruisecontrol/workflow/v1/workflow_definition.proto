@@ -1,0 +1,228 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.workflow.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/workflow/v1;workflowv1";
+
+// WorkflowDefinitionKind identifies the source of a workflow definition.
+enum WorkflowDefinitionKind {
+  // Invalid default; callers must select a kind.
+  WORKFLOW_DEFINITION_KIND_UNSPECIFIED = 0;
+  // Uses the steps embedded in the definition.
+  WORKFLOW_DEFINITION_KIND_INLINE_STEPS = 1;
+  // Uses an account-scoped Workflow Template.
+  WORKFLOW_DEFINITION_KIND_TEMPLATE_REFERENCE = 2;
+}
+
+// StepType identifies the behavior of a workflow step.
+enum StepType {
+  // Invalid default; callers must select a type.
+  STEP_TYPE_UNSPECIFIED = 0;
+  // Waits for one or more human approvals.
+  STEP_TYPE_MANUAL_APPROVAL = 1;
+  // Waits for a configured duration.
+  STEP_TYPE_BAKE_TIME = 2;
+  // Waits until an allowed calendar window.
+  STEP_TYPE_CALENDAR_BLOCKER = 3;
+  // Creates a deployed version through the compute provider.
+  STEP_TYPE_DEPLOY_VERSION = 4;
+  // Changes traffic assigned to a deployed version.
+  STEP_TYPE_RAMP_VERSION = 5;
+  // Marks a deployed version current.
+  STEP_TYPE_MARK_CURRENT = 6;
+  // Runs an integration test.
+  STEP_TYPE_INTEGRATION_TEST = 7;
+  // Invokes a registered custom step.
+  STEP_TYPE_CUSTOM = 8;
+}
+
+// StepTimeoutBehavior controls how an expired blocking step resolves its run.
+enum StepTimeoutBehavior {
+  // Uses the step-specific default, which is FAIL.
+  STEP_TIMEOUT_BEHAVIOR_UNSPECIFIED = 0;
+  // Fails the step and run.
+  STEP_TIMEOUT_BEHAVIOR_FAIL = 1;
+  // Cancels the step and run.
+  STEP_TIMEOUT_BEHAVIOR_CANCEL = 2;
+}
+
+// DayOfWeek identifies a day in a recurring weekly calendar window.
+enum DayOfWeek {
+  // Invalid default; calendar windows require a day.
+  DAY_OF_WEEK_UNSPECIFIED = 0;
+  // Monday.
+  DAY_OF_WEEK_MONDAY = 1;
+  // Tuesday.
+  DAY_OF_WEEK_TUESDAY = 2;
+  // Wednesday.
+  DAY_OF_WEEK_WEDNESDAY = 3;
+  // Thursday.
+  DAY_OF_WEEK_THURSDAY = 4;
+  // Friday.
+  DAY_OF_WEEK_FRIDAY = 5;
+  // Saturday.
+  DAY_OF_WEEK_SATURDAY = 6;
+  // Sunday.
+  DAY_OF_WEEK_SUNDAY = 7;
+}
+
+// ManualApprovalStepParameters configures a Manual Approval step.
+message ManualApprovalStepParameters {
+  // Optional: Approvals required; omission defaults to one, and a present value must be positive.
+  optional int32 min_approvals = 1;
+  // Optional: Permits the actor who created the run to approve it.
+  bool allow_self_approval = 2;
+  // Optional: Approval timeout.
+  google.protobuf.Duration timeout = 3;
+  // Optional: Timeout outcome; UNSPECIFIED defaults to FAIL.
+  StepTimeoutBehavior on_timeout = 4;
+}
+
+// BakeTimeStepParameters configures a Bake Time step.
+message BakeTimeStepParameters {
+  // Required: Positive duration to wait.
+  google.protobuf.Duration duration = 1;
+}
+
+// LocalTime identifies a minute within a local calendar day.
+message LocalTime {
+  // Required: Hour in the range 0-23.
+  int32 hour = 1;
+  // Required: Minute in the range 0-59.
+  int32 minute = 2;
+}
+
+// WeeklyCalendarWindow defines one recurring local-time interval.
+message WeeklyCalendarWindow {
+  // Required: Local day on which the interval starts.
+  DayOfWeek day_of_week = 1;
+  // Required: Inclusive local start time.
+  LocalTime start = 2;
+  // Required: Exclusive local end time, later than start.
+  LocalTime end = 3;
+}
+
+// CalendarBlockerStepParameters configures a Calendar Blocker step.
+message CalendarBlockerStepParameters {
+  // Required: IANA timezone name.
+  string timezone = 1;
+  // Required: One or more valid recurring weekly windows.
+  repeated WeeklyCalendarWindow allowed_windows = 2;
+  // Optional: Maximum blocked wait.
+  google.protobuf.Duration max_wait = 3;
+  // Optional: Blocked-timeout outcome; UNSPECIFIED defaults to FAIL.
+  StepTimeoutBehavior on_blocked_timeout = 4;
+}
+
+// DeployVersionStepParameters configures a Deploy Version step.
+message DeployVersionStepParameters {
+  // Optional: Bounded provider-defined JSON-compatible parameters.
+  google.protobuf.Struct provider_parameters = 1;
+  // Optional: Positive interval between health checks.
+  google.protobuf.Duration health_poll_interval = 2;
+  // Optional: Positive maximum wait for a healthy deployment.
+  google.protobuf.Duration health_timeout = 3;
+}
+
+// RampVersionStepParameters configures a Ramp Version step.
+message RampVersionStepParameters {
+  // Required: Traffic percentage in the range 0-99.
+  int32 percentage = 1;
+  // Optional: Whether the deployed version must be healthy before ramping.
+  optional bool require_healthy_deployed_version = 2;
+  // Optional: Positive maximum operation duration.
+  google.protobuf.Duration timeout = 3;
+}
+
+// MarkCurrentStepParameters configures a Mark Current step.
+message MarkCurrentStepParameters {
+  // Optional: Whether the previously current version should enter draining state.
+  optional bool mark_previous_current_draining = 1;
+  // Optional: Positive maximum operation duration.
+  google.protobuf.Duration timeout = 2;
+}
+
+// IntegrationTestStepParameters configures an Integration Test step.
+message IntegrationTestStepParameters {
+  // Required: Container image used to run the test.
+  string task_image = 1;
+  // Optional: Command override passed to the container.
+  repeated string command = 2;
+  // Optional: Arguments passed to the command.
+  repeated string args = 3;
+  // Optional: Environment variables, including secret references.
+  map<string, temporal.api.cruisecontrol.workflow.v1.EnvironmentVariable> environment_variables = 4;
+  // Optional: Positive maximum test duration.
+  google.protobuf.Duration timeout = 5;
+  // Optional: Bounded provider-defined JSON-compatible parameters.
+  google.protobuf.Struct provider_parameters = 6;
+}
+
+// CustomStepParameters configures a customer-owned Nexus Step Service call.
+message CustomStepParameters {
+  // Required: Customer-configured Temporal Nexus endpoint name.
+  string nexus_endpoint = 1;
+  // Required: Customer-owned Nexus service name.
+  string nexus_service = 2;
+  // Required: Provider-defined custom step type.
+  string step_type = 3;
+  // Optional: Bounded provider-defined JSON-compatible parameters.
+  google.protobuf.Struct parameters = 4;
+  // Optional: Nexus operation timeout.
+  google.protobuf.Duration timeout = 5;
+}
+
+message StepDefinition {
+  // Required: Stable step segment; 1-100 characters matching [A-Za-z0-9.-]+ and unique within the sequence. Example: `approve-prod`.
+  string step_id = 1;
+  // Optional: Display name; UTF-8 and bounded by service configuration.
+  string name = 2;
+  // Required: Step type; UNSPECIFIED is invalid.
+  StepType type = 3;
+  // Required: Typed parameters matching type.
+  oneof parameters {
+    ManualApprovalStepParameters manual_approval = 4;
+    BakeTimeStepParameters bake_time = 5;
+    CalendarBlockerStepParameters calendar_blocker = 6;
+    DeployVersionStepParameters deploy_version = 7;
+    RampVersionStepParameters ramp_version = 8;
+    MarkCurrentStepParameters mark_current = 9;
+    IntegrationTestStepParameters integration_test = 10;
+    CustomStepParameters custom = 11;
+  }
+}
+
+// WorkflowDefinition selects inline steps or a reusable Workflow Template.
+message WorkflowDefinition {
+  // Required: Definition source; UNSPECIFIED is invalid.
+  WorkflowDefinitionKind kind = 1;
+  // Optional: Inline steps; required for INLINE_STEPS and empty for TEMPLATE_REFERENCE; step IDs must be unique.
+  repeated StepDefinition steps = 2;
+  // Optional: Workflow Template full stable ID; required only for TEMPLATE_REFERENCE and otherwise omitted. Example: `acct.acme:wt.standard`.
+  string template_id = 3;
+}
+
+// SecretReference identifies secret material without embedding its plaintext value.
+message SecretReference {
+  // Required: Secret backend identifier; non-empty. Example: `aws-secrets-manager`.
+  string provider = 1;
+  // Required: Backend-specific secret identifier; non-empty; never contains secret material. Example: `secrets/checkout/database`.
+  string secret_id = 2;
+  // Optional: Secret version selector.
+  string version = 3;
+  // Optional: Key within a structured secret.
+  string key = 4;
+}
+
+// EnvironmentVariable contains either a literal value or a reference to a secret value.
+message EnvironmentVariable {
+  // Required: Exactly one value source must be selected.
+  oneof value {
+    // Optional: Non-secret literal value; exactly one value alternative must be set.
+    string literal_value = 1;
+    // Optional: Secret reference; exactly one value alternative must be set, and plaintext secrets are forbidden.
+    SecretReference secret_ref = 2;
+  }
+}

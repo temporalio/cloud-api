@@ -1,0 +1,18 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.principal.v1;
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/principal/v1;principalv1";
+
+enum PrincipalType {
+  PRINCIPAL_TYPE_UNSPECIFIED = 0;
+  PRINCIPAL_TYPE_USER = 1;
+  PRINCIPAL_TYPE_SERVICE_ACCOUNT = 2;
+}
+
+// Principal identifies a user or service account.
+message Principal {
+  // Required: Full stable principal ID. Example: `user.alice` or `service.publisher`.
+  string id = 1;
+  // Required: Principal type; UNSPECIFIED is invalid.
+  PrincipalType type = 2;
+}

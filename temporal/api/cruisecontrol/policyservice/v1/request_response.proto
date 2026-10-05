@@ -1,0 +1,35 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.policyservice.v1;
+
+import "temporal/api/cruisecontrol/asyncoperationservice/v1/async_operation.proto";
+import "temporal/api/cruisecontrol/policyservice/v1/policy.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/policyservice/v1;policyservicev1";
+
+message UpdatePolicyRequest {
+  // Optional: Pipeline full stable ID; omit to update the Account Cedar Policy. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Complete Cedar policy-set source; bounded by service configuration.
+  string source = 2;
+  // Required: Current Cedar Policy etag for the selected scope; non-empty.
+  string prior_etag = 3;
+}
+
+message UpdatePolicyAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UpdatePolicyResponse {
+  // Required: Updated Cedar Policy with its resulting etag.
+  CedarPolicy cedar_policy = 1;
+}
+
+message GetPolicyRequest {
+  // Optional: Pipeline full stable ID; omit to read the Account Cedar Policy. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+}
+
+message GetPolicyResponse {
+  // Required: Requested Cedar Policy with its current etag.
+  CedarPolicy cedar_policy = 1;
+}

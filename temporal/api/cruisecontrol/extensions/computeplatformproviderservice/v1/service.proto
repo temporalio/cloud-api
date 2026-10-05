@@ -1,0 +1,19 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.extensions.computeplatformproviderservice.v1;
+
+import "temporal/api/cruisecontrol/extensions/computeplatformproviderservice/v1/request_response.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/extensions/computeplatformproviderservice/v1;computeplatformproviderservicev1";
+
+// ComputePlatformProviderService supplies the provider-facing primitives used by
+// built-in deployment steps. Operations must be idempotent under retries.
+service ComputePlatformProviderService {
+  // Creates or verifies one deployed version.
+  rpc CreateDeployedVersion(CreateDeployedVersionRequest) returns (CreateDeployedVersionResponse);
+  // Describes provider health for one deployed version.
+  rpc DescribeDeployedVersion(DescribeDeployedVersionRequest) returns (DescribeDeployedVersionResponse);
+  // Deletes one deployed version idempotently.
+  rpc DeleteDeployedVersion(DeleteDeployedVersionRequest) returns (DeleteDeployedVersionResponse);
+  // Runs one target-scoped task.
+  rpc RunTask(RunTaskRequest) returns (RunTaskResponse);
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.extensions.computeplatformproviderservice.v1;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/extensions/computeplatformproviderservice/v1;computeplatformproviderservicev1";
+
+// ComputeProviderStatus is the provider's latest health observation.
+enum ComputeProviderStatus {
+  // No status was reported.
+  COMPUTE_PROVIDER_STATUS_UNSPECIFIED = 0;
+  // The deployed version is still being created.
+  COMPUTE_PROVIDER_STATUS_CREATING = 1;
+  // The deployed version is healthy.
+  COMPUTE_PROVIDER_STATUS_HEALTHY = 2;
+  // The deployed version is unhealthy or failed.
+  COMPUTE_PROVIDER_STATUS_UNHEALTHY = 3;
+  // The deployed version is being deleted.
+  COMPUTE_PROVIDER_STATUS_DELETING = 4;
+  // The deployed version was deleted.
+  COMPUTE_PROVIDER_STATUS_DELETED = 5;
+  // The provider could not determine or apply state.
+  COMPUTE_PROVIDER_STATUS_ERROR = 6;
+}
+
+// ProviderEnvironmentVariable carries either a non-secret literal or an opaque
+// secret reference. Resolved secret material must never be returned.
+message ProviderEnvironmentVariable {
+  oneof value {
+    // Non-secret literal value.
+    string literal_value = 1;
+    // Opaque typed secret reference.
+    google.protobuf.Struct secret_ref = 2;
+  }
+}

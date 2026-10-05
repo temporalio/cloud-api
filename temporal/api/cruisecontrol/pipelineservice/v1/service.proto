@@ -1,0 +1,501 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.pipelineservice.v1;
+
+import "temporal/api/cruisecontrol/pipelineservice/v1/request_response.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/pipelineservice/v1;pipelineservicev1";
+
+service PipelineService {
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc CreatePipeline(CreatePipelineRequest) returns (CreatePipelineAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Create Pipeline"
+      description: "Create Pipeline. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_CreatePipeline"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UpdatePipeline(UpdatePipelineRequest) returns (UpdatePipelineAsyncResponse) {
+    option (google.api.http) = {
+      patch: "/v1/pipelines/{pipeline.pipeline_id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Update Pipeline"
+      description: "Update Pipeline. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_UpdatePipeline"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc DeletePipeline(DeletePipelineRequest) returns (DeletePipelineAsyncResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pipelines/{pipeline_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Delete Pipeline"
+      description: "Delete Pipeline. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_DeletePipeline"
+    };
+  }
+  rpc GetPipeline(GetPipelineRequest) returns (GetPipelineResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Pipeline"
+      description: "Get Pipeline."
+      operation_id: "PipelineService_GetPipeline"
+    };
+  }
+  rpc ListPipelines(ListPipelinesRequest) returns (ListPipelinesResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Pipelines"
+      description: "List Pipelines."
+      operation_id: "PipelineService_ListPipelines"
+    };
+  }
+
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc PublishArtifact(PublishArtifactRequest) returns (PublishArtifactAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/artifacts"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Publish Artifact"
+      description: "Publish Artifact. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_PublishArtifact"
+    };
+  }
+  rpc GetArtifact(GetArtifactRequest) returns (GetArtifactResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/artifacts/{artifact_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Artifact"
+      description: "Get Artifact."
+      operation_id: "PipelineService_GetArtifact"
+    };
+  }
+  rpc ListArtifacts(ListArtifactsRequest) returns (ListArtifactsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/artifacts"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Artifacts"
+      description: "List Artifacts."
+      operation_id: "PipelineService_ListArtifacts"
+    };
+  }
+
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc CreateTargetGroup(CreateTargetGroupRequest) returns (CreateTargetGroupAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{target_group.pipeline_id}/target-groups"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Create Target Group"
+      description: "Create Target Group. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_CreateTargetGroup"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UpdateTargetGroup(UpdateTargetGroupRequest) returns (UpdateTargetGroupAsyncResponse) {
+    option (google.api.http) = {
+      patch: "/v1/pipelines/{target_group.pipeline_id}/target-groups/{target_group.target_group_id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Update Target Group"
+      description: "Update Target Group. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_UpdateTargetGroup"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc DeleteTargetGroup(DeleteTargetGroupRequest) returns (DeleteTargetGroupAsyncResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Delete Target Group"
+      description: "Delete Target Group. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_DeleteTargetGroup"
+    };
+  }
+  rpc GetTargetGroup(GetTargetGroupRequest) returns (GetTargetGroupResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Target Group"
+      description: "Get Target Group."
+      operation_id: "PipelineService_GetTargetGroup"
+    };
+  }
+  rpc ListTargetGroups(ListTargetGroupsRequest) returns (ListTargetGroupsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/target-groups"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Target Groups"
+      description: "List Target Groups."
+      operation_id: "PipelineService_ListTargetGroups"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc LockTargetGroup(LockTargetGroupRequest) returns (LockTargetGroupAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}:lock"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Lock Target Group"
+      description: "Lock Target Group. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_LockTargetGroup"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UnlockTargetGroup(UnlockTargetGroupRequest) returns (UnlockTargetGroupAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}:unlock"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Unlock Target Group"
+      description: "Unlock Target Group. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_UnlockTargetGroup"
+    };
+  }
+
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc CreateDeploymentTarget(CreateDeploymentTargetRequest) returns (CreateDeploymentTargetAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{deployment_target.pipeline_id}/target-groups/{deployment_target.target_group_id}/deployment-targets"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Create Deployment Target"
+      description: "Create Deployment Target. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_CreateDeploymentTarget"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UpdateDeploymentTarget(UpdateDeploymentTargetRequest) returns (UpdateDeploymentTargetAsyncResponse) {
+    option (google.api.http) = {
+      patch: "/v1/pipelines/{deployment_target.pipeline_id}/target-groups/{deployment_target.target_group_id}/deployment-targets/{deployment_target.target_id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Update Deployment Target"
+      description: "Update Deployment Target. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_UpdateDeploymentTarget"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc DeleteDeploymentTarget(DeleteDeploymentTargetRequest) returns (DeleteDeploymentTargetAsyncResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Delete Deployment Target"
+      description: "Delete Deployment Target. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_DeleteDeploymentTarget"
+    };
+  }
+  rpc GetDeploymentTarget(GetDeploymentTargetRequest) returns (GetDeploymentTargetResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Deployment Target"
+      description: "Get Deployment Target."
+      operation_id: "PipelineService_GetDeploymentTarget"
+    };
+  }
+  rpc ListDeploymentTargets(ListDeploymentTargetsRequest) returns (ListDeploymentTargetsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Deployment Targets"
+      description: "List Deployment Targets."
+      operation_id: "PipelineService_ListDeploymentTargets"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc LockDeploymentTarget(LockDeploymentTargetRequest) returns (LockDeploymentTargetAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}:lock"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Lock Deployment Target"
+      description: "Lock Deployment Target. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_LockDeploymentTarget"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UnlockDeploymentTarget(UnlockDeploymentTargetRequest) returns (UnlockDeploymentTargetAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}:unlock"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Unlock Deployment Target"
+      description: "Unlock Deployment Target. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_UnlockDeploymentTarget"
+    };
+  }
+
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc MarkVersionRamping(MarkVersionRampingRequest) returns (MarkVersionRampingAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}/deployed-versions/{deployed_version_id}:markRamping"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Mark Version Ramping"
+      description: "Mark Version Ramping. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_MarkVersionRamping"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc MarkVersionCurrent(MarkVersionCurrentRequest) returns (MarkVersionCurrentAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}/deployed-versions/{deployed_version_id}:markCurrent"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Mark Version Current"
+      description: "Mark Version Current. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_MarkVersionCurrent"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc DeleteVersion(DeleteVersionRequest) returns (DeleteVersionAsyncResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}/deployed-versions/{deployed_version_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Delete Version"
+      description: "Delete Version. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_DeleteVersion"
+    };
+  }
+
+  rpc GetArtifactRollout(GetArtifactRolloutRequest) returns (GetArtifactRolloutResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/artifacts/{artifact_id}/rollout"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Artifact Rollout"
+      description: "Get Artifact Rollout."
+      operation_id: "PipelineService_GetArtifactRollout"
+    };
+  }
+
+  rpc ListPromotionRuns(ListPromotionRunsRequest) returns (ListPromotionRunsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/runs/promotion"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Promotion Runs"
+      description: "List Promotion Runs."
+      operation_id: "PipelineService_ListPromotionRuns"
+    };
+  }
+  rpc GetPromotionRun(GetPromotionRunRequest) returns (GetPromotionRunResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/runs/promotion/{promotion_run_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Promotion Run"
+      description: "Get Promotion Run."
+      operation_id: "PipelineService_GetPromotionRun"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc RespondStepChallenge(RespondStepChallengeRequest) returns (RespondStepChallengeAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/runs/{parent_run_id}/steps/{step_run_id}/challenges/{challenge_id}:respond"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Respond Step Challenge"
+      description: "Respond Step Challenge. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_RespondStepChallenge"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc RetryPromotion(RetryPromotionRequest) returns (RetryPromotionAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/runs/promotion/{promotion_run_id}:retry"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Retry Promotion"
+      description: "Retry Promotion. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_RetryPromotion"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc CancelPromotion(CancelPromotionRequest) returns (CancelPromotionAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/runs/promotion/{promotion_run_id}:cancel"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Cancel Promotion"
+      description: "Cancel Promotion. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_CancelPromotion"
+    };
+  }
+
+  rpc ListDeploymentRuns(ListDeploymentRunsRequest) returns (ListDeploymentRunsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/runs/deployment"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Deployment Runs"
+      description: "List Deployment Runs."
+      operation_id: "PipelineService_ListDeploymentRuns"
+    };
+  }
+  rpc GetDeploymentRun(GetDeploymentRunRequest) returns (GetDeploymentRunResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/runs/deployment/{deployment_run_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Deployment Run"
+      description: "Get Deployment Run."
+      operation_id: "PipelineService_GetDeploymentRun"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc RetryDeployment(RetryDeploymentRequest) returns (RetryDeploymentAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/runs/deployment/{deployment_run_id}:retry"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Retry Deployment"
+      description: "Retry Deployment. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_RetryDeployment"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc CancelDeployment(CancelDeploymentRequest) returns (CancelDeploymentAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/runs/deployment/{deployment_run_id}:cancel"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Cancel Deployment"
+      description: "Cancel Deployment. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_CancelDeployment"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc SkipDeployment(SkipDeploymentRequest) returns (SkipDeploymentAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/pipelines/{pipeline_id}/runs/deployment/{deployment_run_id}:skip"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Skip Deployment"
+      description: "Skip Deployment. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PipelineService_SkipDeployment"
+    };
+  }
+
+  rpc ListStepRuns(ListStepRunsRequest) returns (ListStepRunsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/runs/{parent_run_id}/steps"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Step Runs"
+      description: "List Step Runs."
+      operation_id: "PipelineService_ListStepRuns"
+    };
+  }
+  rpc GetStepRun(GetStepRunRequest) returns (GetStepRunResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/runs/{parent_run_id}/steps/{step_run_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Step Run"
+      description: "Get Step Run."
+      operation_id: "PipelineService_GetStepRun"
+    };
+  }
+  rpc ListDeployedVersions(ListDeployedVersionsRequest) returns (ListDeployedVersionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}/deployed-versions"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "List Deployed Versions"
+      description: "List Deployed Versions."
+      operation_id: "PipelineService_ListDeployedVersions"
+    };
+  }
+  rpc GetDeployedVersion(GetDeployedVersionRequest) returns (GetDeployedVersionResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/target-groups/{target_group_id}/deployment-targets/{target_id}/deployed-versions/{deployed_version_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PipelineService"
+      summary: "Get Deployed Version"
+      description: "Get Deployed Version."
+      operation_id: "PipelineService_GetDeployedVersion"
+    };
+  }
+}

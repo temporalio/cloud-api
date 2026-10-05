@@ -1,0 +1,134 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.artifact.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/artifact/v1;artifactv1";
+
+// ArtifactGroupRolloutStatus describes an Artifact's rollout state in a Target Group.
+enum ArtifactGroupRolloutStatus {
+  // Invalid default; rollouts always have a concrete status.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_UNSPECIFIED = 0;
+  // The Artifact is waiting for its predecessor Target Group.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_BEFORE_PROMOTION_WAITING = 1;
+  // The Artifact is being promoted into the Target Group.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_PROMOTING = 2;
+  // The Target Group admitted the Artifact for deployment.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_ADMITTED = 3;
+  // Promotion into the Target Group failed.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_PROMOTION_FAILED = 4;
+  // Promotion into the Target Group has been canceled.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_PROMOTION_CANCELED = 5;
+  // The Artifact was rejected because a newer Artifact made it stale.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REJECTED_STALE = 6;
+  // The Artifact was superseded after admission.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_SUPERSEDED = 7;
+  // Promotion succeeded and the Artifact is waiting for the successor Target Group.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_AFTER_PROMOTION_WAITING = 8;
+  // The Artifact is currently being deployed to one or multiple of the targets in the Target Group.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_DEPLOYING = 9;
+  // The Artifact has been completely deployed to the Target Group.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_DEPLOYMENT_COMPLETED = 10;
+  // The deployment of the Artifact to one or multiple of the targets in the Target Group has failed.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_DEPLOYMENT_FAILED = 11;
+  // The Target Group has been skipped for the Artifact.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_SKIPPED = 12;
+}
+
+// ArtifactTargetRolloutStatus describes an Artifact's rollout state on a Deployment Target.
+enum ArtifactTargetRolloutStatus {
+  // Invalid default; rollouts always have a concrete status.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_UNSPECIFIED = 0;
+  // Deployment is eligible but has not started.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_PENDING = 1;
+  // Deployment has started.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_STARTED = 2;
+  // Deployment was deliberately not executed.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_SKIPPED = 3;
+  // Deployment completed successfully.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_SUCCEEDED = 4;
+  // Deployment failed.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_FAILED = 5;
+  // Deployment was canceled.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_CANCELED = 6;
+  // Deployment timed out.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_TIMED_OUT = 7;
+}
+
+// ArtifactGroupRolloutStatusReason explains a Target Group rollout status.
+enum ArtifactGroupRolloutStatusReason {
+  // Invalid default; rollouts always have a concrete reason value.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_UNSPECIFIED = 0;
+  // No additional reason applies to the current status.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_NONE = 1;
+  // Promotion is blocked because the Target Group is locked.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_BLOCKED_LOCKED = 2;
+  // Promotion is blocked because the Target Group is busy with deployments.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_GROUP_BUSY = 3;
+  // The promotion workflow failed.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_WORKFLOW_FAILED = 4;
+  // The promotion workflow was canceled.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_WORKFLOW_CANCELED = 5;
+  // The promotion workflow timed out.
+  ARTIFACT_GROUP_ROLLOUT_STATUS_REASON_WORKFLOW_TIMED_OUT = 6;
+}
+
+// ArtifactTargetRolloutStatusReason explains a Deployment Target rollout status.
+enum ArtifactTargetRolloutStatusReason {
+  // Invalid default; rollouts always have a concrete reason value.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_UNSPECIFIED = 0;
+  // No additional reason applies to the current status.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_NONE = 1;
+  // Deployment was skipped because the Deployment Target was locked.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_SKIPPED_LOCKED = 2;
+  // An operator explicitly skipped the deployment.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_SKIPPED_OPERATOR = 3;
+  // The deployment workflow failed.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_WORKFLOW_FAILED = 4;
+  // The deployment workflow was canceled.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_WORKFLOW_CANCELED = 5;
+  // The deployment workflow timed out.
+  ARTIFACT_TARGET_ROLLOUT_STATUS_REASON_WORKFLOW_TIMED_OUT = 6;
+}
+
+// ArtifactGroupRollout is the rollout state of an Artifact in a Target Group.
+message ArtifactGroupRollout {
+  // Required: Artifact full stable ID.
+  string artifact_id = 1;
+  // Required: Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Current Target Group rollout status.
+  ArtifactGroupRolloutStatus status = 3;
+  // Required: Reason for the current status.
+  ArtifactGroupRolloutStatusReason status_reason = 4;
+  // Optional: Promotion Run full stable ID; omitted before a run is created.
+  string promotion_run_id = 5;
+  // Required: Time of the latest state change.
+  google.protobuf.Timestamp updated_at = 6;
+  // Required: Opaque etag for the current rollout state; non-empty.
+  string etag = 7;
+}
+
+// ArtifactTargetRollout is the rollout state of an Artifact on a Deployment Target.
+message ArtifactTargetRollout {
+  // Required: Artifact full stable ID.
+  string artifact_id = 1;
+  // Required: Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Current Deployment Target rollout status.
+  ArtifactTargetRolloutStatus status = 4;
+  // Required: Reason for the current status.
+  ArtifactTargetRolloutStatusReason status_reason = 5;
+  // Optional: Deployment Run full stable ID; omitted before a run is created.
+  string deployment_run_id = 6;
+  // Optional: Time when deployment started; omitted before deployment starts.
+  google.protobuf.Timestamp started_at = 7;
+  // Optional: Time when deployment finished; omitted while non-terminal.
+  google.protobuf.Timestamp finished_at = 8;
+  // Required: Opaque etag for the current rollout state; non-empty.
+  string etag = 9;
+  // Optional: Deployed version produced by the successful Deployment Run.
+  string deployed_version_id = 10;
+}

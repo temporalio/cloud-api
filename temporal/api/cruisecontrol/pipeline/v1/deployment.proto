@@ -1,0 +1,89 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.pipeline.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/pipeline/v1;pipelinev1";
+
+// ProviderStatus identifies the latest compute-provider observation for a
+// deployed version.
+enum ProviderStatus {
+  // No provider status has been observed.
+  PROVIDER_STATUS_UNSPECIFIED = 0;
+  // The provider status is not yet known.
+  PROVIDER_STATUS_UNKNOWN = 1;
+  // The provider is creating the version.
+  PROVIDER_STATUS_CREATING = 2;
+  // The provider reports the version healthy.
+  PROVIDER_STATUS_HEALTHY = 3;
+  // The provider reports the version unhealthy.
+  PROVIDER_STATUS_UNHEALTHY = 4;
+  // The provider is deleting the version.
+  PROVIDER_STATUS_DELETING = 5;
+  // The provider reports the version deleted.
+  PROVIDER_STATUS_DELETED = 6;
+  // The provider reported an operational error.
+  PROVIDER_STATUS_ERROR = 7;
+}
+
+// DeployedVersion is a worker version deployed to one Deployment Target.
+message DeployedVersion {
+  // Required: Owning Account full stable ID.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 2;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Cruise Control-generated Deployed Version full stable ID.
+  string deployed_version_id = 5;
+  // Required: Artifact full stable ID represented by this version.
+  string artifact_id = 6;
+  // Required: Temporal Worker Deployment Build ID.
+  string worker_build_id = 7;
+  // Required: Lifecycle state.
+  DeployedVersionState state = 8;
+  // Optional: Traffic percentage; present only for RAMPING or CURRENT.
+  optional int32 ramping_percentage = 9;
+  // Required: Latest compute-provider observation.
+  ProviderStatus provider_status = 10;
+  // Optional: Bounded opaque provider details.
+  google.protobuf.Struct provider_details = 11;
+  // Optional: Provider-owned identifier; never used as the Cruise Control ID.
+  string provider_deployed_version_id = 12;
+  // Required: Time when the version was first recorded.
+  google.protobuf.Timestamp created_at = 13;
+  // Required: Time of the latest accepted change.
+  google.protobuf.Timestamp updated_at = 14;
+  // Optional: Time when the version entered DELETED.
+  google.protobuf.Timestamp deleted_at = 15;
+  // Optional: Time of the latest Worker Versioning drain observation.
+  google.protobuf.Timestamp last_drain_check_at = 16;
+  // Optional: Time of the latest compute-provider observation.
+  google.protobuf.Timestamp last_provider_checked_at = 17;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 18;
+}
+
+// DeployedVersionState identifies the lifecycle state of a deployed worker
+// version.
+enum DeployedVersionState {
+  // Invalid default; callers must not use it for mutations.
+  DEPLOYED_VERSION_STATE_UNSPECIFIED = 0;
+  // The version exists but is not yet receiving traffic.
+  DEPLOYED_VERSION_STATE_PENDING = 1;
+  // The version receives a configured percentage of new workflow traffic.
+  DEPLOYED_VERSION_STATE_RAMPING = 2;
+  // The version is the default for new workflow executions.
+  DEPLOYED_VERSION_STATE_CURRENT = 3;
+  // The version receives no new workflows but may still have pinned executions.
+  DEPLOYED_VERSION_STATE_DRAINING = 4;
+  // The version has no remaining pinned workflow executions.
+  DEPLOYED_VERSION_STATE_DRAINED = 5;
+  // Deployment or provider-health validation failed.
+  DEPLOYED_VERSION_STATE_FAILED = 6;
+  // The provider and Worker Deployment version have been removed.
+  DEPLOYED_VERSION_STATE_DELETED = 7;
+}

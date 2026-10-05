@@ -1,0 +1,138 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.pipeline.v1;
+
+import "temporal/api/cruisecontrol/artifact/v1/artifact.proto";
+import "temporal/api/cruisecontrol/pipeline/v1/deployment.proto";
+import "temporal/api/cruisecontrol/policyservice/v1/policy.proto";
+import "temporal/api/cruisecontrol/principal/v1/principal.proto";
+import "temporal/api/cruisecontrol/workflow/v1/workflow_definition.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/pipeline/v1;pipelinev1";
+
+// PipelineSpec is the customer-managed Pipeline spec.
+message PipelineSpec {
+  // Required: Display name; UTF-8 and bounded by service configuration.
+  string name = 1;
+  // Optional: Description; UTF-8 and bounded by service configuration.
+  string description = 2;
+  // Optional: Metadata; keys are 1-100 characters matching [A-Za-z0-9_.-]+.
+  map<string, string> metadata = 3;
+  // Required: Artifact ordering and Build ID policies.
+  temporal.api.cruisecontrol.artifact.v1.ArtifactConfiguration artifact_configuration = 4;
+  // Optional: Pipeline-scoped Cedar policy. On create; defaults to permit authenticated principals.
+  temporal.api.cruisecontrol.policyservice.v1.CedarPolicySpec cedar_policy = 5;
+}
+
+// Pipeline is an account-scoped delivery resource and Artifact collection.
+message Pipeline {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Pipeline full stable ID; scoped beneath account_id. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Customer-managed spec.
+  PipelineSpec spec = 3;
+  // Required: Time when the Pipeline was created.
+  google.protobuf.Timestamp created_at = 4;
+  // Required: Time when the Pipeline spec was last updated.
+  google.protobuf.Timestamp updated_at = 5;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 6;
+}
+
+enum NextGroupSignalPolicy {
+  NEXT_GROUP_SIGNAL_POLICY_UNSPECIFIED = 0;
+  NEXT_GROUP_SIGNAL_POLICY_ALL_ELIGIBLE_TARGETS = 1;
+  NEXT_GROUP_SIGNAL_POLICY_FIRST_SUCCESSFUL_TARGET = 2;
+}
+// TargetGroupSpec is the customer-managed Target Group spec.
+message TargetGroupSpec {
+  // Required: Display name; UTF-8 and bounded by service configuration.
+  string name = 1;
+  // Optional: Description; UTF-8 and bounded by service configuration.
+  string description = 2;
+  // Optional: Metadata; keys are 1-100 characters matching [A-Za-z0-9_.-]+.
+  map<string, string> metadata = 3;
+  // Required: Predecessor Target Group full stable ID or the literal SOURCE. Example: `acct.acme:pipeline.checkout:tg.staging`.
+  string prior_target_group_id = 4;
+  // Required: Promotion workflow definition.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowDefinition promotion_workflow = 5;
+  // Required: Successor policy; UNSPECIFIED is invalid.
+  NextGroupSignalPolicy next_group_signal_policy = 6;
+}
+
+// TargetGroup is an ordered promotion stage containing Deployment Targets.
+message TargetGroup {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Target Group full stable ID; scoped beneath pipeline_id. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 3;
+  // Required: Customer-managed spec.
+  TargetGroupSpec spec = 4;
+  // Required: Derived member Target IDs in bytewise lexical order. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1`.
+  repeated string target_ids = 5;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 6;
+  // Optional: Active lock; omitted when unlocked.
+  Lock lock = 7;
+}
+
+// TemporalConfiguration identifies the Temporal worker managed by a Deployment Target.
+message TemporalConfiguration {
+  // Required: Temporal namespace containing the managed worker; non-empty.
+  string namespace = 1;
+  // Required: Managed Temporal Worker Deployment name; non-empty.
+  string worker_deployment_name = 2;
+}
+
+// DeploymentTargetSpec is the customer-managed Deployment Target spec.
+message DeploymentTargetSpec {
+  // Required: Display name; UTF-8 and bounded by service configuration.
+  string name = 1;
+  // Optional: Labels; keys are 1-100 characters matching [A-Za-z0-9_.-]+.
+  map<string, string> labels = 2;
+  // Required: Temporal worker configuration.
+  TemporalConfiguration temporal_configuration = 3;
+  // Required: Registered compute-platform identifier; non-empty. Example: `kubernetes`.
+  string compute_platform = 4;
+  // Optional: Provider configuration; size, depth, strings, lists, and entries are service-capped.
+  google.protobuf.Struct compute_platform_details = 5;
+  // Optional: Target environment keyed by variable name; keys are 1-128 characters matching [A-Za-z_][A-Za-z0-9_]* and each value has exactly one source.
+  map<string, temporal.api.cruisecontrol.workflow.v1.EnvironmentVariable> environment_variables = 6;
+  // Required: Deployment workflow definition.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowDefinition deployment_workflow = 7;
+}
+
+// DeploymentTarget identifies a managed deployment destination in a Target Group.
+message DeploymentTarget {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Immutable owning Target Group full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 3;
+  // Required: Deployment Target full stable ID; scoped beneath target_group_id. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1`.
+  string target_id = 4;
+  // Required: Customer-managed spec.
+  DeploymentTargetSpec spec = 5;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 6;
+  // Optional: Active lock; omitted when unlocked.
+  Lock lock = 7;
+  // Deployed versions currently associated with this target.
+  repeated temporal.api.cruisecontrol.pipeline.v1.DeployedVersion deployed_versions = 8;
+}
+
+// Lock records an operator lock on a Target Group or Deployment Target.
+message Lock {
+  // Required: Operator-supplied reason; UTF-8 and bounded by service configuration.
+  string reason = 1;
+
+  // Required: Principal that acquired the lock.
+  temporal.api.cruisecontrol.principal.v1.Principal locked_by = 2;
+  // Required: Time when the lock was acquired.
+  google.protobuf.Timestamp locked_at = 3;
+}

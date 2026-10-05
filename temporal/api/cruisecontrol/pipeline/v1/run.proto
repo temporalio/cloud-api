@@ -1,0 +1,253 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.pipeline.v1;
+
+import "temporal/api/cruisecontrol/principal/v1/principal.proto";
+import "temporal/api/cruisecontrol/workflow/v1/workflow_definition.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/pipeline/v1;pipelinev1";
+
+enum PromotionRunStatus {
+  PROMOTION_RUN_STATUS_UNSPECIFIED = 0;
+  PROMOTION_RUN_STATUS_PENDING = 1;
+  PROMOTION_RUN_STATUS_RUNNING = 2;
+  PROMOTION_RUN_STATUS_SUCCEEDED = 3;
+  PROMOTION_RUN_STATUS_FAILED = 4;
+  PROMOTION_RUN_STATUS_CANCELED = 5;
+  PROMOTION_RUN_STATUS_TIMED_OUT = 6;
+}
+enum PromotionRunStatusReason {
+  PROMOTION_RUN_STATUS_REASON_UNSPECIFIED = 0;
+  PROMOTION_RUN_STATUS_REASON_NONE = 1;
+  PROMOTION_RUN_STATUS_REASON_WORKFLOW_FAILED = 2;
+  PROMOTION_RUN_STATUS_REASON_WORKFLOW_CANCELED = 3;
+  PROMOTION_RUN_STATUS_REASON_WORKFLOW_TIMED_OUT = 4;
+}
+enum DeploymentRunStatus {
+  DEPLOYMENT_RUN_STATUS_UNSPECIFIED = 0;
+  DEPLOYMENT_RUN_STATUS_PENDING = 1;
+  DEPLOYMENT_RUN_STATUS_RUNNING = 2;
+  DEPLOYMENT_RUN_STATUS_SKIPPED = 3;
+  DEPLOYMENT_RUN_STATUS_SUCCEEDED = 4;
+  DEPLOYMENT_RUN_STATUS_FAILED = 5;
+  DEPLOYMENT_RUN_STATUS_CANCELED = 6;
+  DEPLOYMENT_RUN_STATUS_TIMED_OUT = 7;
+}
+enum DeploymentRunStatusReason {
+  DEPLOYMENT_RUN_STATUS_REASON_UNSPECIFIED = 0;
+  DEPLOYMENT_RUN_STATUS_REASON_WORKFLOW_FAILED = 1;
+  DEPLOYMENT_RUN_STATUS_REASON_WORKFLOW_CANCELED = 2;
+  DEPLOYMENT_RUN_STATUS_REASON_WORKFLOW_TIMED_OUT = 3;
+  DEPLOYMENT_RUN_STATUS_REASON_SKIPPED_LOCKED = 4;
+  DEPLOYMENT_RUN_STATUS_REASON_SKIPPED_OPERATOR = 5;
+}
+enum StepRunStatus {
+  STEP_RUN_STATUS_UNSPECIFIED = 0;
+  STEP_RUN_STATUS_PENDING = 1;
+  STEP_RUN_STATUS_RUNNING = 2;
+  STEP_RUN_STATUS_WAITING = 3;
+  STEP_RUN_STATUS_SUCCEEDED = 4;
+  STEP_RUN_STATUS_FAILED = 5;
+  STEP_RUN_STATUS_CANCELED = 6;
+  STEP_RUN_STATUS_TIMED_OUT = 7;
+}
+enum StepRunStatusReason {
+  STEP_RUN_STATUS_REASON_UNSPECIFIED = 0;
+  STEP_RUN_STATUS_REASON_NONE = 1;
+  STEP_RUN_STATUS_REASON_WAITING_FOR_APPROVAL = 2;
+  STEP_RUN_STATUS_REASON_APPROVAL_REJECTED = 3;
+  STEP_RUN_STATUS_REASON_BAKE_TIMER_ACTIVE = 4;
+  STEP_RUN_STATUS_REASON_CALENDAR_BLOCKED = 5;
+  STEP_RUN_STATUS_REASON_INTEGRATION_TEST_FAILED = 6;
+  STEP_RUN_STATUS_REASON_CUSTOM_STEP_FAILED = 7;
+  STEP_RUN_STATUS_REASON_STEP_TIMED_OUT = 8;
+  STEP_RUN_STATUS_REASON_STEP_CANCELED = 9;
+}
+enum ApprovalDecision {
+  APPROVAL_DECISION_UNSPECIFIED = 0;
+  APPROVAL_DECISION_APPROVE = 1;
+  APPROVAL_DECISION_REJECT = 2;
+}
+
+// ApprovalChallengeStatus identifies the lifecycle state of an approval challenge.
+enum ApprovalChallengeStatus {
+  // Invalid default; challenges always have a concrete status.
+  APPROVAL_CHALLENGE_STATUS_UNSPECIFIED = 0;
+  // The challenge is accepting decisions.
+  APPROVAL_CHALLENGE_STATUS_WAITING = 1;
+  // The required number of approvals was reached.
+  APPROVAL_CHALLENGE_STATUS_APPROVED = 2;
+  // A rejection resolved the challenge.
+  APPROVAL_CHALLENGE_STATUS_REJECTED = 3;
+  // The challenge expired before approval.
+  APPROVAL_CHALLENGE_STATUS_EXPIRED = 4;
+  // The owning run canceled the challenge.
+  APPROVAL_CHALLENGE_STATUS_CANCELED = 5;
+}
+enum PromotionRetryOutcome {
+  PROMOTION_RETRY_OUTCOME_UNSPECIFIED = 0;
+  PROMOTION_RETRY_OUTCOME_CREATED = 1;
+  PROMOTION_RETRY_OUTCOME_NOT_CREATED_STALE = 2;
+  PROMOTION_RETRY_OUTCOME_NOT_CREATED_SUPERSEDED = 3;
+}
+
+// PromotionRun records one attempt to admit an Artifact into a Target Group.
+message PromotionRun {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Owning Target Group full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 3;
+  // Required: Promoted Artifact full stable ID. Example: `acct.acme:pipeline.checkout:art.0123456789abcdef`.
+  string artifact_id = 4;
+  // Required: Cruise Control-generated Promotion Run full stable ID. Example: `acct.acme:pipeline.checkout:promotion.00000001`.
+  string promotion_run_id = 5;
+  // Required: Predecessor Target Group full stable ID or the literal SOURCE. Example: `SOURCE`.
+  string source_target_group_id = 6;
+  // Optional: Prior Promotion Run full stable ID for a retry. Example: `acct.acme:pipeline.checkout:promotion.00000001`.
+  string retry_of_promotion_run_id = 7;
+  // Required: Promotion status; UNSPECIFIED is invalid.
+  PromotionRunStatus status = 8;
+  // Required: Promotion status reason; UNSPECIFIED is invalid.
+  PromotionRunStatusReason status_reason = 9;
+  // Optional: Bounded diagnostic summary.
+  string summary = 10;
+  // Optional: Bounded structured diagnostics.
+  google.protobuf.Struct details = 11;
+  // Required: Time when the run started.
+  google.protobuf.Timestamp started_at = 12;
+  // Optional: Time when the run finished; omitted while non-terminal.
+  google.protobuf.Timestamp finished_at = 13;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 14;
+}
+
+// DeploymentRun records one attempt to deploy an Artifact to a Deployment Target.
+message DeploymentRun {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Owning Target Group full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 3;
+  // Required: Owning Deployment Target full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1`.
+  string target_id = 4;
+  // Required: Deployed Artifact full stable ID. Example: `acct.acme:pipeline.checkout:art.0123456789abcdef`.
+  string artifact_id = 5;
+  // Required: Cruise Control-generated Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1:deployment.00000001`.
+  string deployment_run_id = 6;
+  // Optional: Prior Deployment Run full stable ID for a retry. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1:deployment.00000001`.
+  string retry_of_deployment_run_id = 7;
+  // Required: Deployment status; UNSPECIFIED is invalid.
+  DeploymentRunStatus status = 8;
+  // Optional: Workflow failure, cancellation, timeout, or skip reason; UNSPECIFIED when omitted.
+  DeploymentRunStatusReason status_reason = 9;
+  // Optional: Bounded diagnostic summary.
+  string summary = 10;
+  // Optional: Bounded structured diagnostics.
+  google.protobuf.Struct details = 11;
+  // Required: Time when the run started.
+  google.protobuf.Timestamp started_at = 12;
+  // Optional: Time when the run finished; omitted while non-terminal.
+  google.protobuf.Timestamp finished_at = 13;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 14;
+  // Optional: Deployed version created or verified by this run.
+  string deployed_version_id = 15;
+}
+
+// StepRun records one execution attempt for a step in a promotion or deployment run.
+message StepRun {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required for Deployment Runs and omitted for Promotion Runs: Owning Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Parent Promotion or Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:promotion.00000001`.
+  string parent_run_id = 5;
+  // Required: Definition step ID. Example: `approve-prod`.
+  string step_id = 6;
+  // Required: Cruise Control-generated Step Run full stable ID. Example: `acct.acme:pipeline.checkout:promotion.00000001:step.00000001`.
+  string step_run_id = 7;
+  // Required: Step type; UNSPECIFIED is invalid.
+  temporal.api.cruisecontrol.workflow.v1.StepType step_type = 8;
+  // Required: Step status; UNSPECIFIED is invalid.
+  StepRunStatus status = 9;
+  // Required: Step status reason; UNSPECIFIED is invalid.
+  StepRunStatusReason status_reason = 10;
+  // Required: Attempt number in the range 1-2147483647.
+  int32 attempt = 11;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 12;
+  // Required: Time when the step run started.
+  google.protobuf.Timestamp started_at = 13;
+  // Optional: Time when the step run finished; omitted while non-terminal.
+  google.protobuf.Timestamp finished_at = 14;
+  // Optional: Bounded human-readable step result summary.
+  string summary = 15;
+  // Optional: Bounded structured step result details.
+  google.protobuf.Struct details = 16;
+  // Optional: Approval challenge details when this is a Manual Approval step.
+  ApprovalChallenge approval_challenge = 17;
+}
+
+// ApprovalChallenge describes the current approval state for a step.
+message ApprovalChallenge {
+  // Required: Owning Account full stable ID.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 2;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required for Deployment Runs and omitted for Promotion Runs: Owning Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Owning Promotion or Deployment Run full stable ID.
+  string parent_run_id = 5;
+  // Required: Owning Step Run full stable ID.
+  string step_run_id = 6;
+  // Required: Approval Challenge full stable ID.
+  string challenge_id = 7;
+  // Required: Current challenge status.
+  ApprovalChallengeStatus status = 8;
+
+  // Required: Principal identity.
+  temporal.api.cruisecontrol.principal.v1.Principal created_by = 9;
+  // Required: Positive number of approvals needed.
+  int32 required_approvals = 10;
+  // Required: Whether the run creator may approve the challenge.
+  bool allow_self_approval = 11;
+  // Required: Time when the challenge was created.
+  google.protobuf.Timestamp created_at = 12;
+  // Optional: Time when the challenge expires.
+  google.protobuf.Timestamp expires_at = 13;
+  // Optional: Time when the challenge reached a terminal state.
+  google.protobuf.Timestamp resolved_at = 14;
+  // Required: Opaque etag used for decision preconditions; non-empty.
+  string etag = 15;
+  // Required: Immutable decisions accepted for this challenge, in acceptance order.
+  repeated ApprovalDecisionRecord decisions = 16;
+}
+
+// ApprovalDecisionRecord is one immutable response to an Approval Challenge.
+message ApprovalDecisionRecord {
+  // Required: Approval Decision full stable ID.
+  string decision_id = 1;
+  // Required: Owning Approval Challenge full stable ID.
+  string challenge_id = 2;
+
+  // Required: Principal identity.
+  temporal.api.cruisecontrol.principal.v1.Principal principal = 3;
+  // Required: Recorded decision; UNSPECIFIED is invalid.
+  ApprovalDecision decision = 4;
+  // Optional: Bounded human-readable reason.
+  string reason = 5;
+  // Required: Time when the decision was accepted.
+  google.protobuf.Timestamp decided_at = 6;
+  // Required: Approval Challenge etag resulting from this decision; non-empty.
+  string challenge_resulting_etag = 7;
+}

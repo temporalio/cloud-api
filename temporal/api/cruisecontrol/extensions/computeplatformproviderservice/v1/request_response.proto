@@ -1,0 +1,140 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.extensions.computeplatformproviderservice.v1;
+
+import "temporal/api/cruisecontrol/extensions/computeplatformproviderservice/v1/types.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/extensions/computeplatformproviderservice/v1;computeplatformproviderservicev1";
+
+// CreateDeployedVersionRequest asks a provider to create or verify one stable
+// Cruise Control deployed-version identity.
+message CreateDeployedVersionRequest {
+  // Required: owning Account full stable ID.
+  string account_id = 1;
+  // Required: owning Pipeline full stable ID.
+  string pipeline_id = 2;
+  // Required: owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required: Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Cruise Control-generated idempotency identity.
+  string deployed_version_id = 5;
+  // Required: Artifact full stable ID.
+  string artifact_id = 6;
+  // Required: Artifact version.
+  string artifact_version = 7;
+  // Required: Temporal namespace used by the target.
+  string temporal_namespace = 8;
+  // Required: Temporal Worker Deployment name.
+  string worker_deployment_name = 9;
+  // Required: Temporal Worker Deployment Build ID.
+  string worker_build_id = 10;
+  // Optional: target compute-platform configuration.
+  google.protobuf.Struct platform_details = 11;
+  // Optional: step-specific provider parameters.
+  google.protobuf.Struct provider_parameters = 12;
+  // Optional: snapshotted target environment variables.
+  map<string, ProviderEnvironmentVariable> environment_variables = 13;
+}
+
+// CreateDeployedVersionResponse reports provider-owned identity and initial
+// status for a create-or-verify request.
+message CreateDeployedVersionResponse {
+  // Optional: provider-owned version identifier.
+  string provider_deployed_version_id = 1;
+  // Required: latest provider status.
+  ComputeProviderStatus status = 2;
+  // Optional: bounded opaque provider details.
+  google.protobuf.Struct provider_details = 3;
+}
+
+// DescribeDeployedVersionRequest identifies a previously created version.
+message DescribeDeployedVersionRequest {
+  // Required: owning Account full stable ID.
+  string account_id = 1;
+  // Required: owning Pipeline full stable ID.
+  string pipeline_id = 2;
+  // Required: owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required: Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Cruise Control deployed-version full stable ID.
+  string deployed_version_id = 5;
+  // Optional: provider-owned version identifier returned by create.
+  string provider_deployed_version_id = 6;
+  // Optional: target compute-platform configuration.
+  google.protobuf.Struct platform_details = 7;
+}
+
+// DescribeDeployedVersionResponse reports the latest provider observation.
+message DescribeDeployedVersionResponse {
+  // Required: latest provider status.
+  ComputeProviderStatus status = 1;
+  // Optional: bounded opaque provider details.
+  google.protobuf.Struct provider_details = 2;
+}
+
+// DeleteDeployedVersionRequest asks the provider to idempotently remove a
+// deployed version.
+message DeleteDeployedVersionRequest {
+  // Required: owning Account full stable ID.
+  string account_id = 1;
+  // Required: owning Pipeline full stable ID.
+  string pipeline_id = 2;
+  // Required: owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required: Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Cruise Control deployed-version full stable ID.
+  string deployed_version_id = 5;
+  // Optional: provider-owned version identifier returned by create.
+  string provider_deployed_version_id = 6;
+  // Optional: target compute-platform configuration.
+  google.protobuf.Struct platform_details = 7;
+}
+
+// DeleteDeployedVersionResponse reports completion of an idempotent delete.
+message DeleteDeployedVersionResponse {}
+
+// RunTaskRequest asks the provider to execute a target-scoped validation task.
+message RunTaskRequest {
+  // Required: owning Account full stable ID.
+  string account_id = 1;
+  // Required: owning Pipeline full stable ID.
+  string pipeline_id = 2;
+  // Required: owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required: Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: stable Step Run identity used to make task execution idempotent.
+  string task_id = 5;
+  // Required: task container image.
+  string task_image = 6;
+  // Optional: command override.
+  repeated string command = 7;
+  // Optional: command arguments.
+  repeated string args = 8;
+  // Optional: merged target and step environment variables.
+  map<string, ProviderEnvironmentVariable> environment_variables = 9;
+  // Optional: target compute-platform configuration.
+  google.protobuf.Struct platform_details = 10;
+  // Optional: step-specific provider parameters.
+  google.protobuf.Struct provider_parameters = 11;
+}
+
+// RunTaskResponse reports one terminal task execution.
+message RunTaskResponse {
+  // Required: process exit code; zero indicates success.
+  int32 exit_code = 1;
+  // Optional: bounded stdout summary.
+  string stdout = 2;
+  // Optional: bounded stderr summary.
+  string stderr = 3;
+  // Optional: provider-observed start time.
+  google.protobuf.Timestamp started_at = 4;
+  // Optional: provider-observed finish time.
+  google.protobuf.Timestamp finished_at = 5;
+  // Optional: bounded provider diagnostics.
+  google.protobuf.Struct details = 6;
+}

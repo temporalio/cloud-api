@@ -1,0 +1,764 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.pipelineservice.v1;
+
+import "temporal/api/cruisecontrol/artifact/v1/artifact.proto";
+import "temporal/api/cruisecontrol/artifact/v1/rollout.proto";
+import "temporal/api/cruisecontrol/asyncoperationservice/v1/async_operation.proto";
+import "temporal/api/cruisecontrol/pipeline/v1/deployment.proto";
+import "temporal/api/cruisecontrol/pipeline/v1/pipeline.proto";
+import "temporal/api/cruisecontrol/pipeline/v1/run.proto";
+import "temporal/api/cruisecontrol/workflow/v1/workflow_definition.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/pipelineservice/v1;pipelineservicev1";
+
+message CreatePipelineRequest {
+  // Required: Pipeline identity and customer-managed spec.
+  temporal.api.cruisecontrol.pipeline.v1.Pipeline pipeline = 1;
+}
+
+message CreatePipelineAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message CreatePipelineResponse {
+  // Required: Newly created Pipeline with its initial etag.
+  temporal.api.cruisecontrol.pipeline.v1.Pipeline pipeline = 1;
+}
+
+message UpdatePipelineRequest {
+  // Required: Pipeline identity and desired customer-managed spec; IDs are immutable.
+  temporal.api.cruisecontrol.pipeline.v1.Pipeline pipeline = 1;
+  // Required: Current Pipeline etag; non-empty.
+  string prior_etag = 2;
+}
+
+message UpdatePipelineAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UpdatePipelineResponse {
+  // Required: Updated Pipeline with the resulting etag.
+  temporal.api.cruisecontrol.pipeline.v1.Pipeline pipeline = 1;
+}
+
+message DeletePipelineRequest {
+  // Required: Pipeline full stable ID to permanently delete. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Current Pipeline etag; non-empty.
+  string prior_etag = 2;
+}
+
+message DeletePipelineAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message DeletePipelineResponse {}
+
+message GetPipelineRequest {
+  // Required: Pipeline full stable ID; scoped beneath account_id. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+}
+
+message GetPipelineResponse {
+  // Required: Requested Pipeline.
+  temporal.api.cruisecontrol.pipeline.v1.Pipeline pipeline = 1;
+}
+
+message ListPipelinesRequest {
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 1;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 2;
+}
+
+message ListPipelinesResponse {
+  // Required: Pipelines in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.Pipeline pipelines = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message PublishArtifactRequest {
+  // Required: Owning Pipeline full stable ID; scoped beneath account_id. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Customer-provided immutable Artifact spec.
+  temporal.api.cruisecontrol.artifact.v1.ArtifactSpec spec = 2;
+  // Required: Current Pipeline etag; non-empty.
+  string prior_etag = 3;
+}
+
+message PublishArtifactAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message PublishArtifactResponse {
+  // Required: Published Artifact, including its Cruise Control-generated artifact_id.
+  temporal.api.cruisecontrol.artifact.v1.Artifact artifact = 1;
+}
+
+message GetArtifactRequest {
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Cruise Control-generated Artifact full stable ID. Example: `acct.acme:pipeline.checkout:art.0123456789abcdef`.
+  string artifact_id = 2;
+}
+
+message GetArtifactResponse {
+  // Required: Requested immutable Artifact.
+  temporal.api.cruisecontrol.artifact.v1.Artifact artifact = 1;
+}
+
+message ListArtifactsRequest {
+  // Required: Pipeline whose Artifacts are listed. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 2;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 3;
+}
+
+message ListArtifactsResponse {
+  // Required: Immutable Artifacts in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.artifact.v1.Artifact artifacts = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message CreateTargetGroupRequest {
+  // Required: Target Group identity and customer-managed spec.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+  // Required: Current etag of the owning Pipeline; non-empty.
+  string prior_pipeline_etag = 2;
+}
+
+message CreateTargetGroupAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message CreateTargetGroupResponse {
+  // Required: Newly created Target Group with its initial etag.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+}
+
+message UpdateTargetGroupRequest {
+  // Required: Target Group identity and desired customer-managed spec; IDs are immutable.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+  // Required: Current Target Group etag; non-empty.
+  string prior_etag = 2;
+}
+
+message UpdateTargetGroupAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UpdateTargetGroupResponse {
+  // Required: Updated Target Group with the resulting etag.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+}
+
+message DeleteTargetGroupRequest {
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Target Group full stable ID to permanently delete. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 2;
+  // Required: Current Target Group etag; non-empty.
+  string prior_etag = 3;
+}
+
+message DeleteTargetGroupAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message DeleteTargetGroupResponse {}
+
+message GetTargetGroupRequest {
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Target Group full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 2;
+}
+
+message GetTargetGroupResponse {
+  // Required: Requested Target Group.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+}
+
+message ListTargetGroupsRequest {
+  // Required: Pipeline whose Target Groups are listed. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 2;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 3;
+}
+
+message ListTargetGroupsResponse {
+  // Required: Target Groups in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_groups = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message LockTargetGroupRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Human-readable reason for the lock.
+  string reason = 3;
+  // Required: Current Target Group etag; non-empty.
+  string prior_etag = 4;
+}
+
+message LockTargetGroupAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message LockTargetGroupResponse {
+  // Required: Target Group with its current lock state.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+}
+
+message UnlockTargetGroupRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Current Target Group etag; non-empty.
+  string prior_etag = 3;
+}
+
+message UnlockTargetGroupAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UnlockTargetGroupResponse {
+  // Required: Target Group with its current lock state.
+  temporal.api.cruisecontrol.pipeline.v1.TargetGroup target_group = 1;
+}
+
+message CreateDeploymentTargetRequest {
+  // Required: Deployment Target identity and customer-managed spec.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+  // Required: Current etag of the owning Target Group; non-empty.
+  string prior_target_group_etag = 2;
+}
+
+message CreateDeploymentTargetAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message CreateDeploymentTargetResponse {
+  // Required: Newly created Deployment Target with its initial etag.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+}
+
+message UpdateDeploymentTargetRequest {
+  // Required: Deployment Target identity and desired customer-managed spec; IDs and owning Target Group are immutable.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+  // Required: Current Deployment Target etag; non-empty.
+  string prior_etag = 2;
+}
+
+message UpdateDeploymentTargetAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UpdateDeploymentTargetResponse {
+  // Required: Updated Deployment Target with the resulting etag.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+}
+
+message DeleteDeploymentTargetRequest {
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 2;
+  // Required: Deployment Target full stable ID to permanently delete. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1`.
+  string target_id = 3;
+  // Required: Current Deployment Target etag; non-empty.
+  string prior_etag = 4;
+}
+
+message DeleteDeploymentTargetAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message DeleteDeploymentTargetResponse {}
+
+message GetDeploymentTargetRequest {
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod`.
+  string target_group_id = 2;
+  // Required: Deployment Target full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1`.
+  string target_id = 3;
+}
+
+message GetDeploymentTargetResponse {
+  // Required: Requested Deployment Target.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+}
+
+message ListDeploymentTargetsRequest {
+  // Required: Pipeline whose Deployment Targets are listed. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 1;
+  // Optional: Owning Target Group full stable ID. When omitted, lists all Deployment Targets in the Pipeline.
+  string target_group_id = 2;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 3;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 4;
+}
+
+message ListDeploymentTargetsResponse {
+  // Required: Deployment Targets in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_targets = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message LockDeploymentTargetRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Human-readable reason for the lock.
+  string reason = 4;
+  // Required: Current Deployment Target etag; non-empty.
+  string prior_etag = 5;
+}
+
+message LockDeploymentTargetAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message LockDeploymentTargetResponse {
+  // Required: Deployment Target with its current lock state.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+}
+
+message UnlockDeploymentTargetRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Current Deployment Target etag; non-empty.
+  string prior_etag = 4;
+}
+
+message UnlockDeploymentTargetAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UnlockDeploymentTargetResponse {
+  // Required: Deployment Target with its current lock state.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentTarget deployment_target = 1;
+}
+
+message MarkVersionRampingRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployed Version full stable ID.
+  string deployed_version_id = 4;
+  // Required: Traffic percentage in the range 0-99.
+  int32 percentage = 5;
+  // Required: Current Deployed Version etag; non-empty.
+  string prior_etag = 6;
+}
+
+message MarkVersionRampingAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message MarkVersionRampingResponse {
+  // Required: Resulting Deployed Version.
+  temporal.api.cruisecontrol.pipeline.v1.DeployedVersion deployed_version = 1;
+}
+
+message MarkVersionCurrentRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployed Version full stable ID.
+  string deployed_version_id = 4;
+  // Required: Current etag of the selected Deployed Version; non-empty.
+  string prior_etag = 5;
+}
+
+message MarkVersionCurrentAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message MarkVersionCurrentResponse {
+  // Required: Selected version after it becomes CURRENT.
+  temporal.api.cruisecontrol.pipeline.v1.DeployedVersion selected_version = 1;
+  // Optional: Prior CURRENT version after it becomes DRAINING.
+  temporal.api.cruisecontrol.pipeline.v1.DeployedVersion previous_current_version = 2;
+}
+
+message DeleteVersionRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployed Version full stable ID.
+  string deployed_version_id = 4;
+  // Required: Current Deployed Version etag; non-empty.
+  string prior_etag = 5;
+}
+
+message DeleteVersionAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message DeleteVersionResponse {
+  // Required: Retained DELETED tombstone.
+  temporal.api.cruisecontrol.pipeline.v1.DeployedVersion deployed_version = 1;
+}
+
+message GetArtifactRolloutRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Artifact full stable ID.
+  string artifact_id = 2;
+}
+
+message GetArtifactRolloutResponse {
+  // Required: Requested immutable Artifact.
+  temporal.api.cruisecontrol.artifact.v1.Artifact artifact = 1;
+  // Required: Source Target Groups associated with the Artifact.
+  repeated string source_target_group_ids = 2;
+  // Per-group rollout state.
+  repeated temporal.api.cruisecontrol.artifact.v1.ArtifactGroupRollout group_statuses = 3;
+  // Per-target rollout state.
+  repeated temporal.api.cruisecontrol.artifact.v1.ArtifactTargetRollout target_statuses = 4;
+}
+
+message ListDeployedVersionsRequest {
+  // Optional: Limits results to one Pipeline.
+  string pipeline_id = 1;
+  // Optional: Limits results to one Target Group.
+  string target_group_id = 2;
+  // Optional: Limits results to one Deployment Target.
+  string target_id = 3;
+  // Optional: Limits results to one Artifact.
+  string artifact_id = 4;
+  // Optional: Limits results to this lifecycle state; UNSPECIFIED does not filter.
+  temporal.api.cruisecontrol.pipeline.v1.DeployedVersionState version_state = 5;
+  // Optional: Limits results to this provider status; UNSPECIFIED does not filter.
+  temporal.api.cruisecontrol.pipeline.v1.ProviderStatus provider_status = 6;
+  // Optional: Include retained DELETED tombstones.
+  bool include_deleted = 7;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 8;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 9;
+}
+
+message ListDeployedVersionsResponse {
+  // Required: Deployed Versions in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.DeployedVersion deployed_versions = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message GetDeployedVersionRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployed Version full stable ID.
+  string deployed_version_id = 4;
+}
+
+message GetDeployedVersionResponse {
+  // Required: Requested Deployed Version.
+  temporal.api.cruisecontrol.pipeline.v1.DeployedVersion deployed_version = 1;
+}
+
+message RespondStepChallengeRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required for Deployment Runs and omitted for Promotion Runs: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Parent Promotion or Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:pr.route.run`.
+  string parent_run_id = 4;
+  // Required: Step Run full stable ID beneath parent_run_id. Example: `acct.acme:pipeline.checkout:promotion.00000001:step.00000001`.
+  string step_run_id = 5;
+  // Required: Approval Challenge full stable ID beneath parent_run_id. Example: `acct.acme:pipeline.checkout:promotion.00000001:approval.00000001`.
+  string challenge_id = 6;
+  // Required: Current Approval Challenge etag; non-empty.
+  string prior_etag = 7;
+  // Required: Challenge decision; UNSPECIFIED is invalid.
+  temporal.api.cruisecontrol.pipeline.v1.ApprovalDecision decision = 8;
+  // Optional: Bounded decision reason.
+  string reason = 9;
+}
+
+message RespondStepChallengeAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message RespondStepChallengeResponse {
+  // Required: Resulting Approval Challenge etag; non-empty.
+  string etag = 1;
+}
+
+message RetryPromotionRequest {
+  // Required: Promotion Run full stable ID. Example: `acct.acme:pipeline.checkout:promotion.00000001`.
+  string promotion_run_id = 1;
+  // Required: Current Promotion Run etag; non-empty.
+  string prior_etag = 2;
+  // Optional for gRPC: Owning Pipeline full stable ID; inferred from promotion_run_id when omitted. Required in the HTTP path.
+  string pipeline_id = 3;
+}
+
+message RetryPromotionAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message RetryPromotionResponse {
+  // Required: Original Promotion Run full stable ID. Example: `acct.acme:pipeline.checkout:promotion.00000001`.
+  string promotion_run_id = 1;
+  // Optional: Newly created Promotion Run full stable ID; omitted for stale or superseded outcomes. Example: `acct.acme:pipeline.checkout:promotion.00000002`.
+  string created_promotion_run_id = 2;
+  // Required: Retry outcome; UNSPECIFIED is invalid.
+  temporal.api.cruisecontrol.pipeline.v1.PromotionRetryOutcome retry_outcome = 3;
+}
+
+message CancelPromotionRequest {
+  // Required: Promotion Run full stable ID. Example: `acct.acme:pipeline.checkout:promotion.00000001`.
+  string promotion_run_id = 1;
+  // Required: Current Promotion Run etag; non-empty.
+  string prior_etag = 2;
+  // Optional for gRPC: Owning Pipeline full stable ID; inferred from promotion_run_id when omitted. Required in the HTTP path.
+  string pipeline_id = 3;
+}
+
+message CancelPromotionAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message CancelPromotionResponse {
+  // Required: Resulting Promotion Run.
+  temporal.api.cruisecontrol.pipeline.v1.PromotionRun promotion_run = 1;
+}
+
+message RetryDeploymentRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1:deployment.00000001`.
+  string deployment_run_id = 4;
+  // Required: Current Deployment Run etag; non-empty.
+  string prior_etag = 5;
+}
+
+message RetryDeploymentAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message RetryDeploymentResponse {
+  // Required: Newly created Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1:deployment.00000002`.
+  string created_deployment_run_id = 1;
+}
+
+message CancelDeploymentRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1:deployment.00000001`.
+  string deployment_run_id = 4;
+  // Required: Current Deployment Run etag; non-empty.
+  string prior_etag = 5;
+}
+
+message CancelDeploymentAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message CancelDeploymentResponse {
+  // Required: Resulting Deployment Run.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentRun deployment_run = 1;
+}
+
+message SkipDeploymentRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployment Run full stable ID. Example: `acct.acme:pipeline.checkout:tg.prod:dt.us-west-1:deployment.00000001`.
+  string deployment_run_id = 4;
+  // Required: Current Deployment Run etag; non-empty.
+  string prior_etag = 5;
+}
+
+message SkipDeploymentAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message SkipDeploymentResponse {
+  // Required: Resulting Deployment Run.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentRun deployment_run = 1;
+}
+
+message ListPromotionRunsRequest {
+  // Optional: Limits results to one Pipeline.
+  string pipeline_id = 1;
+  // Optional: Limits results to one Target Group.
+  string target_group_id = 2;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 3;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 4;
+  // Optional: Limits results to one Artifact.
+  string artifact_id = 5;
+  // Optional: Limits results to this status; UNSPECIFIED does not filter.
+  temporal.api.cruisecontrol.pipeline.v1.PromotionRunStatus status = 6;
+  // Optional: Limits results to retries of this Promotion Run.
+  string retry_of_promotion_run_id = 7;
+  // Optional: Exclusive lower bound for started_at.
+  google.protobuf.Timestamp started_after = 8;
+  // Optional: Exclusive upper bound for started_at.
+  google.protobuf.Timestamp started_before = 9;
+}
+
+message ListPromotionRunsResponse {
+  // Required: Promotion Runs in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.PromotionRun promotion_runs = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message GetPromotionRunRequest {
+  // Required: Promotion Run full stable ID.
+  string promotion_run_id = 1;
+  // Optional for gRPC: Owning Pipeline full stable ID; inferred from promotion_run_id when omitted. Required in the HTTP path.
+  string pipeline_id = 2;
+}
+
+message GetPromotionRunResponse {
+  // Required: Requested Promotion Run.
+  temporal.api.cruisecontrol.pipeline.v1.PromotionRun promotion_run = 1;
+  // Required: Step Runs for the requested Promotion Run; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.StepRun step_runs = 2;
+}
+
+message ListDeploymentRunsRequest {
+  // Optional: Limits results to one Pipeline.
+  string pipeline_id = 1;
+  // Optional: Limits results to one Target Group.
+  string target_group_id = 2;
+  // Optional: Limits results to one Deployment Target; target_group_id is required when set.
+  string target_id = 3;
+  // Optional: Limits results to one Artifact.
+  string artifact_id = 4;
+  // Optional: Limits results to this status; UNSPECIFIED does not filter.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentRunStatus status = 5;
+  // Optional: Limits results to retries of this Deployment Run.
+  string retry_of_deployment_run_id = 6;
+  // Optional: Exclusive lower bound for started_at.
+  google.protobuf.Timestamp started_after = 7;
+  // Optional: Exclusive upper bound for started_at.
+  google.protobuf.Timestamp started_before = 8;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 9;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 10;
+}
+
+message ListDeploymentRunsResponse {
+  // Required: Deployment Runs in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.DeploymentRun deployment_runs = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message GetDeploymentRunRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Deployment Run full stable ID.
+  string deployment_run_id = 4;
+}
+
+message GetDeploymentRunResponse {
+  // Required: Requested Deployment Run.
+  temporal.api.cruisecontrol.pipeline.v1.DeploymentRun deployment_run = 1;
+  // Required: Step Runs for the requested Deployment Run; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.StepRun step_runs = 2;
+}
+
+message ListStepRunsRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required for Deployment Runs and omitted for Promotion Runs: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Parent Promotion or Deployment Run full stable ID.
+  string parent_run_id = 4;
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 5;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 6;
+  // Optional: Limits results to this status; UNSPECIFIED does not filter.
+  temporal.api.cruisecontrol.pipeline.v1.StepRunStatus status = 7;
+  // Optional: Limits results to this step type; UNSPECIFIED does not filter.
+  temporal.api.cruisecontrol.workflow.v1.StepType step_type = 8;
+}
+
+message ListStepRunsResponse {
+  // Required: Step Runs in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.pipeline.v1.StepRun step_runs = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}
+
+message GetStepRunRequest {
+  // Required: Owning Pipeline full stable ID.
+  string pipeline_id = 1;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 2;
+  // Required for Deployment Runs and omitted for Promotion Runs: Owning Deployment Target full stable ID.
+  string target_id = 3;
+  // Required: Parent Promotion Run or Deployment Run full stable ID.
+  string parent_run_id = 4;
+  // Required: Step Run full stable ID scoped beneath parent_run_id.
+  string step_run_id = 5;
+}
+
+message GetStepRunResponse {
+  // Required: Requested Step Run.
+  temporal.api.cruisecontrol.pipeline.v1.StepRun step_run = 1;
+}

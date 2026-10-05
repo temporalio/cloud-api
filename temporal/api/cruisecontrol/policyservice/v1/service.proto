@@ -1,0 +1,42 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.policyservice.v1;
+
+import "temporal/api/cruisecontrol/policyservice/v1/request_response.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/policyservice/v1;policyservicev1";
+
+service PolicyService {
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UpdatePolicy(UpdatePolicyRequest) returns (UpdatePolicyAsyncResponse) {
+    option (google.api.http) = {
+      patch: "/v1/pipelines/{pipeline_id}/policy"
+      body: "*"
+      additional_bindings: {
+        patch: "/v1/policy"
+        body: "*"
+      }
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PolicyService"
+      summary: "Update Policy"
+      description: "Update Policy. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "PolicyService_UpdatePolicy"
+    };
+  }
+  rpc GetPolicy(GetPolicyRequest) returns (GetPolicyResponse) {
+    option (google.api.http) = {
+      get: "/v1/pipelines/{pipeline_id}/policy"
+      additional_bindings: {
+        get: "/v1/policy"
+      }
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "PolicyService"
+      summary: "Get Policy"
+      description: "Get Policy."
+      operation_id: "PolicyService_GetPolicy"
+    };
+  }
+}

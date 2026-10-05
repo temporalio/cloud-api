@@ -1,0 +1,95 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.extensions.stepservice.v1;
+
+import "temporal/api/cruisecontrol/extensions/stepservice/v1/types.proto";
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/extensions/stepservice/v1;stepservicev1";
+
+// ExecutePromotionStepRequest contains the Promotion Run and custom-step
+// context supplied to a provider-facing StepService operation.
+message ExecutePromotionStepRequest {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Parent Promotion Run full stable ID.
+  string parent_run_id = 3;
+  // Required: Artifact full stable ID being promoted.
+  string artifact_id = 4;
+  // Optional: Deployment Target full stable ID; currently omitted for promotion steps.
+  string target_id = 5;
+  // Required: Provider-defined custom step type understood by the selected StepService.
+  string step_type = 6;
+  // Optional: Provider-defined custom step parameters from the resolved workflow definition.
+  google.protobuf.Struct parameters = 7;
+  // Required: Execution direction; UNSPECIFIED is invalid.
+  StepExecutionDirection direction = 8;
+}
+
+// ExecutePromotionStepResponse reports the terminal result of a promotion
+// custom-step invocation.
+message ExecutePromotionStepResponse {
+  // Status is the terminal outcome returned by the StepService.
+  enum Status {
+    // Invalid default; providers must return a terminal status.
+    STATUS_UNSPECIFIED = 0;
+    // The custom step completed successfully.
+    STATUS_SUCCEEDED = 1;
+    // The custom step completed unsuccessfully.
+    STATUS_FAILED = 2;
+  }
+  // Required: Terminal custom step status; UNSPECIFIED is invalid.
+  Status status = 1;
+  // Optional: Bounded human-readable result summary.
+  string summary = 2;
+  // Optional: Structured diagnostics surfaced on the Step Run.
+  google.protobuf.Struct details = 3;
+  // Optional: Provider-specific supplemental result metadata surfaced on the Step Run.
+  google.protobuf.Struct additional_details = 4;
+}
+
+// ExecuteDeploymentStepRequest contains the Deployment Run and custom-step
+// context supplied to a provider-facing StepService operation.
+message ExecuteDeploymentStepRequest {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Owning Target Group full stable ID.
+  string target_group_id = 3;
+  // Required: Deployment Target full stable ID.
+  string target_id = 4;
+  // Required: Parent Deployment Run full stable ID.
+  string parent_run_id = 5;
+  // Required: Artifact full stable ID being deployed.
+  string artifact_id = 6;
+  // Required: Provider-defined custom step type understood by the selected StepService.
+  string step_type = 7;
+  // Optional: Provider-defined custom step parameters from the resolved workflow definition.
+  google.protobuf.Struct parameters = 8;
+  // Required: Execution direction; UNSPECIFIED is invalid.
+  StepExecutionDirection direction = 9;
+}
+
+// ExecuteDeploymentStepResponse reports the terminal result of a deployment
+// custom-step invocation.
+message ExecuteDeploymentStepResponse {
+  // Status is the terminal outcome returned by the StepService.
+  enum Status {
+    // Invalid default; providers must return a terminal status.
+    STATUS_UNSPECIFIED = 0;
+    // The custom step completed successfully.
+    STATUS_SUCCEEDED = 1;
+    // The custom step completed unsuccessfully.
+    STATUS_FAILED = 2;
+  }
+  // Required: Terminal custom step status; UNSPECIFIED is invalid.
+  Status status = 1;
+  // Optional: Bounded human-readable result summary.
+  string summary = 2;
+  // Optional: Structured diagnostics surfaced on the Step Run.
+  google.protobuf.Struct details = 3;
+  // Optional: Provider-specific supplemental result metadata surfaced on the Step Run.
+  google.protobuf.Struct additional_details = 4;
+}
