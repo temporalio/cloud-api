@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package test.comments.v1;
+
+// The comment service.
+//
+// Markdown is kept: `code`, *emphasis*, and lists:
+//   - indented item
+service CommentService {
+  // Get one thing.
+  // temporal:versioning:min_version=v0.3.0
+  rpc Get(Thing) returns (Thing); // A trailing comment on the RPC.
+}
+
+// Detached comments are ignored.
+
+// A thing.
+message Thing {
+  // The thing's name.
+  // temporal:enums:replaces=old_name
+  string name = 1; // Trailing comments become a new paragraph.
+
+  // A child: the description is dropped beside a $ref, because nexgen would
+  // fork a new type for it.
+  Thing child = 2;
+
+  // The color.
+  Color color = 3;
+
+  repeated Color palette = 4;
+}
+
+// Colors.
+enum Color {
+  COLOR_UNSPECIFIED = 0;
+  // Red, as in
+  // fire.
+  COLOR_RED = 1;
+  COLOR_BLUE = 2; // Blue.
+}

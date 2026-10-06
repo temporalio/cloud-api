@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package test.maps.v1;
+
+service MapService {
+  rpc Get(Maps) returns (Maps);
+}
+
+message Maps {
+  map<string, string> labels = 1;
+  map<string, Value> values = 2;
+  map<string, Level> levels = 3;
+  map<int32, string> by_int32 = 4;
+  map<uint64, string> by_uint64 = 5;
+  map<bool, int64> by_bool = 6;
+}
+
+message Value {
+  string text = 1;
+}
+
+enum Level {
+  LEVEL_UNSPECIFIED = 0;
+  LEVEL_HIGH = 1;
+}

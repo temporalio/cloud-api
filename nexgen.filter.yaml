@@ -1,0 +1,19 @@
+# nexgen.filter.yaml: proto elements left out of the nexusrpc/ definitions.
+# See tools/nexgen/DESIGN.md §5.8. Every rule must match something.
+exclude:
+  # RPCs. Matched against the method's full name: <service fqn>.<Method>.
+  methods:
+    # Nexus operations return only after the async operation completes, so
+    # there is nothing left to poll.
+    - temporal.api.cloud.cloudservice.v1.CloudService.GetAsyncOperation
+
+  # Fields. Matched against the field's full name: <package>.<Message>[.<Nested>...].<field>.
+  fields:
+    # The client-supplied operation id on mutating requests, and the "current
+    # operation" id on resources, BillingReport, and auditlog LogRecord.
+    - temporal.api.cloud.**.async_operation_id
+
+  # Fields whose type is one of these messages or enums, wherever they appear.
+  field_types:
+    # The AsyncOperation handle on every mutating response.
+    - temporal.api.cloud.operation.v1.AsyncOperation

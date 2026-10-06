@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package test.alpha.v1;
+
+message Spec {
+  string a = 1;
+}

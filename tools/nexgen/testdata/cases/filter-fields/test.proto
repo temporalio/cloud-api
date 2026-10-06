@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package test.filterfields.v1;
+
+service UserService {
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+}
+
+message UpdateRequest {
+  string name = 1;
+  string async_operation_id = 2;
+  User user = 3;
+}
+
+message UpdateResponse {
+  // All fields excluded: still an empty object.
+  string async_operation_id = 1;
+}
+
+message User {
+  string id = 1;
+  string async_operation_id = 2;
+  Spec spec = 3;
+  oneof contact {
+    string email = 4;
+    string phone = 5;
+    // Excluded, so the other members' notes don't mention it.
+    string pager = 6;
+  }
+
+  message Spec {
+    // Nested messages match ** too.
+    string async_operation_id = 1;
+    string region = 2;
+  }
+}

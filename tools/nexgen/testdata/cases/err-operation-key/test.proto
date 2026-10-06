@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package test.opkey.v1;
+
+service KeyService {
+  // One letter: nexgen needs at least two characters.
+  rpc X(Msg) returns (Msg);
+  rpc Get_Thing(Msg) returns (Msg);
+}
+
+message Msg {}

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package test.repeated.v1;
+
+service RepeatedService {
+  rpc List(ListRequest) returns (ListResponse);
+}
+
+message ListRequest {
+  repeated string ids = 1;
+  repeated int64 sizes = 2;
+}
+
+message ListResponse {
+  repeated Item items = 1;
+  repeated Color colors = 2;
+}
+
+message Item {
+  string name = 1;
+}
+
+enum Color {
+  COLOR_UNSPECIFIED = 0;
+  COLOR_RED = 1;
+}

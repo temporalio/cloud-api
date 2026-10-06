@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package test.collision.v1;
+
+service CollisionService {
+  rpc Get(AB) returns (A);
+}
+
+message A {
+  message B {}
+  B b = 1;
+}
+
+// Same $defs key as A.B.
+message AB {}

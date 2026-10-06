@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package test.enums.v1;
+
+service EnumService {
+  rpc Get(Enums) returns (Enums);
+}
+
+message Enums {
+  ResourceState state = 1;
+  HTTPMethod method = 2;
+  Unprefixed unprefixed = 3;
+  Aliased aliased = 4;
+  Status.State status_state = 5;
+}
+
+enum ResourceState {
+  RESOURCE_STATE_UNSPECIFIED = 0;
+  RESOURCE_STATE_ACTIVE = 1;
+  RESOURCE_STATE_ACTIVATION_FAILED = 2;
+  // What remains after the prefix starts with a digit, so the full name is kept.
+  RESOURCE_STATE_2FA = 3;
+}
+
+// An acronym: the prefix is HTTP_METHOD_.
+enum HTTPMethod {
+  HTTP_METHOD_UNSPECIFIED = 0;
+  HTTP_METHOD_GET = 1;
+}
+
+enum Unprefixed {
+  UNSPECIFIED = 0;
+  SOMETHING_ELSE = 1;
+}
+
+enum Aliased {
+  option allow_alias = true;
+  ALIASED_UNSPECIFIED = 0;
+  ALIASED_FIRST = 1;
+  ALIASED_SECOND = 1;
+}
+
+message Status {
+  // Nested: the prefix is the enum's own name, STATE_.
+  enum State {
+    STATE_UNSPECIFIED = 0;
+    STATE_FAILED = 1;
+  }
+}
