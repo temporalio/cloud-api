@@ -1,0 +1,61 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.workflowtemplateservice.v1;
+
+import "temporal/api/cruisecontrol/asyncoperationservice/v1/async_operation.proto";
+import "temporal/api/cruisecontrol/workflow/v1/workflow_template.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/workflowtemplateservice/v1;workflowtemplateservicev1";
+
+message CreateWorkflowTemplateRequest {
+  // Required: Workflow Template identity and customer-managed spec; account_id and etag must be omitted.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowTemplate workflow_template = 1;
+}
+
+message CreateWorkflowTemplateAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message CreateWorkflowTemplateResponse {
+  // Required: Newly created Workflow Template with its initial etag.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowTemplate workflow_template = 1;
+}
+
+message UpdateWorkflowTemplateRequest {
+  // Required: Workflow Template identity and desired customer-managed spec; IDs are immutable.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowTemplate workflow_template = 1;
+  // Required: Current Workflow Template etag; non-empty.
+  string prior_etag = 2;
+}
+
+message UpdateWorkflowTemplateAsyncResponse {
+  temporal.api.cruisecontrol.asyncoperationservice.v1.AsyncOperation async_operation = 1;
+}
+
+message UpdateWorkflowTemplateResponse {
+  // Required: Updated Workflow Template with the resulting etag.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowTemplate workflow_template = 1;
+}
+
+message GetWorkflowTemplateRequest {
+  // Required: Workflow Template full stable ID; scoped beneath account_id. Example: `acct.acme:wt.standard`.
+  string template_id = 1;
+}
+
+message GetWorkflowTemplateResponse {
+  // Required: Requested Workflow Template.
+  temporal.api.cruisecontrol.workflow.v1.WorkflowTemplate workflow_template = 1;
+}
+
+message ListWorkflowTemplatesRequest {
+  // Optional: Page size; 0 uses the server default, negative values are invalid, and positive values may be capped.
+  int32 page_size = 1;
+  // Optional: Opaque continuation token; must come from this operation with identical filters.
+  string page_token = 2;
+}
+
+message ListWorkflowTemplatesResponse {
+  // Required: Workflow Templates in a stable order; may be empty.
+  repeated temporal.api.cruisecontrol.workflow.v1.WorkflowTemplate workflow_templates = 1;
+  // Optional: Continuation token; omitted when no further page exists.
+  string next_page_token = 2;
+}

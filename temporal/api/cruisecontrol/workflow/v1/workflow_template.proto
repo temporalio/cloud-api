@@ -1,0 +1,30 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.workflow.v1;
+
+import "temporal/api/cruisecontrol/workflow/v1/workflow_definition.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/workflow/v1;workflowv1";
+
+// WorkflowTemplateSpec is the customer-managed reusable workflow spec.
+message WorkflowTemplateSpec {
+  // Required: Display name; UTF-8 and bounded by service configuration.
+  string name = 1;
+  // Optional: Description; UTF-8 and bounded by service configuration.
+  string description = 2;
+  // Required: Reusable workflow definition.
+  WorkflowDefinition workflow_definition = 3;
+  // Optional: Metadata; keys are 1-100 characters matching [A-Za-z0-9_.-]+.
+  map<string, string> metadata = 4;
+}
+
+// WorkflowTemplate is a reusable, account-scoped workflow definition.
+message WorkflowTemplate {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Workflow Template full stable ID; scoped beneath account_id. Example: `acct.acme:wt.standard`.
+  string template_id = 2;
+  // Required: Customer-managed spec.
+  WorkflowTemplateSpec spec = 3;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 4;
+}

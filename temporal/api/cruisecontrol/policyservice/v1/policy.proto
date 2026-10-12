@@ -1,0 +1,17 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.policyservice.v1;
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/policyservice/v1;policyservicev1";
+
+// CedarPolicySpec is the customer-managed Cedar Policy spec.
+message CedarPolicySpec {
+  // Required: Cedar policy-set source; bounded by service configuration.
+  string source = 1;
+}
+
+message CedarPolicy {
+  // Required: Customer-managed Cedar Policy spec.
+  CedarPolicySpec spec = 1;
+  // Required: Opaque etag used for write preconditions; non-empty.
+  string etag = 2;
+}

@@ -1,0 +1,87 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.artifact.v1;
+
+import "temporal/api/cruisecontrol/principal/v1/principal.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/artifact/v1;artifactv1";
+
+// OrderingPolicy determines how Artifacts are ordered within a Pipeline.
+enum OrderingPolicy {
+  // Invalid default; callers must select a policy.
+  ORDERING_POLICY_UNSPECIFIED = 0;
+  // Orders by the positive per-Pipeline publish sequence.
+  ORDERING_POLICY_PUBLISHED_AT = 1;
+  // Orders by SemVer 2.0.0 precedence.
+  ORDERING_POLICY_SEMVER = 2;
+}
+
+// BuildIdPolicy determines how worker Build IDs are assigned when Artifacts are published.
+enum BuildIdPolicy {
+  // Invalid default; callers must select a policy.
+  BUILD_ID_POLICY_UNSPECIFIED = 0;
+  // Publish requests must provide a non-empty worker_build_id.
+  BUILD_ID_POLICY_EXPLICIT = 1;
+  // Cruise Control generates the Build ID; requests must omit it.
+  BUILD_ID_POLICY_AUTO_INCREMENT = 2;
+}
+
+message ArtifactConfiguration {
+  // Required: Artifact ordering policy; UNSPECIFIED is invalid.
+  OrderingPolicy ordering_policy = 1;
+  // Required: Worker Build ID policy; UNSPECIFIED is invalid.
+  BuildIdPolicy build_id_policy = 2;
+}
+
+// ArtifactReference identifies a deployable resource associated with an Artifact.
+message ArtifactReference {
+  // Required: Reference name; 1-100 characters matching [A-Za-z0-9_.-]+.
+  string name = 1;
+  // Required: Reference type; 1-100 characters matching [A-Za-z0-9_.-]+.
+  string type = 2;
+  // Required: Opaque URI; non-empty, UTF-8, and bounded by service configuration.
+  string uri = 3;
+  // Optional: Reference metadata; keys are 1-100 characters matching [A-Za-z0-9_.-]+.
+  map<string, string> metadata = 4;
+}
+
+// ArtifactSpec is the customer-provided immutable Artifact spec.
+message ArtifactSpec {
+  // Required: Artifact version; non-empty, and valid SemVer 2.0.0 when ordering_policy is SEMVER.
+  string version = 1;
+  // Optional: Worker Build ID; required for EXPLICIT and omitted for AUTO_INCREMENT.
+  string worker_build_id = 2;
+  // Required: Artifact references; at least one entry, with a service-configured maximum.
+  repeated ArtifactReference references = 3;
+  // Optional: Metadata; keys are 1-100 characters matching [A-Za-z0-9_.-]+.
+  map<string, string> metadata = 4;
+}
+
+// Artifact is an immutable version published for rollout through a Pipeline.
+message Artifact {
+  // Required: Owning Account full stable ID. Example: `acct.acme`.
+  string account_id = 1;
+  // Required: Owning Pipeline full stable ID. Example: `acct.acme:pipeline.checkout`.
+  string pipeline_id = 2;
+  // Required: Cruise Control-generated Artifact full stable ID. Example: `acct.acme:pipeline.checkout:art.0123456789abcdef`.
+  string artifact_id = 3;
+  // Required: Customer-provided immutable spec.
+  ArtifactSpec spec = 4;
+  // Optional: Canonical SemVer without build metadata; present only for SEMVER artifacts.
+  string normalized_version = 5;
+  // Required: Ordering policy captured at publish time.
+  OrderingPolicy ordering_policy = 6;
+  // Required: Time when the Artifact was published.
+  google.protobuf.Timestamp published_on = 7;
+  // Required: Per-Pipeline publish sequence in the range 1-18446744073709551615.
+  uint64 published_sequence = 8;
+
+  // Required: Principal identity.
+  temporal.api.cruisecontrol.principal.v1.Principal published_by = 9;
+  // Required: Human-readable ordering value.
+  string ordering_key = 10;
+  // Required: Canonical bytewise ordering value.
+  bytes ordering_key_sort = 11;
+  // Required: Opaque content-derived etag; non-empty.
+  string etag = 12;
+}

@@ -1,0 +1,59 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.workflowtemplateservice.v1;
+
+import "temporal/api/cruisecontrol/workflowtemplateservice/v1/request_response.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/workflowtemplateservice/v1;workflowtemplateservicev1";
+
+service WorkflowTemplateService {
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc CreateWorkflowTemplate(CreateWorkflowTemplateRequest) returns (CreateWorkflowTemplateAsyncResponse) {
+    option (google.api.http) = {
+      post: "/v1/workflow-templates"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "WorkflowTemplateService"
+      summary: "Create Workflow Template"
+      description: "Create Workflow Template. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "WorkflowTemplateService_CreateWorkflowTemplate"
+    };
+  }
+  // buf:lint:ignore RPC_RESPONSE_STANDARD_NAME
+  rpc UpdateWorkflowTemplate(UpdateWorkflowTemplateRequest) returns (UpdateWorkflowTemplateAsyncResponse) {
+    option (google.api.http) = {
+      patch: "/v1/workflow-templates/{workflow_template.template_id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "WorkflowTemplateService"
+      summary: "Update Workflow Template"
+      description: "Update Workflow Template. Returns an asynchronous operation handle; poll AsyncOperationService.GetAsyncOperation for its terminal result."
+      operation_id: "WorkflowTemplateService_UpdateWorkflowTemplate"
+    };
+  }
+  rpc GetWorkflowTemplate(GetWorkflowTemplateRequest) returns (GetWorkflowTemplateResponse) {
+    option (google.api.http) = {
+      get: "/v1/workflow-templates/{template_id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "WorkflowTemplateService"
+      summary: "Get Workflow Template"
+      description: "Get Workflow Template."
+      operation_id: "WorkflowTemplateService_GetWorkflowTemplate"
+    };
+  }
+  rpc ListWorkflowTemplates(ListWorkflowTemplatesRequest) returns (ListWorkflowTemplatesResponse) {
+    option (google.api.http) = {
+      get: "/v1/workflow-templates"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: "WorkflowTemplateService"
+      summary: "List Workflow Templates"
+      description: "List Workflow Templates."
+      operation_id: "WorkflowTemplateService_ListWorkflowTemplates"
+    };
+  }
+}

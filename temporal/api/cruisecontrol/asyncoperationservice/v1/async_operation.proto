@@ -1,0 +1,44 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.asyncoperationservice.v1;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "google/rpc/status.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/asyncoperationservice/v1;asyncoperationservicev1";
+
+enum AsyncOperationState {
+  ASYNC_OPERATION_STATE_UNSPECIFIED = 0;
+  ASYNC_OPERATION_STATE_RUNNING = 1;
+  ASYNC_OPERATION_STATE_SUCCEEDED = 2;
+  ASYNC_OPERATION_STATE_FAILED = 3;
+  ASYNC_OPERATION_STATE_CANCELED = 4;
+  ASYNC_OPERATION_STATE_TIMED_OUT = 5;
+  ASYNC_OPERATION_STATE_TERMINATED = 6;
+}
+
+// AsyncOperation describes the current state of an asynchronous write operation.
+message AsyncOperation {
+  // Required: Opaque operation ID used with GetAsyncOperation.
+  string operation_id = 1;
+  // Required: Service associated with the operation.
+  string nexus_service = 2;
+  // Required: Name of the operation.
+  string nexus_operation = 3;
+  // Required: Current operation state; UNSPECIFIED is invalid.
+  AsyncOperationState state = 4;
+  // Optional: Recommended delay before requesting another operation state; omitted for terminal states.
+  google.protobuf.Duration recommended_wait = 5;
+  // Optional: Time when the operation started.
+  google.protobuf.Timestamp started_at = 6;
+  // Optional: Time when the operation completed.
+  google.protobuf.Timestamp completed_at = 7;
+
+  oneof outcome {
+    // Operation-specific response for a successfully completed operation.
+    google.protobuf.Any response = 8;
+    // Terminal operation failure.
+    google.rpc.Status error = 9;
+  }
+}

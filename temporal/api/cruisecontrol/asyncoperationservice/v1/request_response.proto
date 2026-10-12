@@ -1,0 +1,16 @@
+syntax = "proto3";
+package temporal.api.cruisecontrol.asyncoperationservice.v1;
+
+import "temporal/api/cruisecontrol/asyncoperationservice/v1/async_operation.proto";
+
+option go_package = "github.com/temporalio/cruise-control/api-go/temporal/api/cruisecontrol/asyncoperationservice/v1;asyncoperationservicev1";
+
+message GetAsyncOperationRequest {
+  // Required: Operation ID returned by an asynchronous write operation.
+  string operation_id = 1;
+}
+
+message GetAsyncOperationResponse {
+  // Required: Requested asynchronous operation.
+  AsyncOperation async_operation = 1;
+}
