@@ -503,6 +503,29 @@ message DeleteNexusEndpointResponse {
     temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
 }
 
+message MoveNexusEndpointToProjectRequest {
+    // The id of the nexus endpoint to move.
+    string endpoint_id = 1;
+
+    // The id of the project to move the endpoint to.
+    string destination_project_id = 2;
+
+    // The id of the project the caller expects the endpoint to currently belong to.
+    string expected_source_project_id = 3;
+
+    // The version of the endpoint for which this move is intended for.
+    // The latest version can be found in the GetNexusEndpoint operation response.
+    string resource_version = 4;
+
+    // The id to use for this async operation - optional.
+    string async_operation_id = 5;
+}
+
+message MoveNexusEndpointToProjectResponse {
+    // The async operation
+    temporal.api.cloud.operation.v1.AsyncOperation async_operation = 1;
+}
+
 message GetUserGroupsRequest {
     // The requested size of the page to retrieve - optional.
     // Cannot exceed 1000. Defaults to 100.
