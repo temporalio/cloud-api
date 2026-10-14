@@ -519,6 +519,19 @@ service CloudService {
         };
     }
 
+    // Move a nexus endpoint to a different project within the same account
+    rpc MoveNexusEndpointToProject(MoveNexusEndpointToProjectRequest) returns (MoveNexusEndpointToProjectResponse) {
+        option (google.api.http) = {
+            post: "/cloud/nexus/endpoints/{endpoint_id}/move-to-project",
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            tags: ["Projects"];
+            summary: "Move a Nexus endpoint to a project";
+            description: "Moves a Nexus endpoint to a different project within the same account.";
+        };
+    }
+
     // Get all user groups
     rpc GetUserGroups (GetUserGroupsRequest) returns (GetUserGroupsResponse) {
         option (google.api.http) = {
