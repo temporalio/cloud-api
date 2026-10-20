@@ -1,0 +1,2 @@
+test.proto:7: KeyService.X: operation key "x" must match ^[a-z][a-zA-Z0-9]+$, which nexgen requires; rename the RPC
+test.proto:8: KeyService.Get_Thing: operation key "get_Thing" must match ^[a-z][a-zA-Z0-9]+$, which nexgen requires; rename the RPC

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package test.pruning.v1;
+
+import "google/protobuf/struct.proto";
+
+service PruneService {
+  rpc Get(GetRequest) returns (GetResponse);
+}
+
+message GetRequest {}
+
+message GetResponse {
+  Used used = 1;
+}
+
+message Used {
+  string name = 1;
+}
+
+// Not reachable from the service: pruned, and its unsupported field
+// produces no diagnostic.
+message Unused {
+  google.protobuf.Value when = 1;
+  Used used = 2;
+}
+
+enum UnusedEnum {
+  UNUSED_ENUM_UNSPECIFIED = 0;
+}

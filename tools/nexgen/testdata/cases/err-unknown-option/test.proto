@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package test.streaming.v1;
+
+service StreamService {
+  rpc Unary(Msg) returns (Msg);
+  rpc Watch(Msg) returns (stream Msg);
+  rpc Upload(stream Msg) returns (Msg);
+}
+
+message Msg {}

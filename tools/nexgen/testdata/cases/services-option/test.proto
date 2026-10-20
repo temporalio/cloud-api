@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package test.services.v1;
+
+service Alpha {
+  rpc AlphaOp(AlphaMessage) returns (AlphaMessage);
+}
+
+service Beta {
+  rpc BetaOp(BetaMessage) returns (BetaMessage);
+}
+
+// Not selected: its messages are pruned.
+service Gamma {
+  rpc GammaOp(GammaMessage) returns (GammaMessage);
+}
+
+message AlphaMessage {}
+
+message BetaMessage {}
+
+message GammaMessage {}

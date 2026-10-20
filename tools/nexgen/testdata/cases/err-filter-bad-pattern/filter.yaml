@@ -1,0 +1,3 @@
+exclude:
+  methods:
+    - test.filtermethods.v1.OpService.Get*

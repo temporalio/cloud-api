@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package test.presence.v1;
+
+service PresenceService {
+  rpc Get(Presence) returns (Presence);
+}
+
+// Presence doesn't change the schema (D5): every field is an optional
+// property, and oneof members are ordinary properties.
+message Presence {
+  string implicit = 1;
+  optional string explicit = 2;
+  Child child = 3;
+  oneof choice {
+    string by_name = 4;
+    int32 by_number = 5;
+  }
+}
+
+message Child {}

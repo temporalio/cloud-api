@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package test.common.v1;
+
+// Stands in for temporal.api.common.v1 from a dependency module.
+message Payload {
+  map<string, bytes> metadata = 1;
+  bytes data = 2;
+}
+
+// Not reachable: not emitted into the dependency's file.
+message Unused {}

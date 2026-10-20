@@ -1,0 +1,1 @@
+services=test.streaming.v1.Nope

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package test.other.v1;
+
+import "deps/common.proto";
+
+message Shared {
+  string name = 1;
+  test.common.v1.Payload payload = 2;
+  Status status = 3;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_OK = 1;
+}

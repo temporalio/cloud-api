@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package test.deprecation.v1;
+
+service DeprecationService {
+  rpc Get(Msg) returns (Msg);
+  rpc Old(Msg) returns (OldMsg) {
+    option deprecated = true;
+  }
+}
+
+message Msg {
+  string name = 1;
+  string old_name = 2 [deprecated = true];
+  // The repo convention: a _deprecated suffix marks a deprecated field.
+  string state_deprecated = 3;
+  OldMsg old = 4 [deprecated = true];
+  Level level = 5;
+  OldEnum old_enum = 6;
+}
+
+message OldMsg {
+  option deprecated = true;
+  string value = 1;
+}
+
+enum Level {
+  LEVEL_UNSPECIFIED = 0;
+  LEVEL_LOW = 1 [deprecated = true];
+  LEVEL_HIGH = 2;
+}
+
+enum OldEnum {
+  option deprecated = true;
+  OLD_ENUM_UNSPECIFIED = 0;
+}
