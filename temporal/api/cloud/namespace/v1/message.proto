@@ -449,6 +449,15 @@ message ExportSinkSpec {
     // The Azure Blob configuration details when destination_type is Azure Blob.
     // temporal:versioning:min_version=v0.19.1
     temporal.api.cloud.sink.v1.AzureBlobSpec azure_blob = 5;
+
+    // The filter configuration for controlling which events are exported.
+    // temporal:versioning:min_version=v0.25.0
+    SinkFilter filter = 6;
+
+    message SinkFilter {
+        // Whether to disable export of standalone activity events.
+        bool disable_standalone_activity_export = 1;
+    }
 }
 
 message ExportSink {
