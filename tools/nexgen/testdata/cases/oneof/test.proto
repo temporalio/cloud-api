@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package test.oneof.v1;
+
+service OneofService {
+  rpc Get(Msg) returns (Msg);
+}
+
+message Msg {
+  oneof target {
+    // By name.
+    string by_name = 1;
+    int32 by_number = 2;
+    Ref by_ref = 3;
+  }
+  oneof single {
+    string only = 4;
+  }
+  optional string not_a_oneof = 5;
+}
+
+message Ref {
+  string id = 1;
+}

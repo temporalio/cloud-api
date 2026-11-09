@@ -1,0 +1,2 @@
+test.proto:7: StreamService.Watch: streaming RPCs can't be Nexus operations, which are unary
+test.proto:8: StreamService.Upload: streaming RPCs can't be Nexus operations, which are unary

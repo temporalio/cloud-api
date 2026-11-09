@@ -1,0 +1,3 @@
+exclude:
+  fields:
+    - test.filterdiag.v1.Msg.value

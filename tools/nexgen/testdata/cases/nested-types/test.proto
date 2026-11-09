@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package test.nested.v1;
+
+service NestedService {
+  rpc Get(GetRequest) returns (GetResponse);
+}
+
+message GetRequest {}
+
+// Declared after its use so declaration order, not reference order, decides
+// the $defs order.
+message GetResponse {
+  // Field numbers out of declaration order: properties follow field numbers.
+  Spec spec = 2;
+  Spec.Inner.Leaf leaf = 1;
+  Kind kind = 3;
+}
+
+enum Kind {
+  KIND_UNSPECIFIED = 0;
+  KIND_A = 1;
+}
+
+message Spec {
+  enum Mode {
+    MODE_UNSPECIFIED = 0;
+    MODE_ON = 1;
+  }
+  message Inner {
+    message Leaf {
+      string value = 1;
+    }
+    Leaf leaf = 1;
+  }
+  Inner inner = 1;
+  Mode mode = 2;
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package test.names.v1;
+
+import "a/a.proto";
+import "b/b.proto";
+
+service NameService {
+  rpc Get(Msg) returns (Msg);
+}
+
+// nexgen puts Go, Python, and TypeScript types in one namespace, so the two
+// Specs get AlphaSpec and BetaSpec there.
+message Msg {
+  test.alpha.v1.Spec alpha = 1;
+  test.beta.v1.Spec beta = 2;
+}

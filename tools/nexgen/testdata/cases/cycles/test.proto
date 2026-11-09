@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package test.cycles.v1;
+
+service TreeService {
+  rpc Get(Node) returns (Tree);
+}
+
+message Tree {
+  Node root = 1;
+}
+
+// Refers to itself directly and through Edge.
+message Node {
+  string name = 1;
+  repeated Node children = 2;
+  Edge parent = 3;
+}
+
+message Edge {
+  Node target = 1;
+}

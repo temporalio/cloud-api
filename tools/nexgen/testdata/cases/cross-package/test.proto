@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package test.cross.v1;
+
+import "other/other.proto";
+
+service CrossService {
+  rpc Get(GetRequest) returns (test.other.v1.Shared);
+}
+
+message GetRequest {
+  test.other.v1.Shared shared = 1;
+  test.other.v1.Status status = 2;
+}

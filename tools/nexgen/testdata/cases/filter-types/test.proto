@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package test.filtertypes.v1;
+
+import "op/op.proto";
+
+service ThingService {
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message DeleteRequest {
+  string id = 1;
+}
+
+message DeleteResponse {
+  test.filtertypes.op.v1.AsyncOperation async_operation = 1;
+  repeated test.filtertypes.op.v1.AsyncOperation history = 2;
+  map<string, test.filtertypes.op.v1.AsyncOperation> by_region = 3;
+  string note = 4;
+}

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package test.wkt.v1;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+service WktService {
+  rpc Get(google.protobuf.Empty) returns (Msg);
+  rpc Clear(Msg) returns (google.protobuf.Empty);
+}
+
+message Msg {
+  google.protobuf.Timestamp created = 1;
+  repeated google.protobuf.Duration ttls = 2;
+  google.protobuf.Struct attributes = 3;
+  google.protobuf.Any detail = 4;
+  google.protobuf.Empty nothing = 5;
+  google.protobuf.FieldMask mask = 6;
+  google.protobuf.Int64Value count = 7;
+  google.protobuf.UInt32Value small = 8;
+  google.protobuf.BoolValue flag = 9;
+  google.protobuf.StringValue label = 10;
+  google.protobuf.BytesValue blob = 11;
+  google.protobuf.DoubleValue ratio = 12;
+  map<string, google.protobuf.Timestamp> deadlines = 13;
+}

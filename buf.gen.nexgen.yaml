@@ -1,0 +1,12 @@
+# Generates the nexgen definition files under nexusrpc/. See tools/nexgen.
+version: v1
+plugins:
+  - plugin: nexgen
+    path: .bin/protoc-gen-nexgen
+    out: nexusrpc
+    # The plugin needs every package in one request to compute the type
+    # closure and the cross-package $refs.
+    strategy: all
+    opt:
+      - services=temporal.api.cloud.cloudservice.v1.CloudService
+      - filter=nexgen.filter.yaml
