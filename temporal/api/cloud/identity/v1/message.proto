@@ -159,6 +159,18 @@ message User {
     // The date and time when the user was last modified
     // Will not be set if the user has never been modified
     google.protobuf.Timestamp last_modified_time = 8;
+    // The SCIM and Cloud groups the user is a member of, without their access or roles.
+    // This field is only set if include_group_memberships in the GetUser or GetUsers request is true
+    // and the caller has access to the user's full identity information.
+    repeated UserGroupMembership group_memberships = 10;
+}
+
+// A group the user is a member of.
+message UserGroupMembership {
+    // The id of the group.
+    string group_id = 1;
+    // The display name of the group.
+    string display_name = 2;
 }
 
 message GoogleGroupSpec {
