@@ -48,6 +48,9 @@ message GetUsersRequest {
     string email = 3;
     // Filter users by the namespace they have access to - optional.
     string namespace = 4;
+    // Whether to include each user's group memberships in the response - optional.
+    // Defaults to false.
+    bool include_group_memberships = 5;
 }
 
 message GetUsersResponse {
@@ -60,6 +63,9 @@ message GetUsersResponse {
 message GetUserRequest {
     // The id of the user to get
     string user_id = 1;
+    // Whether to include the user's group memberships in the response - optional.
+    // Defaults to false.
+    bool include_group_memberships = 2;
 }
 
 message GetUserResponse {
