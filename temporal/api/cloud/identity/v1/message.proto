@@ -84,6 +84,10 @@ message ProjectAccess {
         PROJECT_ROLE_MEMBER = 6;      // Basic membership; grants read-only access to the project.
         PROJECT_ROLE_DEVELOPER = 7;   // Inherited from the account developer role; cannot be assigned directly.
     }
+
+    // List of project-scoped custom role IDs assigned to the principal for this project.
+    // temporal:versioning:min_version=v0.27.0
+    repeated string custom_roles = 2;
 }
 
 message Access {
@@ -343,6 +347,14 @@ message CustomRoleSpec {
     string description = 2;
     // The permissions assigned to the custom role.
     repeated Permission permissions = 3;
+    // The id of the project this custom role is scoped to - optional.
+    // If unset, the custom role is scoped to the account: it can reference resources anywhere in the
+    // account and can be assigned to principals at the account level.
+    // If set, the custom role is scoped to the project: its resources must belong to that project, it
+    // is not shared across projects, and it can only be assigned to principals within that project.
+    // Immutable once the custom role is created - it cannot be changed via UpdateCustomRole.
+    // temporal:versioning:min_version=v0.27.0
+    string project_id = 4;
 
     message Resources {
         // The resource type the permission applies to.

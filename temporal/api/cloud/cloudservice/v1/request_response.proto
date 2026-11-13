@@ -1285,6 +1285,9 @@ message GetCustomRolesRequest {
     int32 page_size = 1;
     // The page token if this is continuing from another response.
     string page_token = 2;
+    // Filter to only the custom roles scoped to this project - optional.
+    // If unset, only account-scoped custom roles are returned.
+    string project_id = 3;
 }
 
 message GetCustomRolesResponse {
