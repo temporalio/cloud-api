@@ -1,0 +1,4 @@
+exclude:
+  fields:
+    - test.filterfields.v1.**.async_operation_id
+    - test.filterfields.v1.*.pager

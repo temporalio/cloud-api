@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package test.inline.v1;
+
+import "google/protobuf/struct.proto";
+
+service InlineService {
+  rpc Get(Namespace) returns (Namespace);
+}
+
+message Namespace {
+  // nexgen names this map's shape NamespaceRegionStatus, the message below,
+  // so the plugin hoists it into $defs as NamespaceRegionStatusMap.
+  map<string, NamespaceRegionStatus> region_status = 1 [deprecated = true];
+  // No collision: stays inline.
+  map<string, string> labels = 2;
+  // An open object colliding with NamespaceAttributes: hoisted as
+  // NamespaceAttributesMap.
+  google.protobuf.Struct attributes = 3;
+  NamespaceAttributes extra = 4;
+}
+
+message NamespaceRegionStatus {
+  string state = 1;
+}
+
+message NamespaceAttributes {}

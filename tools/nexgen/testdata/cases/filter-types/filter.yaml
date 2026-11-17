@@ -1,0 +1,3 @@
+exclude:
+  field_types:
+    - test.filtertypes.op.v1.AsyncOperation

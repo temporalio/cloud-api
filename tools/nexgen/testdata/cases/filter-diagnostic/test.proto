@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package test.filterdiag.v1;
+
+import "google/protobuf/struct.proto";
+
+service DiagService {
+  rpc Get(Msg) returns (Msg);
+}
+
+message Msg {
+  string name = 1;
+  // Unmappable, but excluded, so no error.
+  google.protobuf.Value value = 2;
+}

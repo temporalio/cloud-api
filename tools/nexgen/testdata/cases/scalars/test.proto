@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package test.scalars.v1;
+
+service ScalarService {
+  rpc Echo(Scalars) returns (Scalars);
+}
+
+message Scalars {
+  string string_field = 1;
+  bool bool_field = 2;
+  int32 int32_field = 3;
+  sint32 sint32_field = 4;
+  sfixed32 sfixed32_field = 5;
+  uint32 uint32_field = 6;
+  fixed32 fixed32_field = 7;
+  int64 int64_field = 8;
+  sint64 sint64_field = 9;
+  sfixed64 sfixed64_field = 10;
+  uint64 uint64_field = 11;
+  fixed64 fixed64_field = 12;
+  float float_field = 13;
+  double double_field = 14;
+  bytes bytes_field = 15;
+}

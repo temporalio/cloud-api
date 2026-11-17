@@ -1,0 +1,67 @@
+{
+  "nexusrpc": "1.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "services": {
+    "RepeatedService": {
+      "fqn": "test.repeated.v1.RepeatedService",
+      "operations": {
+        "list": {
+          "fqn": "List",
+          "input": {
+            "$ref": "#/$defs/ListRequest"
+          },
+          "output": {
+            "$ref": "#/$defs/ListResponse"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ListRequest": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^-?[0-9]+$"
+          }
+        }
+      }
+    },
+    "ListResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Item"
+          },
+          "x-java-name": "items_"
+        },
+        "colors": {
+          "description": "One of the `Color` values:\n\n- `COLOR_UNSPECIFIED`\n- `COLOR_RED`\n\nNewer servers may return values not listed here.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Item": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

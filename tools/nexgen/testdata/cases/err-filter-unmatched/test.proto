@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package test.filtermethods.v1;
+
+service OpService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc GetAsyncOperation(GetAsyncOperationRequest) returns (GetAsyncOperationResponse);
+}
+
+message CreateRequest {
+  string name = 1;
+}
+
+message CreateResponse {}
+
+// Reachable only through the excluded RPC: pruned.
+message GetAsyncOperationRequest {
+  string id = 1;
+}
+
+message GetAsyncOperationResponse {
+  Operation operation = 1;
+}
+
+message Operation {
+  string state = 1;
+}
