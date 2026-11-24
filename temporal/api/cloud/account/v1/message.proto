@@ -14,6 +14,8 @@ import "temporal/api/cloud/sink/v1/message.proto";
 import "google/protobuf/timestamp.proto";
 
 message MetricsSpec {
+    option deprecated = true;
+
     // The ca cert(s) in PEM format that clients connecting to the metrics endpoint can use for authentication.
     // This must only be one value, but the CA can have a chain.
     bytes accepted_client_ca = 2;
@@ -27,13 +29,15 @@ message AuthenticationSettings {
 message AccountSpec {
     // The metrics specification for this account.
     // If not specified, metrics will not be enabled.
-    MetricsSpec metrics = 1;
+    MetricsSpec metrics = 1 [deprecated = true];
     // Authentication settings for this account.
     // temporal:versioning:min_version=v0.20.0
     AuthenticationSettings authentication_settings = 2;
 }
 
 message Metrics {
+    option deprecated = true;
+
     // The prometheus metrics endpoint uri.
     // This is only populated when the metrics is enabled in the metrics specification.
     string uri = 1;
@@ -52,7 +56,7 @@ message Account {
     // The id of the async operation that is updating the account, if any.
     string async_operation_id = 5;
     // Information related to metrics.
-    Metrics metrics = 6;
+    Metrics metrics = 6 [deprecated = true];
 }
 
 // AuditLogSinkSpec is only used by Audit Log
