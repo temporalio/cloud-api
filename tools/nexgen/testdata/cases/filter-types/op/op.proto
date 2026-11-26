@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package test.filtertypes.op.v1;
+
+// Only reachable through excluded fields, so the whole package is pruned.
+message AsyncOperation {
+  string id = 1;
+}

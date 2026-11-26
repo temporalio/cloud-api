@@ -1,0 +1,1 @@
+filter: open nope.yaml: no such file or directory

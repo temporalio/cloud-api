@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package test.wkt.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+
+service WktService {
+  rpc Get(Msg) returns (google.protobuf.StringValue);
+}
+
+// Every reachable error is reported, not just the first.
+message Msg {
+  google.protobuf.Value value = 1;
+  google.protobuf.ListValue list = 2;
+  google.protobuf.NullValue null = 3;
+}

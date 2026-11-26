@@ -1,0 +1,1 @@
+services=test.services.v1.Beta+test.services.v1.Alpha

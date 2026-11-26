@@ -1,0 +1,4 @@
+test.proto:9: WktService.Get: google.protobuf.StringValue can't be an operation input or output; nexgen requires a message with fields
+test.proto:14: Msg.value: google.protobuf.Value can't be expressed: nexgen has no "any JSON value" type; use google.protobuf.Struct or a message
+test.proto:15: Msg.list: google.protobuf.ListValue can't be expressed: nexgen has no "any JSON value" type; use google.protobuf.Struct or a message
+test.proto:16: Msg.null: google.protobuf.NullValue can't be expressed: nexgen has no "any JSON value" type; use google.protobuf.Struct or a message

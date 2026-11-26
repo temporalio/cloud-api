@@ -1,0 +1,1 @@
+filter.yaml: exclude.methods[0]: "test.filtermethods.v1.OpService.Get*": segment "Get*" must be a proto identifier, * (one segment), or ** (any number of segments)

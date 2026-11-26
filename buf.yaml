@@ -5,6 +5,11 @@ deps:
   - buf.build/temporalio/api:v1.43.0
   - buf.build/grpc-ecosystem/grpc-gateway:v2.26.3
 
+build:
+  excludes:
+    # Test fixtures for the protoc-gen-nexgen plugin, not part of the API.
+    - tools
+
 breaking:
   use:
     - FILE
